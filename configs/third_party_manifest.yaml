@@ -1,0 +1,66 @@
+# Provenance of third-party code and data used by this project. Update on every re-pin.
+# Rule: one fork of CoachAI+ is the executable baseline; everything else is a separate preprocessing
+# dependency or a reference. Never copy folders between repositories.
+
+coachai_plus:                       # THE baseline environment (report reference [1])
+  repo: https://github.com/KuangDW/CoachAI-Plus
+  pinned_commit: 4fd05934f172eec16c74d05c2902983b64c8521e      # 2025-01-28 "updated"
+  your_fork: TODO https://github.com/<your-github-user>/CoachAI-Plus
+  license: >
+    NONE FOUND. No LICENSE file and no licence statement in the README, so by default all rights are
+    reserved. Ask the authors (NYCU Advanced Database System Lab, Prof. Wen-Chih Peng) for permission or a
+    licence before redistributing or publishing modified copies. Not legal advice.
+  python_env: {python: 3.10.12, torch: 2.4.1 (cu121), numpy: 1.26.4, pandas: 2.2.3, scikit-learn: 1.5.2, scipy: 1.14.1}
+  how_it_runs: "NOT as upstream documents. Use scripts/setup/run_coachai_baseline.py (adds the fork root and BadmintonEnv/ to sys.path, chdir to the fork root, torch.load defaults to CPU without a GPU)."
+  verified_run: {where: "Linux sandbox, Python 3.12, CPU only, pinned packages", result: "5 rallies, 25 stroke rows, 5.4 s", not_tested: "WSL2, Python 3.10, GPU"}
+  known_issues:
+    - "python -m BadmintonEnv.RunEnv fails: Environment.py does `from Utils...` (needs BadmintonEnv/ on sys.path; the authors' own api/app.py appends it)"
+    - "requires ./ as working directory (relative paths to input_data/ and BadmintonEnv/Agent/)"
+    - "hyperparameters.pkl and INV_weight.pth are CUDA-saved and loaded without map_location: crashes on machines where PyTorch sees no GPU"
+    - "environment.yaml is a Linux conda lock (hundreds of pins); the pip list in requirements-coachai.txt is the subset the code imports"
+  api_warning: "NOT Gymnasium. reset() -> (state, info, done, launch). step(action, is_launch) returns a 4-tuple (state, info, done, launch) on the opponent-launch path (is_launch=True, used by reset) and a 5-tuple (state, reward, info, done, launch) on the normal path. Read from Environment.py lines 122-283, not yet run."
+  audited_facts:
+    - "no physics terms (gravity/drag/velocity/speed/reaction/acceleration/flight) found in BadmintonEnv/*.py; transitions are constraints + learned opponents"
+    - "hitter-referenced court frame: 960 x 355 units, hitter always at negative y, (0,0) at court centre; 330 units to the back line (about 2.03 cm/unit)"
+  bundled_files:
+      BadmintonEnv/Agent/RallyNet_weight.trc: {bytes: 369928, sha256: bed1f112d542903a5c6db898f56a0e6baf3d240abe2879041cc092805e985c7d}
+      BadmintonEnv/Agent/BC_weight.pth: {bytes: 29466, sha256: a99b4a78de714716166ceb794c3e54998201cd7df35777ed318603b969a3e997}
+      BadmintonEnv/Agent/BC4Serve_weight.pth: {bytes: 20632, sha256: 8036be9ccf012174a51ded00689d494b530f01249ea28ce4e7dceb93653be344}
+      BadmintonEnv/Agent/INV_weight.pth: {bytes: 45850, sha256: ae9d0e1837c3515c3507172b060e82808e83840938313523509438d56eff3c60}
+      BadmintonEnv/Agent/hyperparameters.pkl: {bytes: 26602443, sha256: 7e5ab372205f5b37db450e519040bdb358136e4c2b66461a1374b50c43588c7d}
+      input_data/target_players_ids.pkl: {bytes: 508, sha256: b6c2e4ea5b58923d20c1a7b51a0ee6f8d83a2958d622183995c271222f51e755}
+
+coachai_projects:                   # ShuttleSet data + the older AAAI-24 environment (read-only)
+  repo: https://github.com/wywyWang/CoachAI-Projects
+  pinned_commit: 45517f7d4cb936b03f3eabf939cc7959d39226fe      # 2026-07-17
+  license: "MIT (Copyright (c) 2022 Wei-Yao Wang); the StrategicEnvironment subfolder is MIT too (OpenAI multiagent-particle-envs)"
+  used_for: "ShuttleSet/set annotation CSVs, copied to data/raw/shuttleset/set (gitignored)"
+  audited_paths: [ShuttleSet/, "CoachAI Badminton Environment/StrategicEnvironment/multiagent/core.py", "CoachAI Badminton Environment/StrategicEnvironment/Data/"]
+  not_audited: [CoachAI-Challenge-IJCAI2023/ShuttleSet22, RallyNet/ (ECML-PKDD 2024), model checkpoints, "running that environment"]
+
+shuttleset:
+  path: data/raw/shuttleset/set
+  claimed_by_readme: {matches: 44, sets: 104, rallies: 3685, strokes: 36492, shot_types: 18}
+  observed: {matches: 44, sets: 104, rallies: 3683, strokes: 36484, shot_types: 19}
+  license_note: >
+    No dataset-specific licence is stated in the README; the repository licence is MIT. Match videos are
+    YouTube broadcasts (urls in match.csv) and are not redistributable. Keep raw data out of this repo
+    and cite Wang et al., KDD 2023. Ask the authors before publishing derived per-stroke tables.
+
+# ---- later (months 5-6, perception pilot): each needs its OWN virtual environment -------------------
+tracknetv3:
+  repo: https://github.com/LiaoBoTai/_TrackNetV3
+  commit_seen: 2808fb8 (2026-07-04)
+  license: MIT (Copyright (c) 2024 qaz812345; this repo is a copy of that author's TrackNetV3)
+  python_env: {python: 3.8.7, torch: 1.10.0, numpy: 1.22.4, opencv_python: 4.4.0.46}   # incompatible with CoachAI+
+  weights: "ckpts/TrackNet_best.pt, InpaintNet_best.pt from a Google Drive link in its README; record sha256 when downloaded"
+mmpose:
+  repo: https://github.com/open-mmlab/mmpose
+  commit_seen: 759b39c (2025-08-04)
+  license: Apache-2.0
+  python_env: "separate; needs matching mmengine>=0.4,<1 / mmcv>=2,<3 / mmdet>=3,<3.3 builds for the chosen torch"
+3dshuttletracking:
+  repo: https://github.com/BrindaS42/3DShuttleTracking
+  commit_seen: af05d3b (2026-04-30)
+  license: NONE FOUND at repo root
+  note: "REFERENCE ONLY. Its documented workflow needs a Roboflow API key and a Hugging Face token; do not run it inside the project, do not copy code."

@@ -1,0 +1,120 @@
+{
+  "V_T": 6.86,
+  "rows": [
+    {
+      "case": "net shot",
+      "speed": 8.0,
+      "elev_deg": 35.0,
+      "z0": 1.0,
+      "quadratic_range_m": 4.03,
+      "quadratic_time_s": 1.02,
+      "coachai_n1": {
+        "range_m": 3.57,
+        "time_s": 1.06,
+        "range_ratio_vs_quadratic": 0.89,
+        "time_ratio_vs_quadratic": 1.03
+      },
+      "coachai_n2": {
+        "range_m": 4.12,
+        "time_s": 0.99,
+        "range_ratio_vs_quadratic": 1.02,
+        "time_ratio_vs_quadratic": 0.97
+      }
+    },
+    {
+      "case": "drop",
+      "speed": 18.0,
+      "elev_deg": 12.0,
+      "z0": 2.5,
+      "quadratic_range_m": 7.8,
+      "quadratic_time_s": 1.18,
+      "coachai_n1": {
+        "range_m": 10.32,
+        "time_s": 1.27,
+        "range_ratio_vs_quadratic": 1.32,
+        "time_ratio_vs_quadratic": 1.08
+      },
+      "coachai_n2": {
+        "range_m": 7.64,
+        "time_s": 1.07,
+        "range_ratio_vs_quadratic": 0.98,
+        "time_ratio_vs_quadratic": 0.91
+      }
+    },
+    {
+      "case": "lob",
+      "speed": 24.0,
+      "elev_deg": 50.0,
+      "z0": 0.8,
+      "quadratic_range_m": 7.81,
+      "quadratic_time_s": 1.93,
+      "coachai_n1": {
+        "range_m": 10.55,
+        "time_s": 2.63,
+        "range_ratio_vs_quadratic": 1.35,
+        "time_ratio_vs_quadratic": 1.36
+      },
+      "coachai_n2": {
+        "range_m": 9.05,
+        "time_s": 1.74,
+        "range_ratio_vs_quadratic": 1.16,
+        "time_ratio_vs_quadratic": 0.9
+      }
+    },
+    {
+      "case": "clear",
+      "speed": 35.0,
+      "elev_deg": 35.0,
+      "z0": 2.5,
+      "quadratic_range_m": 10.95,
+      "quadratic_time_s": 2.05,
+      "coachai_n1": {
+        "range_m": 19.82,
+        "time_s": 3.08,
+        "range_ratio_vs_quadratic": 1.81,
+        "time_ratio_vs_quadratic": 1.5
+      },
+      "coachai_n2": {
+        "range_m": 11.91,
+        "time_s": 1.83,
+        "range_ratio_vs_quadratic": 1.09,
+        "time_ratio_vs_quadratic": 0.89
+      }
+    },
+    {
+      "case": "clear (fast)",
+      "speed": 50.0,
+      "elev_deg": 25.0,
+      "z0": 2.5,
+      "quadratic_range_m": 13.05,
+      "quadratic_time_s": 1.9,
+      "coachai_n1": {
+        "range_m": 31.39,
+        "time_s": 3.19,
+        "range_ratio_vs_quadratic": 2.4,
+        "time_ratio_vs_quadratic": 1.68
+      },
+      "coachai_n2": {
+        "range_m": 14.0,
+        "time_s": 1.85,
+        "range_ratio_vs_quadratic": 1.07,
+        "time_ratio_vs_quadratic": 0.98
+      }
+    },
+    {
+      "case": "smash",
+      "speed": 60.0,
+      "elev_deg": -15.0,
+      "z0": 2.8,
+      "quadratic_range_m": 8.45,
+      "quadratic_time_s": 0.42,
+      "coachai_n1": {
+        "range_m": 9.86,
+        "time_s": 0.2,
+        "range_ratio_vs_quadratic": 1.17,
+        "time_ratio_vs_quadratic": 0.46
+      },
+      "coachai_n2": null
+    }
+  ]
+}

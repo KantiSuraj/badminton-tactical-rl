@@ -1,0 +1,1330 @@
+{
+  "integrity": {
+    "counts": {
+      "matches": 44,
+      "sets": 104,
+      "rallies": 3683,
+      "strokes": 36484,
+      "shot_types": 19
+    },
+    "readme_claims": {
+      "matches": 44,
+      "sets": 104,
+      "rallies": 3685,
+      "strokes": 36492,
+      "shot_types": 18
+    },
+    "count_differences": {
+      "matches": 0,
+      "sets": 0,
+      "rallies": -2,
+      "strokes": -8,
+      "shot_types": 1
+    },
+    "unknown_shot_strokes": 1407,
+    "shot_type_counts": {
+      "net shot": 6290,
+      "lob": 5331,
+      "return net": 3620,
+      "push": 2925,
+      "clear": 2922,
+      "smash": 2586,
+      "drop": 2144,
+      "short service": 2051,
+      "wrist smash": 1648,
+      "unknown": 1407,
+      "cross-court net shot": 1371,
+      "passive drop": 1356,
+      "drive": 700,
+      "rush": 512,
+      "back-court drive": 473,
+      "defensive return drive": 406,
+      "long service": 373,
+      "defensive return lob": 301,
+      "driven flight": 68
+    },
+    "rallies_not_starting_at_1": 0,
+    "ball_round_gaps": 2,
+    "same_player_twice_in_a_row": 6,
+    "frame_not_increasing": 240,
+    "frame_decreasing": 35,
+    "frame_equal": 205,
+    "fps_by_video": {
+      "An_Se_Young_Pornpawee_Chochuwong_TOYOTA_THAILAND_OPEN_2021_QuarterFinals": 30.0,
+      "An_Se_Young_Ratchanok_Intanon_YONEX_Thailand_Open_2021_QuarterFinals": 30.0,
+      "Anders_ANTONSEN_Jonatan_CHRISTIE Indonesia_Masters_2020_QuarterFinals": 25.0,
+      "Anders_Antonsen_Sameer_Verma_TOYOTA_THAILAND_OPEN_2021_QuarterFinals": 30.0,
+      "Anders_Antonsen_Viktor_Axelsen_HSBC_BWF_WORLD_TOUR_FINALS_2020_Finals": 30.0,
+      "Anthony_Sinisuka_GINTING_Anders_ANTONSEN_Indonesia_Masters_2020_Final": 25.0,
+      "Anthony_Sinisuka_GINTING_Viktor_AXELSEN _Indonesia_Masters_2020_SemiFinals": 25.0,
+      "Anthony_Sinisuka_Ginting_Lee_Zii_Jia_HSBC_BWF_WORLD_TOUR_FINALS_2020_QuarterFinals": 30.0,
+      "Anthony_Sinisuka_Ginting_Rasmus_Gemke_YONEX_Thailand_Open_2021_QuarterFinals": 30.0,
+      "CHEN_Long_CHOU_Tien_Chen_Denmark_Open_2019_QuarterFinal": 25.0,
+      "CHEN_Long_CHOU_Tien_Chen_World_Tour_Finals_Group_Stage": 25.0,
+      "CHOU_Tien_Chen_Anders_ANTONSEN_Fuzhou_Open_2019_Semi-finals": 25.0,
+      "CHOU_Tien_Chen_Jonatan_CHRISTIE_Indonesia_Open_2019_Quarter-finals": 25.0,
+      "CHOU_Tien_Chen_Jonatan_CHRISTIE_Sudirman_Cup_2019_Quarter-finals": 25.0,
+      "CHOU_Tien_Chen_NG_Ka_Long_Angus_Sudirman_Cup_2019_Group_Stage": 25.0,
+      "Carolina_Marin_An_Se_Young_HSBC_BWF_WORLD_TOUR_FINALS_2020_QuarterFinals": 30.0,
+      "Carolina_Marin_An_Se_Young_TOYOTA_THAILAND_OPEN_2021_SemiFinals": 30.0,
+      "Carolina_Marin_Neslihan_Yigit_TOYOTA_THAILAND_OPEN_2021_QuarterFinals": 30.0,
+      "Carolina_Marin_Pornpawee_Chochuwong_HSBC_BWF_WORLD_TOUR_FINALS_2020_SemiFinals": 30.0,
+      "Carolina_Marin_Supanida_Katethong_YONEX_Thailand_Open_2021_QuarterFinals": 30.0,
+      "Evgeniya_Kosetskaya_Michelle_Li_HSBC_BWF_WORLD_TOUR_FINALS_2020_QuarterFinals": 30.0,
+      "Hans-Kristian_Solberg_Vittinghus_Anders_Antonsen_TOYOTA_THAILAND_OPEN_2021_SemiFinals": 30.0,
+      "Hans-Kristian_Solberg_Vittinghus_Lee_Cheuk_Yu_TOYOTA_THAILAND_OPEN_2021_QuarterFinals": 30.0,
+      "Kento_MOMOTA_CHOU_Tien_Chen_Denmark_Open_2018_Finals": 25.0,
+      "Kento_MOMOTA_CHOU_Tien_Chen_Fuzhou_Open_2018_Finals": 25.0,
+      "Kento_MOMOTA_CHOU_Tien_Chen_Fuzhou_Open_2019_Finals": 25.0,
+      "Kento_MOMOTA_CHOU_Tien_Chen_KOREA_OPEN_2019_Final": 25.0,
+      "Kento_MOMOTA_CHOU_Tien_Chen_Malaysia_Open_2018_QuarterFinals": 25.0,
+      "Kento_MOMOTA_Viktor_AXELSEN_Malaysia_Masters_2020_Finals": 25.0,
+      "Mia_Blichfeldt_Busanan_Ongbamrungphan_YONEX_Thailand_Open_2021_QuarterFinals": 30.0,
+      "NG_Ka_Long_Angus_Jonatan_CHRISTIE_Malaysia_Masters_2020_QuarterFinals": 25.0,
+      "NG_Ka_Long_Angus_SHI_Yu_Qi_Thailand_Masters_2020_SemiFinals": 29.97,
+      "Ng_Ka_Long_Angus_Kidambi_Srikanth_HSBC_BWF_WORLD_TOUR_FINALS_2020_QuarterFinals": 30.0,
+      "Ng_Ka_Long_Angus_Lee_Cheuk_Yiu_YONEX_Thailand_Open_2021_QuarterFinals": 30.0,
+      "Pusarla_V._Sindhu_Pornpawee_Chochuwong_HSBC_BWF_WORLD_TOUR_FINALS_2020_QuarterFinals": 30.0,
+      "Ratchanok_Intanon_Pusarla_V._Sindhu_TOYOTA_THAILAND_OPEN_2021_QuarterFinals": 30.0,
+      "Viktor_AXELSEN _SHI_Yu_Qi_All_England_Open_2020_QuarterFinals": 25.0,
+      "Viktor_AXELSEN_CHEN_Long_Malaysia_Masters_2020_QuarterFinals": 25.0,
+      "Viktor_AXELSEN_NG_Ka_Long_Angus_Malaysia_Masters_2020_SemiFinals": 25.0,
+      "Viktor_Axelsen_Anthony_Sinisuka_Ginting_YONEX_Thailand_Open_2021_SemiFinals": 30.0,
+      "Viktor_Axelsen_Hans-Kristian_Solberg_VIittinghus_TOYOTA_THAILAND_OPEN_2021_Finals": 30.0,
+      "Viktor_Axelsen_Jonatan_Christie_YONEX_Thailand_Open_2021_QuarterFinals": 30.0,
+      "Viktor_Axelsen_Liew_Daren_TOYOTA_THAILAND_OPEN_2021_QuarterFinals": 30.0,
+      "Viktor_Axelsen_Ng_Ka_Long_Angus_YONEX_Thailand_Open_2021_Finals": 30.0
+    },
+    "fps_counts": {
+      "30.0": 25,
+      "25.0": 19
+    },
+    "videos_with_clock_drift_over_2s": {
+      "Pusarla_V._Sindhu_Pornpawee_Chochuwong_HSBC_BWF_WORLD_TOUR_FINALS_2020_QuarterFinals": 4.2,
+      "Viktor_Axelsen_Jonatan_Christie_YONEX_Thailand_Open_2021_QuarterFinals": 18.1
+    },
+    "missing_fraction": {
+      "time": 0.0,
+      "frame_num": 0.0,
+      "type": 0.0,
+      "player_location_x": 0.0321,
+      "opponent_location_x": 0.0322,
+      "hit_x": 0.1302,
+      "landing_x": 0.0325,
+      "hit_height": 0.0012,
+      "landing_height": 0.1732,
+      "lose_reason": 0.9038,
+      "win_reason": 0.9038
+    },
+    "outside_court_fraction": {
+      "player": 0.0,
+      "opponent": 2.8319787035201494e-05,
+      "landing": 0.002436467688472108
+    }
+  },
+  "flight_time": {
+    "usable_pairs": 32493,
+    "excluded_pairs_outside_0.15_6s": 308,
+    "resolution_s_at_25fps": 0.04,
+    "resolution_s_at_30fps": 0.0333,
+    "table": {
+      "back-court drive": {
+        "n": 439,
+        "mean_s": 0.549,
+        "median_s": 0.533,
+        "p10_s": 0.433,
+        "p90_s": 0.684,
+        "mean_frames": 15.339
+      },
+      "clear": {
+        "n": 2733,
+        "mean_s": 1.183,
+        "median_s": 1.167,
+        "p10_s": 0.9,
+        "p90_s": 1.5,
+        "mean_frames": 32.885
+      },
+      "cross-court net shot": {
+        "n": 1201,
+        "mean_s": 0.918,
+        "median_s": 0.92,
+        "p10_s": 0.8,
+        "p90_s": 1.04,
+        "mean_frames": 25.361
+      },
+      "defensive return drive": {
+        "n": 353,
+        "mean_s": 0.734,
+        "median_s": 0.72,
+        "p10_s": 0.469,
+        "p90_s": 1.039,
+        "mean_frames": 20.289
+      },
+      "defensive return lob": {
+        "n": 274,
+        "mean_s": 1.035,
+        "median_s": 1.04,
+        "p10_s": 0.724,
+        "p90_s": 1.32,
+        "mean_frames": 28.715
+      },
+      "drive": {
+        "n": 624,
+        "mean_s": 0.5,
+        "median_s": 0.467,
+        "p10_s": 0.36,
+        "p90_s": 0.68,
+        "mean_frames": 13.699
+      },
+      "driven flight": {
+        "n": 65,
+        "mean_s": 0.684,
+        "median_s": 0.7,
+        "p10_s": 0.48,
+        "p90_s": 0.84,
+        "mean_frames": 19.108
+      },
+      "drop": {
+        "n": 1917,
+        "mean_s": 0.803,
+        "median_s": 0.8,
+        "p10_s": 0.633,
+        "p90_s": 0.96,
+        "mean_frames": 22.322
+      },
+      "lob": {
+        "n": 4986,
+        "mean_s": 1.335,
+        "median_s": 1.28,
+        "p10_s": 1.0,
+        "p90_s": 1.8,
+        "mean_frames": 36.901
+      },
+      "long service": {
+        "n": 360,
+        "mean_s": 1.447,
+        "median_s": 1.24,
+        "p10_s": 0.957,
+        "p90_s": 2.067,
+        "mean_frames": 41.711
+      },
+      "net shot": {
+        "n": 5821,
+        "mean_s": 0.88,
+        "median_s": 0.88,
+        "p10_s": 0.733,
+        "p90_s": 1.033,
+        "mean_frames": 24.242
+      },
+      "passive drop": {
+        "n": 1276,
+        "mean_s": 0.792,
+        "median_s": 0.8,
+        "p10_s": 0.6,
+        "p90_s": 0.967,
+        "mean_frames": 21.876
+      },
+      "push": {
+        "n": 2680,
+        "mean_s": 0.957,
+        "median_s": 1.033,
+        "p10_s": 0.5,
+        "p90_s": 1.28,
+        "mean_frames": 26.454
+      },
+      "return net": {
+        "n": 3190,
+        "mean_s": 0.883,
+        "median_s": 0.88,
+        "p10_s": 0.7,
+        "p90_s": 1.067,
+        "mean_frames": 24.348
+      },
+      "rush": {
+        "n": 212,
+        "mean_s": 0.417,
+        "median_s": 0.4,
+        "p10_s": 0.3,
+        "p90_s": 0.533,
+        "mean_frames": 11.481
+      },
+      "short service": {
+        "n": 2036,
+        "mean_s": 0.76,
+        "median_s": 0.72,
+        "p10_s": 0.6,
+        "p90_s": 0.92,
+        "mean_frames": 20.597
+      },
+      "smash": {
+        "n": 1912,
+        "mean_s": 0.487,
+        "median_s": 0.467,
+        "p10_s": 0.367,
+        "p90_s": 0.6,
+        "mean_frames": 13.61
+      },
+      "unknown": {
+        "n": 1012,
+        "mean_s": 1.227,
+        "median_s": 1.0,
+        "p10_s": 0.433,
+        "p90_s": 2.298,
+        "mean_frames": 35.617
+      },
+      "wrist smash": {
+        "n": 1402,
+        "mean_s": 0.531,
+        "median_s": 0.52,
+        "p10_s": 0.4,
+        "p90_s": 0.68,
+        "mean_frames": 14.676
+      }
+    },
+    "note": "dt is the time between consecutive hits, i.e. flight time to the CONTACT point (includes the shuttle being hit above the floor), not time-to-floor."
+  },
+  "kinematics": {
+    "pairs": 28265,
+    "dropped_as_jumps_over_10mps": 0,
+    "avg_speed_mps": {
+      "p5": 0.3312,
+      "p25": 0.9258,
+      "p50": 1.361,
+      "p75": 1.8102,
+      "p90": 2.312,
+      "p95": 2.6233,
+      "p99": 3.1496
+    },
+    "distance_m": {
+      "p5": 0.5637,
+      "p25": 1.5872,
+      "p50": 2.4872,
+      "p75": 3.4255,
+      "p90": 4.1999,
+      "p95": 4.6247,
+      "p99": 5.3759
+    },
+    "interval_s": {
+      "p5": 1.1333,
+      "p25": 1.5333,
+      "p50": 1.8,
+      "p75": 2.12,
+      "p90": 2.4666,
+      "p95": 2.6667,
+      "p99": 3.0334
+    },
+    "max_clean_avg_speed_mps": 7.38,
+    "envelope_table": [
+      {
+        "n": 166,
+        "T_mean": 0.72,
+        "D_p50": 0.933,
+        "D_p90": 1.763,
+        "D_p95": 2.763,
+        "D_p99": 3.938,
+        "bin": "(0.4, 0.8]"
+      },
+      {
+        "n": 1681,
+        "T_mean": 1.046,
+        "D_p50": 1.332,
+        "D_p90": 2.734,
+        "D_p95": 3.15,
+        "D_p99": 3.838,
+        "bin": "(0.8, 1.2]"
+      },
+      {
+        "n": 6615,
+        "T_mean": 1.43,
+        "D_p50": 2.213,
+        "D_p90": 3.784,
+        "D_p95": 4.126,
+        "D_p99": 4.752,
+        "bin": "(1.2, 1.6]"
+      },
+      {
+        "n": 10300,
+        "T_mean": 1.794,
+        "D_p50": 2.421,
+        "D_p90": 4.162,
+        "D_p95": 4.622,
+        "D_p99": 5.406,
+        "bin": "(1.6, 2.0]"
+      },
+      {
+        "n": 7040,
+        "T_mean": 2.206,
+        "D_p50": 2.872,
+        "D_p90": 4.276,
+        "D_p95": 4.637,
+        "D_p99": 5.3,
+        "bin": "(2.0, 2.5]"
+      },
+      {
+        "n": 2118,
+        "T_mean": 2.689,
+        "D_p50": 3.553,
+        "D_p90": 4.869,
+        "D_p95": 5.239,
+        "D_p99": 5.849,
+        "bin": "(2.5, 3.0]"
+      },
+      {
+        "n": 342,
+        "T_mean": 3.163,
+        "D_p50": 4.019,
+        "D_p90": 5.268,
+        "D_p95": 5.487,
+        "D_p99": 5.815,
+        "bin": "(3.0, 4.0]"
+      },
+      {
+        "n": 3,
+        "T_mean": 4.147,
+        "D_p50": 2.428,
+        "D_p90": 3.139,
+        "D_p95": 3.228,
+        "D_p99": 3.299,
+        "bin": "(4.0, 8.0]"
+      }
+    ],
+    "avg_speed_exceedance": {
+      "v>3.0": {
+        "all": 0.01642,
+        "interval<1.2s": 0.04006
+      },
+      "v>3.5": {
+        "all": 0.0034,
+        "interval<1.2s": 0.01083
+      },
+      "v>4.0": {
+        "all": 0.00205,
+        "interval<1.2s": 0.00758
+      },
+      "v>4.5": {
+        "all": 0.00142,
+        "interval<1.2s": 0.00596
+      },
+      "v>5.0": {
+        "all": 0.00106,
+        "interval<1.2s": 0.00487
+      },
+      "v>6.0": {
+        "all": 0.00042,
+        "interval<1.2s": 0.00217
+      },
+      "v>8.0": {
+        "all": 0.0,
+        "interval<1.2s": 0.0
+      }
+    },
+    "avg_speed_p999_mps": 5.01,
+    "note": "v_avg is the average speed between two hits of the same player, a LOWER bound on peak speed. The distance envelope saturates at court size (about 5 m) for intervals above ~2 s, so (v_max, a_max) are NOT identifiable from it (an earlier least-squares fit hit its grid boundary with 2.3 m RMSE and was removed). Use exceedance only to reject limits that are too LOW; peak speed needs tracked player trajectories (blueprint 7.4)."
+  },
+  "contact_reach": {
+    "overall_m": {
+      "p5": 0.2649,
+      "p25": 0.5663,
+      "p50": 0.8201,
+      "p75": 1.151,
+      "p90": 1.5523,
+      "p95": 1.8956,
+      "p99": 2.4934
+    },
+    "by_type": {
+      "back-court drive": {
+        "n": 460,
+        "median": 0.707,
+        "p90": 1.17,
+        "p99": 1.911
+      },
+      "clear": {
+        "n": 2861,
+        "median": 0.705,
+        "p90": 1.375,
+        "p99": 2.015
+      },
+      "cross-court net shot": {
+        "n": 1347,
+        "median": 0.867,
+        "p90": 1.644,
+        "p99": 2.376
+      },
+      "defensive return drive": {
+        "n": 404,
+        "median": 1.031,
+        "p90": 2.034,
+        "p99": 2.507
+      },
+      "defensive return lob": {
+        "n": 299,
+        "median": 1.28,
+        "p90": 2.245,
+        "p99": 2.62
+      },
+      "drive": {
+        "n": 690,
+        "median": 0.886,
+        "p90": 1.662,
+        "p99": 2.137
+      },
+      "driven flight": {
+        "n": 57,
+        "median": 0.757,
+        "p90": 1.35,
+        "p99": 1.852
+      },
+      "drop": {
+        "n": 2096,
+        "median": 0.607,
+        "p90": 1.275,
+        "p99": 1.926
+      },
+      "lob": {
+        "n": 5158,
+        "median": 0.871,
+        "p90": 1.418,
+        "p99": 2.296
+      },
+      "net shot": {
+        "n": 5988,
+        "median": 0.85,
+        "p90": 1.43,
+        "p99": 2.415
+      },
+      "passive drop": {
+        "n": 1338,
+        "median": 0.638,
+        "p90": 1.19,
+        "p99": 1.922
+      },
+      "push": {
+        "n": 2744,
+        "median": 0.843,
+        "p90": 1.409,
+        "p99": 2.299
+      },
+      "return net": {
+        "n": 3605,
+        "median": 1.223,
+        "p90": 2.276,
+        "p99": 2.694
+      },
+      "rush": {
+        "n": 510,
+        "median": 0.829,
+        "p90": 1.605,
+        "p99": 2.235
+      },
+      "smash": {
+        "n": 2515,
+        "median": 0.595,
+        "p90": 1.218,
+        "p99": 1.923
+      },
+      "wrist smash": {
+        "n": 1605,
+        "median": 0.705,
+        "p90": 1.352,
+        "p99": 1.862
+      }
+    },
+    "note": "Floor-projected distance from the player's position to the shuttle's position at contact. The shuttle is airborne, so its floor projection has an unknown parallax error: treat as an indicative scale for ContactEnvelope.horizontal_radius, NOT a measurement."
+  },
+  "coachai_comparison": {
+    "table": {
+      "back-court drive": {
+        "coachai_mean_frames": 46.6,
+        "ours_n_to_n+1_frames": 15.34,
+        "ours_n_to_n+2_frames": 36.34,
+        "ratio_vs_n+1": 3.04,
+        "ratio_vs_n+2": 1.28
+      },
+      "clear": {
+        "coachai_mean_frames": 61.82,
+        "ours_n_to_n+1_frames": 32.88,
+        "ours_n_to_n+2_frames": 56.19,
+        "ratio_vs_n+1": 1.88,
+        "ratio_vs_n+2": 1.1
+      },
+      "cross-court net shot": {
+        "coachai_mean_frames": 42.86,
+        "ours_n_to_n+1_frames": 25.36,
+        "ours_n_to_n+2_frames": 55.51,
+        "ratio_vs_n+1": 1.69,
+        "ratio_vs_n+2": 0.77
+      },
+      "defensive return drive": {
+        "coachai_mean_frames": 45.69,
+        "ours_n_to_n+1_frames": 20.29,
+        "ours_n_to_n+2_frames": 40.37,
+        "ratio_vs_n+1": 2.25,
+        "ratio_vs_n+2": 1.13
+      },
+      "defensive return lob": {
+        "coachai_mean_frames": 53.45,
+        "ours_n_to_n+1_frames": 28.72,
+        "ours_n_to_n+2_frames": 50.81,
+        "ratio_vs_n+1": 1.86,
+        "ratio_vs_n+2": 1.05
+      },
+      "drive": {
+        "coachai_mean_frames": 44.62,
+        "ours_n_to_n+1_frames": 13.7,
+        "ours_n_to_n+2_frames": 32.78,
+        "ratio_vs_n+1": 3.26,
+        "ratio_vs_n+2": 1.36
+      },
+      "driven flight": {
+        "coachai_mean_frames": 40.2,
+        "ours_n_to_n+1_frames": 19.11,
+        "ours_n_to_n+2_frames": 41.48,
+        "ratio_vs_n+1": 2.1,
+        "ratio_vs_n+2": 0.97
+      },
+      "drop": {
+        "coachai_mean_frames": 48.36,
+        "ours_n_to_n+1_frames": 22.31,
+        "ours_n_to_n+2_frames": 49.42,
+        "ratio_vs_n+1": 2.17,
+        "ratio_vs_n+2": 0.98
+      },
+      "lob": {
+        "coachai_mean_frames": 58.61,
+        "ours_n_to_n+1_frames": 36.9,
+        "ours_n_to_n+2_frames": 58.25,
+        "ratio_vs_n+1": 1.59,
+        "ratio_vs_n+2": 1.01
+      },
+      "long service": {
+        "coachai_mean_frames": 67.85,
+        "ours_n_to_n+1_frames": 41.71,
+        "ours_n_to_n+2_frames": 62.62,
+        "ratio_vs_n+1": 1.63,
+        "ratio_vs_n+2": 1.08
+      },
+      "net shot": {
+        "coachai_mean_frames": 42.04,
+        "ours_n_to_n+1_frames": 24.24,
+        "ours_n_to_n+2_frames": 56.7,
+        "ratio_vs_n+1": 1.73,
+        "ratio_vs_n+2": 0.74
+      },
+      "passive drop": {
+        "coachai_mean_frames": 47.25,
+        "ours_n_to_n+1_frames": 21.88,
+        "ours_n_to_n+2_frames": 47.28,
+        "ratio_vs_n+1": 2.16,
+        "ratio_vs_n+2": 1.0
+      },
+      "push": {
+        "coachai_mean_frames": 50.34,
+        "ours_n_to_n+1_frames": 26.45,
+        "ours_n_to_n+2_frames": 47.98,
+        "ratio_vs_n+1": 1.9,
+        "ratio_vs_n+2": 1.05
+      },
+      "return net": {
+        "coachai_mean_frames": 43.47,
+        "ours_n_to_n+1_frames": 24.32,
+        "ours_n_to_n+2_frames": 50.33,
+        "ratio_vs_n+1": 1.79,
+        "ratio_vs_n+2": 0.86
+      },
+      "rush": {
+        "coachai_mean_frames": 45.69,
+        "ours_n_to_n+1_frames": 11.48,
+        "ours_n_to_n+2_frames": 32.98,
+        "ratio_vs_n+1": 3.98,
+        "ratio_vs_n+2": 1.39
+      },
+      "short service": {
+        "coachai_mean_frames": 40.91,
+        "ours_n_to_n+1_frames": 20.6,
+        "ours_n_to_n+2_frames": 45.5,
+        "ratio_vs_n+1": 1.99,
+        "ratio_vs_n+2": 0.9
+      },
+      "smash": {
+        "coachai_mean_frames": 46.02,
+        "ours_n_to_n+1_frames": 13.6,
+        "ours_n_to_n+2_frames": 39.03,
+        "ratio_vs_n+1": 3.38,
+        "ratio_vs_n+2": 1.18
+      },
+      "wrist smash": {
+        "coachai_mean_frames": 45.98,
+        "ours_n_to_n+1_frames": 14.68,
+        "ours_n_to_n+2_frames": 39.72,
+        "ratio_vs_n+1": 3.13,
+        "ratio_vs_n+2": 1.16
+      }
+    },
+    "ratio_vs_one_flight": {
+      "median": 2.05,
+      "std": 0.72
+    },
+    "ratio_vs_two_flights": {
+      "median": 1.05,
+      "std": 0.18
+    },
+    "share_of_matches_at_25fps": 0.432,
+    "unit_scale_cm_per_unit": {
+      "x": 2.033,
+      "y": 2.03,
+      "coachai_assumes": 2.0
+    },
+    "note": "CoachAI's per-type 'frame' table is far closer to the interval between a player's consecutive OWN hits (two flights) than to one flight. The script that generates ball_type_model.csv is not in the repository, so this is an inference. CoachAI uses these values as the flight time of a single shot (core.py: frame/30). Independently of that, frame/30 is wrong for the 25 fps videos (43% of matches)."
+  },
+  "placeholder_check": {
+    "per_family": {
+      "BLOCK": {
+        "n": 150,
+        "assumed_contact_height_m": 1.2999999999999998,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.833,
+            "median_time_ratio": 1.126,
+            "p10_p90_time_ratio": [
+              0.941,
+              1.39
+            ],
+            "failure_reasons": {
+              "net_collision": 24,
+              "target_too_far_for_family_speed": 1
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.967,
+            "median_time_ratio": 0.8,
+            "p10_p90_time_ratio": [
+              0.643,
+              1.044
+            ],
+            "failure_reasons": {
+              "net_collision": 1,
+              "target_too_far_for_family_speed": 4
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.967,
+            "median_time_ratio": 0.689,
+            "p10_p90_time_ratio": [
+              0.493,
+              1.002
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 5
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.94,
+            "median_time_ratio": 0.705,
+            "p10_p90_time_ratio": [
+              0.515,
+              1.032
+            ],
+            "failure_reasons": {
+              "target_height_not_reached": 9
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 1.09,
+            "feasible_rate": 0.967,
+            "median_time_ratio": 0.799,
+            "p10_p90_time_ratio": [
+              0.623,
+              1.02
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 4,
+              "net_collision": 1
+            }
+          }
+        }
+      },
+      "CLEAR": {
+        "n": 150,
+        "assumed_contact_height_m": 2.3,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.981,
+            "p10_p90_time_ratio": [
+              1.545,
+              2.599
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 1
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.847,
+            "p10_p90_time_ratio": [
+              1.454,
+              2.45
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 1
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.987,
+            "median_time_ratio": 1.777,
+            "p10_p90_time_ratio": [
+              1.399,
+              2.383
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 2
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.96,
+            "median_time_ratio": 1.698,
+            "p10_p90_time_ratio": [
+              1.327,
+              2.335
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 6
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 2.42,
+            "feasible_rate": 0.933,
+            "median_time_ratio": 1.647,
+            "p10_p90_time_ratio": [
+              1.268,
+              2.312
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 10
+            }
+          }
+        }
+      },
+      "CUT": {
+        "n": 150,
+        "assumed_contact_height_m": 2.4,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.867,
+            "median_time_ratio": 1.12,
+            "p10_p90_time_ratio": [
+              0.899,
+              1.437
+            ],
+            "failure_reasons": {
+              "net_collision": 20
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.967,
+            "median_time_ratio": 0.814,
+            "p10_p90_time_ratio": [
+              0.602,
+              1.145
+            ],
+            "failure_reasons": {
+              "net_collision": 4,
+              "target_too_far_for_family_speed": 1
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.98,
+            "median_time_ratio": 0.769,
+            "p10_p90_time_ratio": [
+              0.535,
+              1.085
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 3
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.953,
+            "median_time_ratio": 0.78,
+            "p10_p90_time_ratio": [
+              0.523,
+              1.065
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 7
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 1.1,
+            "feasible_rate": 0.973,
+            "median_time_ratio": 0.811,
+            "p10_p90_time_ratio": [
+              0.587,
+              1.151
+            ],
+            "failure_reasons": {
+              "target_height_not_reached": 1,
+              "net_collision": 2,
+              "target_too_far_for_family_speed": 1
+            }
+          }
+        }
+      },
+      "DRIVE": {
+        "n": 150,
+        "assumed_contact_height_m": 1.5,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.667,
+            "median_time_ratio": 1.643,
+            "p10_p90_time_ratio": [
+              0.904,
+              2.111
+            ],
+            "failure_reasons": {
+              "net_collision": 49,
+              "target_too_close_for_family_speed": 1
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.927,
+            "median_time_ratio": 1.159,
+            "p10_p90_time_ratio": [
+              0.686,
+              1.58
+            ],
+            "failure_reasons": {
+              "net_collision": 11
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 1.0,
+            "median_time_ratio": 0.922,
+            "p10_p90_time_ratio": [
+              0.488,
+              1.456
+            ],
+            "failure_reasons": {}
+          },
+          "h=2.0": {
+            "feasible_rate": 0.973,
+            "median_time_ratio": 0.895,
+            "p10_p90_time_ratio": [
+              0.51,
+              1.496
+            ],
+            "failure_reasons": {
+              "target_height_not_reached": 4
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 1.48,
+            "feasible_rate": 0.933,
+            "median_time_ratio": 0.985,
+            "p10_p90_time_ratio": [
+              0.56,
+              1.51
+            ],
+            "failure_reasons": {
+              "net_collision": 4,
+              "target_height_not_reached": 6
+            }
+          }
+        }
+      },
+      "DROP": {
+        "n": 150,
+        "assumed_contact_height_m": 2.4,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.973,
+            "median_time_ratio": 1.452,
+            "p10_p90_time_ratio": [
+              1.239,
+              1.927
+            ],
+            "failure_reasons": {
+              "net_collision": 3,
+              "target_too_far_for_family_speed": 1
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.253,
+            "p10_p90_time_ratio": [
+              1.035,
+              1.667
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 1
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.973,
+            "median_time_ratio": 1.138,
+            "p10_p90_time_ratio": [
+              0.927,
+              1.618
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 4
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.953,
+            "median_time_ratio": 1.075,
+            "p10_p90_time_ratio": [
+              0.806,
+              1.632
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 7
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 1.03,
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.256,
+            "p10_p90_time_ratio": [
+              1.025,
+              1.655
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 1
+            }
+          }
+        }
+      },
+      "HALF_SMASH": {
+        "n": 150,
+        "assumed_contact_height_m": 2.4,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.967,
+            "median_time_ratio": 1.406,
+            "p10_p90_time_ratio": [
+              1.088,
+              1.763
+            ],
+            "failure_reasons": {
+              "net_collision": 5
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.973,
+            "median_time_ratio": 1.073,
+            "p10_p90_time_ratio": [
+              0.798,
+              1.449
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 4
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.7,
+            "median_time_ratio": 0.982,
+            "p10_p90_time_ratio": [
+              0.743,
+              1.268
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 45
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.093,
+            "median_time_ratio": 0.758,
+            "p10_p90_time_ratio": [
+              0.505,
+              0.881
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 136
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 1.24,
+            "feasible_rate": 0.873,
+            "median_time_ratio": 1.038,
+            "p10_p90_time_ratio": [
+              0.762,
+              1.4
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 19
+            }
+          }
+        }
+      },
+      "LIFT": {
+        "n": 150,
+        "assumed_contact_height_m": 0.825,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.615,
+            "p10_p90_time_ratio": [
+              1.093,
+              2.236
+            ],
+            "failure_reasons": {
+              "target_too_close_for_family_speed": 1
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.508,
+            "p10_p90_time_ratio": [
+              1.022,
+              2.092
+            ],
+            "failure_reasons": {
+              "target_too_close_for_family_speed": 1
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.455,
+            "p10_p90_time_ratio": [
+              0.987,
+              2.021
+            ],
+            "failure_reasons": {
+              "target_too_close_for_family_speed": 1
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.402,
+            "p10_p90_time_ratio": [
+              0.952,
+              1.95
+            ],
+            "failure_reasons": {
+              "target_too_close_for_family_speed": 1
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 2.39,
+            "feasible_rate": 0.993,
+            "median_time_ratio": 1.357,
+            "p10_p90_time_ratio": [
+              0.926,
+              1.907
+            ],
+            "failure_reasons": {
+              "target_too_close_for_family_speed": 1
+            }
+          }
+        }
+      },
+      "NET_SHOT": {
+        "n": 150,
+        "assumed_contact_height_m": 1.05,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.847,
+            "median_time_ratio": 1.26,
+            "p10_p90_time_ratio": [
+              1.055,
+              1.517
+            ],
+            "failure_reasons": {
+              "net_collision": 12,
+              "target_too_far_for_family_speed": 11
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.827,
+            "median_time_ratio": 0.94,
+            "p10_p90_time_ratio": [
+              0.802,
+              1.16
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 24,
+              "net_collision": 2
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.767,
+            "median_time_ratio": 0.755,
+            "p10_p90_time_ratio": [
+              0.595,
+              0.997
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 35
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.727,
+            "median_time_ratio": 0.644,
+            "p10_p90_time_ratio": [
+              0.477,
+              0.874
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 41
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 0.98,
+            "feasible_rate": 0.82,
+            "median_time_ratio": 0.959,
+            "p10_p90_time_ratio": [
+              0.805,
+              1.164
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 24,
+              "net_collision": 2,
+              "target_height_not_reached": 1
+            }
+          }
+        }
+      },
+      "PUSH": {
+        "n": 150,
+        "assumed_contact_height_m": 1.2,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.96,
+            "median_time_ratio": 0.993,
+            "p10_p90_time_ratio": [
+              0.812,
+              1.87
+            ],
+            "failure_reasons": {
+              "net_collision": 6
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.967,
+            "median_time_ratio": 0.884,
+            "p10_p90_time_ratio": [
+              0.682,
+              1.578
+            ],
+            "failure_reasons": {
+              "net_collision": 3,
+              "target_too_far_for_family_speed": 2
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.94,
+            "median_time_ratio": 0.816,
+            "p10_p90_time_ratio": [
+              0.638,
+              1.261
+            ],
+            "failure_reasons": {
+              "target_height_not_reached": 8,
+              "net_collision": 1
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.873,
+            "median_time_ratio": 0.799,
+            "p10_p90_time_ratio": [
+              0.61,
+              1.262
+            ],
+            "failure_reasons": {
+              "target_height_not_reached": 18,
+              "net_collision": 1
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 2.15,
+            "feasible_rate": 0.667,
+            "median_time_ratio": 0.842,
+            "p10_p90_time_ratio": [
+              0.616,
+              1.423
+            ],
+            "failure_reasons": {
+              "target_height_not_reached": 48,
+              "net_collision": 2
+            }
+          }
+        }
+      },
+      "SMASH": {
+        "n": 150,
+        "assumed_contact_height_m": 2.6500000000000004,
+        "by_target_height": {
+          "h=0.0": {
+            "feasible_rate": 0.267,
+            "median_time_ratio": 1.288,
+            "p10_p90_time_ratio": [
+              0.913,
+              1.64
+            ],
+            "failure_reasons": {
+              "net_collision": 108,
+              "target_too_far_for_family_speed": 2
+            }
+          },
+          "h=1.0": {
+            "feasible_rate": 0.06,
+            "median_time_ratio": 0.774,
+            "p10_p90_time_ratio": [
+              0.355,
+              0.99
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 141
+            }
+          },
+          "h=1.5": {
+            "feasible_rate": 0.0,
+            "median_time_ratio": null,
+            "p10_p90_time_ratio": null,
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 150
+            }
+          },
+          "h=2.0": {
+            "feasible_rate": 0.0,
+            "median_time_ratio": null,
+            "p10_p90_time_ratio": null,
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 150
+            }
+          },
+          "h=by_next_stroke": {
+            "n": 150,
+            "mean_receiving_height_m": 1.27,
+            "feasible_rate": 0.02,
+            "median_time_ratio": 0.465,
+            "p10_p90_time_ratio": [
+              0.464,
+              0.574
+            ],
+            "failure_reasons": {
+              "target_too_far_for_family_speed": 146,
+              "target_height_not_reached": 1
+            }
+          }
+        }
+      }
+    },
+    "receiving_heights_tested_m": [
+      1.0,
+      1.5,
+      2.0
+    ],
+    "note": "time_ratio = solver time-to-target / observed hit-to-hit time (1.0 = reproduces the data). Still confounded by: unobserved hitter contact height (family midpoint used), unobserved receiving height (sensitivity over h), parallax of the airborne contact point, and the family priors themselves. Indicative, not a calibration."
+  }
+}
