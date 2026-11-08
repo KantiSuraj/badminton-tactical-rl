@@ -1,6 +1,9 @@
-# Pins copied from CoachAI+ environment.yaml (Python 3.10.12). Install into ONE venv for the
-# main project and the CoachAI+ baseline. Perception tools (MMPose, TrackNetV3) get their own venvs.
-# The second block is what BadmintonEnv/*.py actually imports beyond the core stack.
+# Dependency pins copied from CoachAI+ environment.yaml (its declared Python version is 3.10.12).
+# Install ONLY into the isolated Python 3.12 worker environment: .venv-coachai.
+# Never install this file into the Python 3.12 parent .venv; NumPy/Pandas pins differ there.
+# Python 3.12 is an approved runtime choice based on the prior CPU baseline run, but B2 worker
+# compatibility remains unverified until the dedicated runtime probe passes.
+# These are the additional packages imported by BadmintonEnv/*.py beyond the core Python stack.
 numpy==1.26.4
 pandas==2.2.3
 scikit-learn==1.5.2

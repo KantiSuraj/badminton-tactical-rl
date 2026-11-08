@@ -1,0 +1,84 @@
+split_scheme_version: player_match_v1
+seed: 42
+method:
+  player_partition:
+    seen_fraction_target: 0.8
+    held_out_fraction_target: 0.2
+  seen_match_partition:
+    train_fraction_target: 0.7
+    val_fraction_target: 0.15
+    test_match_fraction_target: 0.15
+    allocation: rounded_counts_after_seeded_shuffle
+player_partition:
+  seen:
+  - An Se Young
+  - Anders ANTONSEN
+  - Anthony Sinisuka GINTING
+  - Busanan ONGBAMRUNGPHAN
+  - CHEN Long
+  - CHOU Tien Chen
+  - Carolina MARIN
+  - Hans-Kristian Solberg VITTINGHUS
+  - Jonatan CHRISTIE
+  - KIDAMBI Srikanth
+  - Kento MOMOTA
+  - LEE Cheuk Yiu
+  - LEE Zii Jia
+  - LIEW Daren
+  - Mia BLICHFELDT
+  - Michelle LI
+  - Neslihan YIGIT
+  - Pornpawee CHOCHUWONG
+  - SHI Yuqi
+  - Sameer VERMA
+  - Supanida KATETHONG
+  - Viktor AXELSEN
+  held_out:
+  - Evgeniya KOSETSKAYA
+  - NG Ka Long Angus
+  - PUSARLA V. Sindhu
+  - Rasmus GEMKE
+  - Ratchanok INTANON
+  n_seen: 22
+  n_held_out: 5
+  actual_seen_fraction: 0.8148148148148148
+  actual_held_out_fraction: 0.18518518518518517
+  n_unique_identifiable_players: 27
+match_counts:
+  total: 44
+  by_split:
+    train: 22
+    val: 5
+    test_match: 5
+    test_player: 1
+    excluded: 11
+  by_player_partition:
+    seen: 32
+    held_out: 1
+    mixed: 11
+    invalid: 0
+stroke_counts_by_split:
+  train: 18235
+  val: 4696
+  test_match: 4185
+  test_player: 583
+  excluded: 8785
+rally_counts_by_split:
+  train: 1838
+  val: 475
+  test_match: 405
+  test_player: 64
+  excluded: 901
+test_player_validation:
+  enforced: false
+  passed: false
+  minimum_matches: 2
+  minimum_strokes: 100
+  actual_matches: 1
+  actual_strokes: 583
+  warning: 'test_player below configured minimum: matches=1/2, strokes=583/100. Do
+    not change the player partition or seed silently; inspect the dataset and justify
+    any methodological change.'
+exclusion_reasons:
+  mixed_player_partition: 11
+content_hash_sha256: d5350564cbbd89425444eb7550ed8426698bd297d59f539aecc133733a1c4fb5

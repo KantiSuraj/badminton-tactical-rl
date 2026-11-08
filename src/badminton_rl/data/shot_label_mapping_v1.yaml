@@ -1,0 +1,49 @@
+version: 1
+mapping_id: shot_label_mapping_v1
+generated_from: scripts/audit/audit_shuttleset.py::FAMILY_OF (extracted verbatim)
+note: |
+  Semantics preserved from the audit script. PROVISIONAL: re-examine after
+  calibration (audit §6 step 4). The audit script's own FAMILY_OF is left
+  untouched; build_events.py reads this YAML, not the dict.
+
+families:
+  CLEAR:      {id: 0, source_labels: ["clear"]}
+  DROP:       {id: 1, source_labels: ["drop"]}
+  SMASH:      {id: 2, source_labels: ["smash"]}
+  HALF_SMASH: {id: 3, source_labels: ["wrist smash"]}
+  DRIVE:      {id: 4, source_labels: ["drive", "driven flight", "back-court drive", "defensive return drive"]}
+  PUSH:       {id: 5, source_labels: ["push", "rush"]}
+  LIFT:       {id: 6, source_labels: ["lob", "defensive return lob"]}
+  NET_SHOT:   {id: 7, source_labels: ["net shot", "cross-court net shot"]}
+  BLOCK:      {id: 8, source_labels: ["return net"]}
+  CUT:        {id: 9, source_labels: ["passive drop"]}
+
+raw_labels:
+  - {english: "net shot",               chinese: ["放小球"],               family: NET_SHOT,   mapping_status: mapped}
+  - {english: "return net",             chinese: ["擋小球"],               family: BLOCK,      mapping_status: mapped}
+  - {english: "smash",                  chinese: ["殺球"],                 family: SMASH,      mapping_status: mapped}
+  - {english: "wrist smash",            chinese: ["點扣"],                 family: HALF_SMASH, mapping_status: mapped}
+  - {english: "lob",                    chinese: ["挑球"],                 family: LIFT,       mapping_status: mapped}
+  - {english: "defensive return lob",   chinese: ["防守回挑"],             family: LIFT,       mapping_status: mapped}
+  - {english: "clear",                  chinese: ["長球"],                 family: CLEAR,      mapping_status: mapped}
+  - {english: "drive",                  chinese: ["平球"],                 family: DRIVE,      mapping_status: mapped}
+  - {english: "driven flight",          chinese: ["小平球"],               family: DRIVE,      mapping_status: mapped}
+  - {english: "back-court drive",       chinese: ["後場抽平球"],           family: DRIVE,      mapping_status: mapped}
+  - {english: "defensive return drive", chinese: ["防守回抽"],             family: DRIVE,      mapping_status: mapped}
+  - {english: "drop",                   chinese: ["切球"],                 family: DROP,       mapping_status: mapped}
+  - {english: "passive drop",           chinese: ["過度切球", "過渡切球"], family: CUT,        mapping_status: mapped,
+     note: "Data uses 過度切球; README uses 過渡切球. Same label."}
+  - {english: "push",                   chinese: ["推球"],                 family: PUSH,       mapping_status: mapped}
+  - {english: "rush",                   chinese: ["撲球"],                 family: PUSH,       mapping_status: mapped}
+  - {english: "cross-court net shot",   chinese: ["勾球"],                 family: NET_SHOT,   mapping_status: mapped}
+  - {english: "short service",          chinese: ["發短球"],               family: null,       mapping_status: unmapped,
+     rationale: "Serve; no incoming trajectory; not a tactical action family."}
+  - {english: "long service",           chinese: ["發長球"],               family: null,       mapping_status: unmapped,
+     rationale: "Serve; no incoming trajectory; not a tactical action family."}
+  - {english: "unknown",                chinese: ["未知球種"],             family: null,       mapping_status: unmapped,
+     rationale: "Undocumented label; 1,407 strokes (3.9%); no basis to map."}
+
+ambiguous: []
+provisional_judgment_calls:
+  - "return net → BLOCK (arguably a net-shot family); preserved from FAMILY_OF."
+  - "rush → PUSH; preserved from FAMILY_OF."

@@ -10,9 +10,16 @@ coachai_plus:                       # THE baseline environment (report reference
     NONE FOUND. No LICENSE file and no licence statement in the README, so by default all rights are
     reserved. Ask the authors (NYCU Advanced Database System Lab, Prof. Wen-Chih Peng) for permission or a
     licence before redistributing or publishing modified copies. Not legal advice.
-  python_env: {python: 3.10.12, torch: 2.4.1 (cu121), numpy: 1.26.4, pandas: 2.2.3, scikit-learn: 1.5.2, scipy: 1.14.1}
+  upstream_declared_environment: {python: 3.10.12, torch: 2.4.1 (cu121), numpy: 1.26.4, pandas: 2.2.3, scikit-learn: 1.5.2, scipy: 1.14.1}
+  worker_runtime:
+    python: "3.12"
+    virtual_environment: ".venv-coachai"
+    dependency_file: "requirements-coachai.txt"
+    process_isolation: true
+    user_approved: true
+    compatibility_status: "pending dedicated B2 runtime probe"
   how_it_runs: "NOT as upstream documents. Use scripts/setup/run_coachai_baseline.py (adds the fork root and BadmintonEnv/ to sys.path, chdir to the fork root, torch.load defaults to CPU without a GPU)."
-  verified_run: {where: "Linux sandbox, Python 3.12, CPU only, pinned packages", result: "5 rallies, 25 stroke rows, 5.4 s", not_tested: "WSL2, Python 3.10, GPU"}
+  verified_run: {where: "Linux sandbox, Python 3.12, CPU only, pinned packages", result: "5 rallies, 25 stroke rows, 5.4 s", not_tested: "WSL2, isolated B2 subprocess worker, GPU"}
   known_issues:
     - "python -m BadmintonEnv.RunEnv fails: Environment.py does `from Utils...` (needs BadmintonEnv/ on sys.path; the authors' own api/app.py appends it)"
     - "requires ./ as working directory (relative paths to input_data/ and BadmintonEnv/Agent/)"
@@ -22,6 +29,8 @@ coachai_plus:                       # THE baseline environment (report reference
   audited_facts:
     - "no physics terms (gravity/drag/velocity/speed/reaction/acceleration/flight) found in BadmintonEnv/*.py; transitions are constraints + learned opponents"
     - "hitter-referenced court frame: 960 x 355 units, hitter always at negative y, (0,0) at court centre; 330 units to the back line (about 2.03 cm/unit)"
+  locally_observed_files:
+      input_data/All_dataset.csv: {sha256: 3116fd86391e2cec477b513f9e00bc75efc596bf3862779927eee7c923403ba6, observed: "2026-11-08; user-reported local fingerprint; no upstream reference hash available"}
   bundled_files:
       BadmintonEnv/Agent/RallyNet_weight.trc: {bytes: 369928, sha256: bed1f112d542903a5c6db898f56a0e6baf3d240abe2879041cc092805e985c7d}
       BadmintonEnv/Agent/BC_weight.pth: {bytes: 29466, sha256: a99b4a78de714716166ceb794c3e54998201cd7df35777ed318603b969a3e997}

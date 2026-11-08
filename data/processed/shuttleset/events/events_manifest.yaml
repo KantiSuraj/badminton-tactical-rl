@@ -1,0 +1,74 @@
+schema_version: events_v1
+provenance:
+  repository: wywyWang/CoachAI-Projects
+  short_commit: 45517f7
+  commit: null
+  full_sha_format_valid: false
+  source_commit_status: short_sha_only_unverified
+  event_source_commit_value: UNVERIFIED:45517f7
+  loader_version: load_shuttleset_v1
+  court_transform_id: court_coordinates_v1
+  mapping_version: shot_label_mapping_v1
+  mapping_yaml_sha256: 151e3bfa719bd5f412bf0d9de33f98ba1421467d06f0ed4eeaf77a1a68a3cb6a
+  build_code_commit: fc1d80555baee9bc5e42f266c2f2647582eb9753
+  source_root: /home/suraj/project-sem/badminton-tactical-rl/data/raw/shuttleset/set
+row_counts:
+  source_strokes: 36484
+  events: 36484
+  matches_in_source_metadata: 44
+  matches_represented_in_events: 44
+  sets_in_events: 104
+  rallies_in_events: 3683
+shot_family_counts_including_null:
+  NET_SHOT: 7661
+  LIFT: 5632
+  <NA>: 3831
+  BLOCK: 3620
+  PUSH: 3437
+  CLEAR: 2922
+  SMASH: 2586
+  DROP: 2144
+  HALF_SMASH: 1648
+  DRIVE: 1647
+  CUT: 1356
+unmapped_label_counts:
+  short service: 2051
+  unknown: 1407
+  long service: 373
+missing_value_counts:
+  shot_family: 3831
+  hit_height: 42
+  landing_height: 6318
+  hit_area: 1171
+  landing_area: 1186
+  opponent_area: 1173
+  lose_reason: 32975
+  getpoint_player_raw: 32974
+  hit_x_m: 4749
+  hit_y_m: 4749
+  landing_x_m: 1187
+  landing_y_m: 1187
+  player_x_m: 1170
+  player_y_m: 1170
+  opponent_x_m: 1173
+  opponent_y_m: 1173
+  rally_winner_role: 300
+  rally_winner_id: 300
+  quality_flags: 26175
+quality_flag_counts_by_affected_stroke:
+  missing_hit_height: 42
+  missing_hit_xy: 4749
+  missing_landing_area: 1186
+  missing_landing_height: 6318
+  missing_landing_xy: 1187
+  missing_opponent_xy: 1173
+  missing_player_xy: 1170
+  non_increasing_frame_num: 239
+  rally_winner_missing: 300
+  same_player_twice_in_a_row: 5
+  unknown_shot_label: 1407
+  unmapped_shot_label: 3831
+rally_winner_status_counts:
+  validated: 36184
+  missing: 300
+landing_area_domain_validation: not_performed_no_canonical_domain_configured

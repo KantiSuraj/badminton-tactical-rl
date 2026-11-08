@@ -9,8 +9,8 @@ API does plus one fix, and leaves the fork's files exactly as upstream:
      (hyperparameters.pkl and INV_weight.pth are CUDA-saved and upstream loads them with no
      map_location, so it crashes without a GPU). With a GPU this patch is skipped.
 
-Usage (venv active, from the project root):
-    python scripts/setup/run_coachai_baseline.py
+Usage (from the project root; invoke with the isolated CoachAI worker interpreter):
+    .venv-coachai/bin/python scripts/setup/run_coachai_baseline.py
     python scripts/setup/run_coachai_baseline.py --root ../external/CoachAI-Plus \
         --player "CHOU Tien Chen" --opponent "Kento MOMOTA"
 It simulates 5 rallies (the value hard-coded in upstream RunEnv.py) and writes

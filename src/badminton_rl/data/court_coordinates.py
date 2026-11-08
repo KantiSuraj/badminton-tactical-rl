@@ -1,4 +1,6 @@
-"""Camera pixels <-> court coordinates for ShuttleSet.
+"""
+COURT_TRANSFORM_VERSION = "court_coordinates_v1"
+Camera pixels <-> court coordinates for ShuttleSet.
 
 Audit findings (see reports/audit/AUDIT.md):
   * `homography.csv` stores H such that  court_units = H @ camera_pixel  (the README states

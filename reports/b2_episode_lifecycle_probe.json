@@ -1,0 +1,189 @@
+{
+  "coachai_checkout": {
+    "expected_commit": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "files": {
+      "BadmintonEnv/Agent/BC4Serve_weight.pth": {
+        "bytes": 20632,
+        "sha256": "8036be9ccf012174a51ded00689d494b530f01249ea28ce4e7dceb93653be344"
+      },
+      "BadmintonEnv/Agent/INV_weight.pth": {
+        "bytes": 45850,
+        "sha256": "ae9d0e1837c3515c3507172b060e82808e83840938313523509438d56eff3c60"
+      },
+      "BadmintonEnv/Agent/RallyNet_weight.trc": {
+        "bytes": 369928,
+        "sha256": "bed1f112d542903a5c6db898f56a0e6baf3d240abe2879041cc092805e985c7d"
+      },
+      "BadmintonEnv/Agent/hyperparameters.pkl": {
+        "bytes": 26602443,
+        "sha256": "7e5ab372205f5b37db450e519040bdb358136e4c2b66461a1374b50c43588c7d"
+      },
+      "input_data/All_dataset.csv": {
+        "bytes": 11505569,
+        "sha256": "3116fd86391e2cec477b513f9e00bc75efc596bf3862779927eee7c923403ba6"
+      },
+      "input_data/target_players_ids.pkl": {
+        "bytes": 508,
+        "sha256": "b6c2e4ea5b58923d20c1a7b51a0ee6f8d83a2958d622183995c271222f51e755"
+      }
+    },
+    "head": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "root": "/home/suraj/project-sem/external/CoachAI-Plus",
+    "working_tree_clean": true
+  },
+  "coachai_root": "/home/suraj/project-sem/external/CoachAI-Plus",
+  "created_at_utc": "2026-11-08T14:24:48.183544+00:00",
+  "fresh_environment": {
+    "constructor_ms": 331.495,
+    "rally": {
+      "decision_count": 2,
+      "native_rewards": [
+        -1.0,
+        0.0
+      ],
+      "output_rows_added": 5,
+      "output_rows_after": 5,
+      "output_rows_before": 0,
+      "rally_before_reset": 0,
+      "reset": {
+        "done": false,
+        "history_length": 2,
+        "launch": false,
+        "player_history": [
+          "Kento MOMOTA",
+          "Kento MOMOTA"
+        ],
+        "rally_after_reset": 1,
+        "reset_ms": 171.687,
+        "return_length": 4,
+        "score_after_reset": {
+          "A": 0,
+          "B": 0
+        }
+      },
+      "score_after_rally": {
+        "A": 1,
+        "B": 0
+      },
+      "score_before_reset": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 1,
+        "B": 0
+      },
+      "terminated": true,
+      "winner_name_from_final_record": "CHOU Tien Chen",
+      "winner_side_from_score_delta": "A"
+    }
+  },
+  "players": {
+    "A": "CHOU Tien Chen",
+    "B": "Kento MOMOTA"
+  },
+  "probe_version": "b2_episode_lifecycle_probe_v1",
+  "project_root": "/home/suraj/project-sem/badminton-tactical-rl",
+  "python_version": "3.12.3",
+  "runtime": {
+    "agent_a_training_mode": false,
+    "agent_b_training_mode": false,
+    "cuda_available": true,
+    "device": "cuda:0",
+    "numpy_version": "1.26.4",
+    "target_player_count": 27,
+    "torch_version": "2.4.1+cu121"
+  },
+  "same_environment": {
+    "constructor_ms": 272.128,
+    "output_accumulates_between_rallies": true,
+    "rallies": [
+      {
+        "decision_count": 2,
+        "native_rewards": [
+          -1.0,
+          0.0
+        ],
+        "output_rows_added": 5,
+        "output_rows_after": 5,
+        "output_rows_before": 0,
+        "rally_before_reset": 0,
+        "reset": {
+          "done": false,
+          "history_length": 2,
+          "launch": false,
+          "player_history": [
+            "Kento MOMOTA",
+            "Kento MOMOTA"
+          ],
+          "rally_after_reset": 1,
+          "reset_ms": 698.006,
+          "return_length": 4,
+          "score_after_reset": {
+            "A": 0,
+            "B": 0
+          }
+        },
+        "score_after_rally": {
+          "A": 1,
+          "B": 0
+        },
+        "score_before_reset": {
+          "A": 0,
+          "B": 0
+        },
+        "score_delta": {
+          "A": 1,
+          "B": 0
+        },
+        "terminated": true,
+        "winner_name_from_final_record": "CHOU Tien Chen",
+        "winner_side_from_score_delta": "A"
+      },
+      {
+        "decision_count": 1,
+        "native_rewards": [
+          -2.0
+        ],
+        "output_rows_added": 2,
+        "output_rows_after": 7,
+        "output_rows_before": 5,
+        "rally_before_reset": 1,
+        "reset": {
+          "done": false,
+          "history_length": 2,
+          "launch": false,
+          "player_history": [
+            "Kento MOMOTA",
+            "Kento MOMOTA"
+          ],
+          "rally_after_reset": 2,
+          "reset_ms": 171.858,
+          "return_length": 4,
+          "score_after_reset": {
+            "A": 1,
+            "B": 0
+          }
+        },
+        "score_after_rally": {
+          "A": 1,
+          "B": 1
+        },
+        "score_before_reset": {
+          "A": 1,
+          "B": 0
+        },
+        "score_delta": {
+          "A": 0,
+          "B": 1
+        },
+        "terminated": true,
+        "winner_name_from_final_record": "Kento MOMOTA",
+        "winner_side_from_score_delta": "B"
+      }
+    ],
+    "score_carries_between_resets": true
+  },
+  "seed": 42,
+  "status": "PASS"
+}

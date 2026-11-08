@@ -1,5 +1,5 @@
 # Editable install with no version control (badminton-tactical-rl==0.1.0)
-
+pyarrow<26
 iniconfig==2.3.1
 numpy==2.5.3
 packaging==26.3

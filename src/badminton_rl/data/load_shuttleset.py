@@ -1,3 +1,4 @@
+
 """Load ShuttleSet into one tidy DataFrame (court coordinates in metres, English shot labels).
 
 Everything the audit found that a downstream user must know is handled here:
@@ -13,26 +14,50 @@ Everything the audit found that a downstream user must know is handled here:
 from __future__ import annotations
 
 import os
+import warnings
 from pathlib import Path
 from typing import Optional
 
 import numpy as np
 import pandas as pd
 
-from .court_coordinates import camera_to_court_units, corner_offset_units, parse_homography, units_to_metres
+from .court_coordinates import (
+    camera_to_court_units,
+    corner_offset_units,
+    parse_homography,
+    units_to_metres,
+)
 
 TYPE_EN = {
-    "放小球": "net shot", "擋小球": "return net", "殺球": "smash", "點扣": "wrist smash",
-    "挑球": "lob", "防守回挑": "defensive return lob", "長球": "clear", "平球": "drive",
-    "小平球": "driven flight", "後場抽平球": "back-court drive", "切球": "drop",
-    "過度切球": "passive drop", "過渡切球": "passive drop",   # data spelling / README spelling
-    "推球": "push", "撲球": "rush", "防守回抽": "defensive return drive", "勾球": "cross-court net shot",
-    "發短球": "short service", "發長球": "long service", "未知球種": "unknown",
+    "放小球": "net shot",
+    "擋小球": "return net",
+    "殺球": "smash",
+    "點扣": "wrist smash",
+    "挑球": "lob",
+    "防守回挑": "defensive return lob",
+    "長球": "clear",
+    "平球": "drive",
+    "小平球": "driven flight",
+    "後場抽平球": "back-court drive",
+    "切球": "drop",
+    "過度切球": "passive drop",
+    "過渡切球": "passive drop",  # data spelling / README spelling
+    "推球": "push",
+    "撲球": "rush",
+    "防守回抽": "defensive return drive",
+    "勾球": "cross-court net shot",
+    "發短球": "short service",
+    "發長球": "long service",
+    "未知球種": "unknown",
 }
 
-DEFAULT_ROOT = Path(os.environ.get("SHUTTLESET_ROOT", "data/raw/shuttleset/set"))
+DEFAULT_ROOT = Path(
+    os.environ.get("SHUTTLESET_ROOT", "data/raw/shuttleset/set")
+)
+LOADER_VERSION = "load_shuttleset_v1"
 
-_POINTS = {  # name -> (x column, y column)
+_POINTS = {
+    # name -> (x column, y column)
     "player": ("player_location_x", "player_location_y"),
     "opponent": ("opponent_location_x", "opponent_location_y"),
     "hit": ("hit_x", "hit_y"),
@@ -42,10 +67,30 @@ _POINTS = {  # name -> (x column, y column)
 
 def load_matches(root: Optional[Path] = None) -> pd.DataFrame:
     root = Path(root or DEFAULT_ROOT)
+
     m = pd.read_csv(root / "match.csv")
-    h = pd.read_csv(root / "homography.csv")[["video", "homography_matrix", "upleft_x", "upright_x", "downleft_x",
-                                              "downright_x", "upleft_y", "upright_y", "downleft_y", "downright_y"]]
-    return m.merge(h, on="video", how="left", validate="one_to_one")
+
+    h = pd.read_csv(root / "homography.csv")[
+        [
+            "video",
+            "homography_matrix",
+            "upleft_x",
+            "upright_x",
+            "downleft_x",
+            "downright_x",
+            "upleft_y",
+            "upright_y",
+            "downleft_y",
+            "downright_y",
+        ]
+    ]
+
+    return m.merge(
+        h,
+        on="video",
+        how="left",
+        validate="one_to_one",
+    )
 
 
 def estimate_fps(frames: np.ndarray, seconds: np.ndarray) -> float:
@@ -54,35 +99,107 @@ def estimate_fps(frames: np.ndarray, seconds: np.ndarray) -> float:
 
 
 def load_strokes(root: Optional[Path] = None) -> pd.DataFrame:
-    """One row per stroke. Adds: match_id, video, set, t_s (frame/fps), fps, type_en,
-    and <name>_x_m / <name>_y_m court coordinates for player/opponent/hit/landing."""
+    """Load one row per stroke.
+
+    Adds:
+      match_id, video, set, set_id, source_file,
+      corner_offset_x_units, corner_offset_y_units,
+      t_s, fps, type_en,
+      and <name>_x_m / <name>_y_m court coordinates
+      for player/opponent/hit/landing.
+    """
     root = Path(root or DEFAULT_ROOT)
     matches = load_matches(root)
+
     frames = []
+
     for m in matches.itertuples():
         H = parse_homography(m.homography_matrix)
-        corners = np.array([[m.upleft_x, m.upleft_y], [m.upright_x, m.upright_y],
-                            [m.downright_x, m.downright_y], [m.downleft_x, m.downleft_y]], float)
-        offset = corner_offset_units(H, corners)     # 2.5 units in x for 24/44 matches, ~0 otherwise
+
+        corners = np.array(
+            [
+                [m.upleft_x, m.upleft_y],
+                [m.upright_x, m.upright_y],
+                [m.downright_x, m.downright_y],
+                [m.downleft_x, m.downleft_y],
+            ],
+            dtype=float,
+        )
+
+        offset = corner_offset_units(H, corners)
+
         parts = []
+
         for s in (1, 2, 3):
             f = root / m.video / f"set{s}.csv"
-            if f.exists():
-                d = pd.read_csv(f)
-                d["set"] = s
-                parts.append(d)
+
+            if not f.exists():
+                continue
+
+            d = pd.read_csv(f)
+
+            # Preserve the original set column and expose the schema's set_id.
+            d["set"] = s
+            d["set_id"] = s
+
+            # Source provenance: add this to every row from this CSV.
+            d["source_file"] = f"{m.video}/set{s}.csv"
+
+            parts.append(d)
+
+        if not parts:
+            raise FileNotFoundError(
+                f"No set1.csv, set2.csv, or set3.csv found for "
+                f"match video {m.video!r} under {root}"
+            )
+
         d = pd.concat(parts, ignore_index=True)
-        d["match_id"], d["video"] = m.id, m.video
+
+        d["match_id"] = m.id
+        d["video"] = m.video
+
+        # Match-level coordinate-transform provenance.
+        d["corner_offset_x_units"] = float(offset[0])
+        d["corner_offset_y_units"] = float(offset[1])
+
         sec = pd.to_timedelta(d["time"]).dt.total_seconds().to_numpy()
-        fps = estimate_fps(d["frame_num"].to_numpy(float), sec)
+        fps = estimate_fps(d["frame_num"].to_numpy(dtype=float), sec)
+
+        if not (24.0 <= fps <= 31.0):
+            warnings.warn(
+                f"{m.video}: estimated fps={fps:.2f} outside [24, 31]",
+                stacklevel=2,
+            )
+
         d["fps"] = fps
         d["t_s"] = d["frame_num"] / fps
+
+        # Keep the existing coordinate transformation unchanged.
         for name, (cx, cy) in _POINTS.items():
-            xy = units_to_metres(camera_to_court_units(H, d[[cx, cy]].to_numpy(float)) - offset)
-            d[f"{name}_x_m"], d[f"{name}_y_m"] = xy[:, 0], xy[:, 1]
+            xy = units_to_metres(
+                camera_to_court_units(
+                    H,
+                    d[[cx, cy]].to_numpy(dtype=float),
+                )
+                - offset
+            )
+
+            d[f"{name}_x_m"] = xy[:, 0]
+            d[f"{name}_y_m"] = xy[:, 1]
+
         frames.append(d)
+
+    if not frames:
+        raise ValueError(f"No stroke data found under {root}")
+
     out = pd.concat(frames, ignore_index=True)
+
     out["type_en"] = out["type"].map(TYPE_EN)
+
     if out["type_en"].isna().any():
-        raise ValueError(f"unmapped shot labels: {sorted(out.loc[out.type_en.isna(), 'type'].unique())}")
+        unknown_labels = sorted(
+            out.loc[out["type_en"].isna(), "type"].unique()
+        )
+        raise ValueError(f"Unmapped shot labels: {unknown_labels}")
+
     return out

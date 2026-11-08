@@ -1,0 +1,2665 @@
+{
+  "coachai_checkout": {
+    "expected_commit": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "files": {
+      "BadmintonEnv/Agent/BC4Serve_weight.pth": {
+        "bytes": 20632,
+        "sha256": "8036be9ccf012174a51ded00689d494b530f01249ea28ce4e7dceb93653be344"
+      },
+      "BadmintonEnv/Agent/INV_weight.pth": {
+        "bytes": 45850,
+        "sha256": "ae9d0e1837c3515c3507172b060e82808e83840938313523509438d56eff3c60"
+      },
+      "BadmintonEnv/Agent/RallyNet_weight.trc": {
+        "bytes": 369928,
+        "sha256": "bed1f112d542903a5c6db898f56a0e6baf3d240abe2879041cc092805e985c7d"
+      },
+      "BadmintonEnv/Agent/hyperparameters.pkl": {
+        "bytes": 26602443,
+        "sha256": "7e5ab372205f5b37db450e519040bdb358136e4c2b66461a1374b50c43588c7d"
+      },
+      "input_data/All_dataset.csv": {
+        "bytes": 11505569,
+        "sha256": "3116fd86391e2cec477b513f9e00bc75efc596bf3862779927eee7c923403ba6"
+      },
+      "input_data/target_players_ids.pkl": {
+        "bytes": 508,
+        "sha256": "b6c2e4ea5b58923d20c1a7b51a0ee6f8d83a2958d622183995c271222f51e755"
+      }
+    },
+    "head": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "root": "/home/suraj/project-sem/external/CoachAI-Plus",
+    "working_tree_clean": true
+  },
+  "created_at_utc": "2026-11-08T14:08:53.121494+00:00",
+  "max_decisions": 64,
+  "players": {
+    "A": "CHOU Tien Chen",
+    "B": "Kento MOMOTA"
+  },
+  "probe_version": "b2_runtime_probe_v1",
+  "project_root": "/home/suraj/project-sem/badminton-tactical-rl",
+  "python": {
+    "executable": "/home/suraj/project-sem/badminton-tactical-rl/.venv-coachai/bin/python",
+    "version": "3.12.3"
+  },
+  "results": {
+    "A": {
+      "all_normal_steps_return_five_values": true,
+      "constraint_validation_samples": [
+        {
+          "action_changed": true,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -48.40721972286701,
+                  245.52775740623474
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -11.894415244460106,
+                  -277.6047348976135
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.7128218028790296,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.2871781971209704,
+                  0.7128218028790296,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 10
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -48.40721972286701,
+                  245.52775740623474
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -11.894415244460106,
+                  -277.6047348976135
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.7128218028790296,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.2871781971209704,
+                  0.7128218028790296,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 2
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [
+            "shot_type"
+          ],
+          "is_constraint": false,
+          "native_constraint_reward": 0.0
+        },
+        {
+          "action_changed": true,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  48.40721972286701,
+                  -245.52775740623474
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  87.73055443514333,
+                  185.4582276791628
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -17.575455643236637,
+                  -296.8255305290222
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.17759973082263672,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10236818876982316,
+                  0.12686660373887185,
+                  0.12314262046933132,
+                  0.17759973082263672,
+                  0.05395418812775336,
+                  0.16391832750804597,
+                  0.1086248889443203,
+                  0.14352545161921731
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 9
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  48.40721972286701,
+                  -245.52775740623474
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -16.900924388319254,
+                  230.14391541481018
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -17.575455643236637,
+                  -296.8255305290222
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.17759973082263672,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10236818876982316,
+                  0.12686660373887185,
+                  0.12314262046933132,
+                  0.17759973082263672,
+                  0.05395418812775336,
+                  0.16391832750804597,
+                  0.1086248889443203,
+                  0.14352545161921731
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 5
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [
+            "landing_position",
+            "shot_type"
+          ],
+          "is_constraint": true,
+          "native_constraint_reward": -1.0
+        },
+        {
+          "action_changed": true,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -87.73055443514333,
+                  -185.4582276791628
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  51.32707670331001,
+                  170.67484617233276
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  19.313011951744556,
+                  -265.75350880622864
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.3819837624628585,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 0.9999999999999998,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.23626596781249812,
+                  0.0,
+                  0.2763793924612589,
+                  0.3819837624628585,
+                  0.10537087726338436,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int64",
+                "value": 5
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -87.73055443514333,
+                  -185.4582276791628
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  51.32707670331001,
+                  170.67484617233276
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  19.313011951744556,
+                  -265.75350880622864
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.1741418652978292,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10771085157125192,
+                  0.12649486229922363,
+                  0.12599808594681872,
+                  0.1741418652978292,
+                  0.04803733278190994,
+                  0.16722658198004467,
+                  0.10166073752097789,
+                  0.14872968260194402
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 4
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [
+            "shot_probability",
+            "shot_type"
+          ],
+          "is_constraint": true,
+          "native_constraint_reward": -1.0
+        },
+        {
+          "action_changed": true,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -51.32707670331001,
+                  -170.67484617233276
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  23.620955124497414,
+                  237.80047953128815
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -1.2174137867987156,
+                  -201.2003481388092
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.6723084992694535,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.6723084992694535,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.32769150073054665,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int64",
+                "value": 2
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -51.32707670331001,
+                  -170.67484617233276
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  23.620955124497414,
+                  237.80047953128815
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -1.2174137867987156,
+                  -201.2003481388092
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.19091952722702535,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.09958526130728797,
+                  0.13666803340069322,
+                  0.11401704759208187,
+                  0.19091952722702535,
+                  0.04853909144966767,
+                  0.15729045024626145,
+                  0.11068770546854792,
+                  0.14229288330843454
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 5
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [
+            "shot_probability",
+            "shot_type"
+          ],
+          "is_constraint": true,
+          "native_constraint_reward": -1.0
+        }
+      ],
+      "constructor": {
+        "class": "BadmintonEnv.Environment.BadmintonEnv",
+        "episodes": 1,
+        "is_constraint": true,
+        "is_have_serve_state": false,
+        "is_match": true
+      },
+      "decision_count": 3,
+      "elapsed_ms": 1363.743,
+      "final_record": {
+        "ball_round": 5,
+        "constraint": false,
+        "getpoint_player": "Kento MOMOTA",
+        "landing_x": 0.0,
+        "landing_y": 0.0,
+        "match": 1,
+        "opponent_location_x": 1.2174137867987156,
+        "opponent_location_y": 201.2003481388092,
+        "player": "A",
+        "player_hit_x": 0.0,
+        "player_hit_y": 0.0,
+        "player_location_x": 19.313011951744556,
+        "player_location_y": -265.75350880622864,
+        "player_movement_x": 0.0,
+        "player_movement_y": 0.0,
+        "rally": 1,
+        "receive_type": 2,
+        "receive_type_number": "Clear",
+        "roundscore_A": 0,
+        "roundscore_B": 1,
+        "serve": false,
+        "type": 11,
+        "type_number": "Missed shot",
+        "violation": "Miss hit"
+      },
+      "final_record_winner_matches_score_delta": true,
+      "info_final": {
+        "action_history_length": 6,
+        "constraint": true,
+        "env_score": [
+          0,
+          1
+        ],
+        "keys": [
+          "action",
+          "constraint",
+          "env_score",
+          "launch",
+          "match",
+          "player",
+          "rally",
+          "round",
+          "score",
+          "state"
+        ],
+        "latest_action": null,
+        "latest_history_state": {
+          "container_type": "tuple",
+          "fields": [
+            {
+              "index": 0,
+              "name": "previous_shot_type",
+              "python_type": "int64",
+              "value": 2
+            },
+            {
+              "index": 1,
+              "name": "player_position",
+              "python_type": "tuple",
+              "value": [
+                19.313011951744556,
+                -265.75350880622864
+              ]
+            },
+            {
+              "index": 2,
+              "name": "opponent_position",
+              "python_type": "tuple",
+              "value": [
+                1.2174137867987156,
+                201.2003481388092
+              ]
+            },
+            {
+              "index": 3,
+              "name": "shuttle_position",
+              "python_type": "tuple",
+              "value": [
+                -23.620955124497414,
+                -237.80047953128815
+              ]
+            }
+          ],
+          "length": 4
+        },
+        "launch": false,
+        "match": 1,
+        "player": [
+          "CHOU Tien Chen",
+          "CHOU Tien Chen",
+          "Kento MOMOTA",
+          "CHOU Tien Chen",
+          "Kento MOMOTA",
+          "CHOU Tien Chen"
+        ],
+        "rally": 1,
+        "round": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "score": [
+          0,
+          1
+        ],
+        "state_history_length": 6
+      },
+      "max_decisions_reached": false,
+      "native_game_winner_check": null,
+      "native_reward_values": [
+        0.0,
+        -1.0,
+        -2.0
+      ],
+      "normal_step_return_lengths": [
+        5,
+        5,
+        5
+      ],
+      "recorded_stroke_rows": 5,
+      "requested_server": "A",
+      "reset": {
+        "done": false,
+        "info": {
+          "action_history_length": 1,
+          "env_score": [
+            0,
+            0
+          ],
+          "keys": [
+            "action",
+            "env_score",
+            "match",
+            "player",
+            "rally",
+            "round",
+            "score",
+            "state"
+          ],
+          "latest_action": null,
+          "latest_history_state": {
+            "container_type": "tuple",
+            "fields": [
+              {
+                "index": 0,
+                "name": "previous_shot_type",
+                "python_type": "int",
+                "value": 0
+              },
+              {
+                "index": 1,
+                "name": "player_position",
+                "python_type": "tuple",
+                "value": [
+                  46.99786968665444,
+                  -220.649419217976
+                ]
+              },
+              {
+                "index": 2,
+                "name": "opponent_position",
+                "python_type": "tuple",
+                "value": [
+                  -20.214654900130256,
+                  209.94662013996356
+                ]
+              },
+              {
+                "index": 3,
+                "name": "shuttle_position",
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "length": 4
+          },
+          "match": 1,
+          "player": [
+            "CHOU Tien Chen"
+          ],
+          "rally": 1,
+          "round": [
+            1
+          ],
+          "score": [
+            0,
+            0
+          ],
+          "state_history_length": 1
+        },
+        "launch": true,
+        "return_length": 4,
+        "score_after_reset": {
+          "A": 0,
+          "B": 0
+        },
+        "state": {
+          "container_type": "tuple",
+          "fields": [
+            {
+              "index": 0,
+              "name": "previous_shot_type",
+              "python_type": "int",
+              "value": 0
+            },
+            {
+              "index": 1,
+              "name": "player_position",
+              "python_type": "tuple",
+              "value": [
+                46.99786968665444,
+                -220.649419217976
+              ]
+            },
+            {
+              "index": 2,
+              "name": "opponent_position",
+              "python_type": "tuple",
+              "value": [
+                -20.214654900130256,
+                209.94662013996356
+              ]
+            },
+            {
+              "index": 3,
+              "name": "shuttle_position",
+              "python_type": "tuple",
+              "value": [
+                0,
+                0
+              ]
+            }
+          ],
+          "length": 4
+        },
+        "tuple_schema": [
+          "state",
+          "info",
+          "done",
+          "launch"
+        ]
+      },
+      "score_after": {
+        "A": 0,
+        "B": 1
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 0,
+        "B": 1
+      },
+      "steps": [
+        {
+          "agent_a_action": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -48.40721972286701,
+                  245.52775740623474
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -11.894415244460106,
+                  -277.6047348976135
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.7128218028790296,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.2871781971209704,
+                  0.7128218028790296,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 2
+              }
+            },
+            "length": 5
+          },
+          "agent_a_action_inference_ms": 690.012,
+          "decision_index": 1,
+          "done": false,
+          "launch": false,
+          "native_reward": 0.0,
+          "next_info": {
+            "action_history_length": 3,
+            "constraint": true,
+            "env_score": [
+              0,
+              0
+            ],
+            "keys": [
+              "action",
+              "constraint",
+              "env_score",
+              "launch",
+              "match",
+              "player",
+              "rally",
+              "round",
+              "score",
+              "state"
+            ],
+            "latest_action": {
+              "fields": {
+                "hitting_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    0,
+                    0
+                  ]
+                },
+                "landing_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    -48.40721972286701,
+                    245.52775740623474
+                  ]
+                },
+                "recovery_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    -11.894415244460106,
+                    -277.6047348976135
+                  ]
+                },
+                "shot_probability": {
+                  "length": 10,
+                  "max": 0.7128218028790296,
+                  "min": 0.0,
+                  "python_type": "tuple",
+                  "sum": 1.0,
+                  "values": [
+                    0.2871781971209704,
+                    0.7128218028790296,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                "shot_type": {
+                  "python_type": "int",
+                  "value": 10
+                }
+              },
+              "length": 5
+            },
+            "latest_history_state": {
+              "container_type": "tuple",
+              "fields": [
+                {
+                  "index": 0,
+                  "name": "previous_shot_type",
+                  "python_type": "int",
+                  "value": 10
+                },
+                {
+                  "index": 1,
+                  "name": "player_position",
+                  "python_type": "tuple",
+                  "value": [
+                    20.214654900130256,
+                    -209.94662013996356
+                  ]
+                },
+                {
+                  "index": 2,
+                  "name": "opponent_position",
+                  "python_type": "tuple",
+                  "value": [
+                    11.894415244460106,
+                    277.6047348976135
+                  ]
+                },
+                {
+                  "index": 3,
+                  "name": "shuttle_position",
+                  "python_type": "tuple",
+                  "value": [
+                    48.40721972286701,
+                    -245.52775740623474
+                  ]
+                }
+              ],
+              "length": 4
+            },
+            "launch": false,
+            "match": 1,
+            "player": [
+              "CHOU Tien Chen",
+              "CHOU Tien Chen",
+              "Kento MOMOTA"
+            ],
+            "rally": 1,
+            "round": [
+              1,
+              2,
+              3
+            ],
+            "score": [
+              0,
+              0
+            ],
+            "state_history_length": 3
+          },
+          "next_state": {
+            "container_type": "tuple",
+            "fields": [
+              {
+                "index": 0,
+                "name": "previous_shot_type",
+                "python_type": "int",
+                "value": 9
+              },
+              {
+                "index": 1,
+                "name": "player_position",
+                "python_type": "tuple",
+                "value": [
+                  -11.894415244460106,
+                  -277.6047348976135
+                ]
+              },
+              {
+                "index": 2,
+                "name": "opponent_position",
+                "python_type": "tuple",
+                "value": [
+                  17.575455643236637,
+                  296.8255305290222
+                ]
+              },
+              {
+                "index": 3,
+                "name": "shuttle_position",
+                "python_type": "tuple",
+                "value": [
+                  -87.73055443514333,
+                  -185.4582276791628
+                ]
+              }
+            ],
+            "length": 4
+          },
+          "score": {
+            "A": 0,
+            "B": 0
+          },
+          "step_return_length": 5,
+          "tuple_schema": [
+            "state",
+            "native_reward",
+            "info",
+            "done",
+            "launch"
+          ]
+        },
+        {
+          "agent_a_action": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -87.73055443514333,
+                  -185.4582276791628
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  51.32707670331001,
+                  170.67484617233276
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  19.313011951744556,
+                  -265.75350880622864
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.1741418652978292,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10771085157125192,
+                  0.12649486229922363,
+                  0.12599808594681872,
+                  0.1741418652978292,
+                  0.04803733278190994,
+                  0.16722658198004467,
+                  0.10166073752097789,
+                  0.14872968260194402
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 4
+              }
+            },
+            "length": 5
+          },
+          "agent_a_action_inference_ms": 171.966,
+          "decision_index": 2,
+          "done": false,
+          "launch": false,
+          "native_reward": -1.0,
+          "next_info": {
+            "action_history_length": 5,
+            "constraint": true,
+            "env_score": [
+              0,
+              0
+            ],
+            "keys": [
+              "action",
+              "constraint",
+              "env_score",
+              "launch",
+              "match",
+              "player",
+              "rally",
+              "round",
+              "score",
+              "state"
+            ],
+            "latest_action": {
+              "fields": {
+                "hitting_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    -87.73055443514333,
+                    -185.4582276791628
+                  ]
+                },
+                "landing_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    51.32707670331001,
+                    170.67484617233276
+                  ]
+                },
+                "recovery_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    19.313011951744556,
+                    -265.75350880622864
+                  ]
+                },
+                "shot_probability": {
+                  "length": 10,
+                  "max": 0.3819837624628585,
+                  "min": 0.0,
+                  "python_type": "tuple",
+                  "sum": 0.9999999999999998,
+                  "values": [
+                    0.0,
+                    0.0,
+                    0.23626596781249812,
+                    0.0,
+                    0.2763793924612589,
+                    0.3819837624628585,
+                    0.10537087726338436,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                "shot_type": {
+                  "python_type": "int64",
+                  "value": 5
+                }
+              },
+              "length": 5
+            },
+            "latest_history_state": {
+              "container_type": "tuple",
+              "fields": [
+                {
+                  "index": 0,
+                  "name": "previous_shot_type",
+                  "python_type": "int64",
+                  "value": 5
+                },
+                {
+                  "index": 1,
+                  "name": "player_position",
+                  "python_type": "tuple",
+                  "value": [
+                    -17.575455643236637,
+                    -296.8255305290222
+                  ]
+                },
+                {
+                  "index": 2,
+                  "name": "opponent_position",
+                  "python_type": "tuple",
+                  "value": [
+                    -19.313011951744556,
+                    265.75350880622864
+                  ]
+                },
+                {
+                  "index": 3,
+                  "name": "shuttle_position",
+                  "python_type": "tuple",
+                  "value": [
+                    -51.32707670331001,
+                    -170.67484617233276
+                  ]
+                }
+              ],
+              "length": 4
+            },
+            "launch": false,
+            "match": 1,
+            "player": [
+              "CHOU Tien Chen",
+              "CHOU Tien Chen",
+              "Kento MOMOTA",
+              "CHOU Tien Chen",
+              "Kento MOMOTA"
+            ],
+            "rally": 1,
+            "round": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "score": [
+              0,
+              0
+            ],
+            "state_history_length": 5
+          },
+          "next_state": {
+            "container_type": "tuple",
+            "fields": [
+              {
+                "index": 0,
+                "name": "previous_shot_type",
+                "python_type": "int64",
+                "value": 2
+              },
+              {
+                "index": 1,
+                "name": "player_position",
+                "python_type": "tuple",
+                "value": [
+                  19.313011951744556,
+                  -265.75350880622864
+                ]
+              },
+              {
+                "index": 2,
+                "name": "opponent_position",
+                "python_type": "tuple",
+                "value": [
+                  1.2174137867987156,
+                  201.2003481388092
+                ]
+              },
+              {
+                "index": 3,
+                "name": "shuttle_position",
+                "python_type": "tuple",
+                "value": [
+                  -23.620955124497414,
+                  -237.80047953128815
+                ]
+              }
+            ],
+            "length": 4
+          },
+          "score": {
+            "A": 0,
+            "B": 0
+          },
+          "step_return_length": 5,
+          "tuple_schema": [
+            "state",
+            "native_reward",
+            "info",
+            "done",
+            "launch"
+          ]
+        },
+        {
+          "agent_a_action": null,
+          "agent_a_action_inference_ms": 135.609,
+          "decision_index": 3,
+          "done": true,
+          "launch": false,
+          "native_reward": -2.0,
+          "next_info": {
+            "action_history_length": 6,
+            "constraint": true,
+            "env_score": [
+              0,
+              1
+            ],
+            "keys": [
+              "action",
+              "constraint",
+              "env_score",
+              "launch",
+              "match",
+              "player",
+              "rally",
+              "round",
+              "score",
+              "state"
+            ],
+            "latest_action": null,
+            "latest_history_state": {
+              "container_type": "tuple",
+              "fields": [
+                {
+                  "index": 0,
+                  "name": "previous_shot_type",
+                  "python_type": "int64",
+                  "value": 2
+                },
+                {
+                  "index": 1,
+                  "name": "player_position",
+                  "python_type": "tuple",
+                  "value": [
+                    19.313011951744556,
+                    -265.75350880622864
+                  ]
+                },
+                {
+                  "index": 2,
+                  "name": "opponent_position",
+                  "python_type": "tuple",
+                  "value": [
+                    1.2174137867987156,
+                    201.2003481388092
+                  ]
+                },
+                {
+                  "index": 3,
+                  "name": "shuttle_position",
+                  "python_type": "tuple",
+                  "value": [
+                    -23.620955124497414,
+                    -237.80047953128815
+                  ]
+                }
+              ],
+              "length": 4
+            },
+            "launch": false,
+            "match": 1,
+            "player": [
+              "CHOU Tien Chen",
+              "CHOU Tien Chen",
+              "Kento MOMOTA",
+              "CHOU Tien Chen",
+              "Kento MOMOTA",
+              "CHOU Tien Chen"
+            ],
+            "rally": 1,
+            "round": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "score": [
+              0,
+              1
+            ],
+            "state_history_length": 6
+          },
+          "next_state": {
+            "container_type": "tuple",
+            "fields": [
+              {
+                "index": 0,
+                "name": "previous_shot_type",
+                "python_type": "int64",
+                "value": 2
+              },
+              {
+                "index": 1,
+                "name": "player_position",
+                "python_type": "tuple",
+                "value": [
+                  19.313011951744556,
+                  -265.75350880622864
+                ]
+              },
+              {
+                "index": 2,
+                "name": "opponent_position",
+                "python_type": "tuple",
+                "value": [
+                  1.2174137867987156,
+                  201.2003481388092
+                ]
+              },
+              {
+                "index": 3,
+                "name": "shuttle_position",
+                "python_type": "tuple",
+                "value": [
+                  -23.620955124497414,
+                  -237.80047953128815
+                ]
+              }
+            ],
+            "length": 4
+          },
+          "score": {
+            "A": 0,
+            "B": 1
+          },
+          "step_return_length": 5,
+          "tuple_schema": [
+            "state",
+            "native_reward",
+            "info",
+            "done",
+            "launch"
+          ]
+        }
+      ],
+      "terminated": true,
+      "winner_name_from_final_record": "Kento MOMOTA",
+      "winner_side_from_score_delta": "B"
+    },
+    "B": {
+      "all_normal_steps_return_five_values": true,
+      "constraint_validation_samples": [
+        {
+          "action_changed": false,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -51.98211595416069,
+                  196.93616151809692
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  3.9782097190618515,
+                  -253.22975635528564
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.9591021430592744,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.9591021430592744,
+                  0.040897856940725556,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 1
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -51.98211595416069,
+                  196.93616151809692
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  3.9782097190618515,
+                  -253.22975635528564
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.9591021430592744,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.9591021430592744,
+                  0.040897856940725556,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 1
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [],
+          "is_constraint": false,
+          "native_constraint_reward": 0.0
+        },
+        {
+          "action_changed": true,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  51.98211595416069,
+                  -196.93616151809692
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -15.256815701723099,
+                  238.97045731544495
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -20.157168209552765,
+                  -298.61157417297363
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.6510880262629641,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.6510880262629641,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.34891197373703586,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int64",
+                "value": 2
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  51.98211595416069,
+                  -196.93616151809692
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -15.256815701723099,
+                  238.97045731544495
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -20.157168209552765,
+                  -298.61157417297363
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.17340116234644887,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10164317592661187,
+                  0.12973319388242083,
+                  0.12277317113674666,
+                  0.17340116234644887,
+                  0.054469625763216484,
+                  0.16448942598319224,
+                  0.10839291434699262,
+                  0.14509733061437044
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 5
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [
+            "shot_probability",
+            "shot_type"
+          ],
+          "is_constraint": true,
+          "native_constraint_reward": -1.0
+        },
+        {
+          "action_changed": false,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  15.256815701723099,
+                  -238.97045731544495
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  53.36259260773659,
+                  160.18700122833252
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  16.455964744091034,
+                  -267.14938938617706
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.17636753466748809,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10842638460004704,
+                  0.12742623446425974,
+                  0.12438167751986509,
+                  0.17636753466748809,
+                  0.04827630013718931,
+                  0.16772089990218456,
+                  0.1026571020807756,
+                  0.14474386662819058
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 4
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  15.256815701723099,
+                  -238.97045731544495
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  53.36259260773659,
+                  160.18700122833252
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  16.455964744091034,
+                  -267.14938938617706
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.17636753466748809,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10842638460004704,
+                  0.12742623446425974,
+                  0.12438167751986509,
+                  0.17636753466748809,
+                  0.04827630013718931,
+                  0.16772089990218456,
+                  0.1026571020807756,
+                  0.14474386662819058
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 4
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [],
+          "is_constraint": false,
+          "native_constraint_reward": 0.0
+        },
+        {
+          "action_changed": true,
+          "after": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -53.36259260773659,
+                  -160.18700122833252
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  24.15746860206127,
+                  239.33484256267548
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  2.4891377799212933,
+                  -198.61923336982727
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 1.0,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int64",
+                "value": 6
+              }
+            },
+            "length": 5
+          },
+          "before": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -53.36259260773659,
+                  -160.18700122833252
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  24.15746860206127,
+                  239.33484256267548
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  2.4891377799212933,
+                  -198.61923336982727
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.19058235104465265,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 0.9999999999999999,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.09967579188619725,
+                  0.13661855144661772,
+                  0.11363896024633523,
+                  0.19058235104465265,
+                  0.04679425753509599,
+                  0.15847855420685214,
+                  0.11327746561849089,
+                  0.14093406801575814
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 5
+              }
+            },
+            "length": 5
+          },
+          "changed_fields": [
+            "shot_probability",
+            "shot_type"
+          ],
+          "is_constraint": true,
+          "native_constraint_reward": -1.0
+        }
+      ],
+      "constructor": {
+        "class": "BadmintonEnv.Environment.BadmintonEnv",
+        "episodes": 1,
+        "is_constraint": true,
+        "is_have_serve_state": false,
+        "is_match": true
+      },
+      "decision_count": 2,
+      "elapsed_ms": 824.447,
+      "final_record": {
+        "ball_round": 5,
+        "constraint": false,
+        "getpoint_player": "CHOU Tien Chen",
+        "landing_x": 0.0,
+        "landing_y": 0.0,
+        "match": 1,
+        "opponent_location_x": -2.4891377799212933,
+        "opponent_location_y": 198.61923336982727,
+        "player": "B",
+        "player_hit_x": 0.0,
+        "player_hit_y": 0.0,
+        "player_location_x": 16.455964744091034,
+        "player_location_y": -267.14938938617706,
+        "player_movement_x": 0.0,
+        "player_movement_y": 0.0,
+        "rally": 1,
+        "receive_type": 6,
+        "receive_type_number": "Drive",
+        "roundscore_A": 1,
+        "roundscore_B": 0,
+        "serve": false,
+        "type": 11,
+        "type_number": "Missed shot",
+        "violation": "Miss hit"
+      },
+      "final_record_winner_matches_score_delta": true,
+      "info_final": {
+        "action_history_length": 6,
+        "env_score": [
+          1,
+          0
+        ],
+        "keys": [
+          "action",
+          "env_score",
+          "launch",
+          "match",
+          "player",
+          "rally",
+          "round",
+          "score",
+          "state"
+        ],
+        "latest_action": {
+          "fields": {
+            "hitting_position": {
+              "python_type": "tuple",
+              "value": [
+                -53.36259260773659,
+                -160.18700122833252
+              ]
+            },
+            "landing_position": {
+              "python_type": "tuple",
+              "value": [
+                24.15746860206127,
+                239.33484256267548
+              ]
+            },
+            "recovery_position": {
+              "python_type": "tuple",
+              "value": [
+                2.4891377799212933,
+                -198.61923336982727
+              ]
+            },
+            "shot_probability": {
+              "length": 10,
+              "max": 1.0,
+              "min": 0.0,
+              "python_type": "tuple",
+              "sum": 1.0,
+              "values": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "shot_type": {
+              "python_type": "int64",
+              "value": 6
+            }
+          },
+          "length": 5
+        },
+        "latest_history_state": {
+          "container_type": "tuple",
+          "fields": [
+            {
+              "index": 0,
+              "name": "previous_shot_type",
+              "python_type": "int64",
+              "value": 6
+            },
+            {
+              "index": 1,
+              "name": "player_position",
+              "python_type": "tuple",
+              "value": [
+                16.455964744091034,
+                -267.14938938617706
+              ]
+            },
+            {
+              "index": 2,
+              "name": "opponent_position",
+              "python_type": "tuple",
+              "value": [
+                -2.4891377799212933,
+                198.61923336982727
+              ]
+            },
+            {
+              "index": 3,
+              "name": "shuttle_position",
+              "python_type": "tuple",
+              "value": [
+                -24.15746860206127,
+                -239.33484256267548
+              ]
+            }
+          ],
+          "length": 4
+        },
+        "launch": false,
+        "match": 1,
+        "player": [
+          "Kento MOMOTA",
+          "Kento MOMOTA",
+          "CHOU Tien Chen",
+          "Kento MOMOTA",
+          "CHOU Tien Chen",
+          "Kento MOMOTA"
+        ],
+        "rally": 1,
+        "round": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "score": [
+          0,
+          1
+        ],
+        "state_history_length": 6
+      },
+      "max_decisions_reached": false,
+      "native_game_winner_check": null,
+      "native_reward_values": [
+        -1.0,
+        0.0
+      ],
+      "normal_step_return_lengths": [
+        5,
+        5
+      ],
+      "recorded_stroke_rows": 5,
+      "requested_server": "B",
+      "reset": {
+        "done": false,
+        "info": {
+          "action_history_length": 2,
+          "env_score": [
+            0,
+            0
+          ],
+          "keys": [
+            "action",
+            "env_score",
+            "match",
+            "player",
+            "rally",
+            "round",
+            "score",
+            "state"
+          ],
+          "latest_action": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -51.98211595416069,
+                  196.93616151809692
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  3.9782097190618515,
+                  -253.22975635528564
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.9591021430592744,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.9591021430592744,
+                  0.040897856940725556,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 1
+              }
+            },
+            "length": 5
+          },
+          "latest_history_state": {
+            "container_type": "tuple",
+            "fields": [
+              {
+                "index": 0,
+                "name": "previous_shot_type",
+                "python_type": "int",
+                "value": 0
+              },
+              {
+                "index": 1,
+                "name": "player_position",
+                "python_type": "tuple",
+                "value": [
+                  46.99786968665444,
+                  -220.649419217976
+                ]
+              },
+              {
+                "index": 2,
+                "name": "opponent_position",
+                "python_type": "tuple",
+                "value": [
+                  -20.214654900130256,
+                  209.94662013996356
+                ]
+              },
+              {
+                "index": 3,
+                "name": "shuttle_position",
+                "python_type": "tuple",
+                "value": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "length": 4
+          },
+          "match": 1,
+          "player": [
+            "Kento MOMOTA",
+            "Kento MOMOTA"
+          ],
+          "rally": 1,
+          "round": [
+            1,
+            2
+          ],
+          "score": [
+            0,
+            0
+          ],
+          "state_history_length": 2
+        },
+        "launch": false,
+        "return_length": 4,
+        "score_after_reset": {
+          "A": 0,
+          "B": 0
+        },
+        "state": {
+          "container_type": "tuple",
+          "fields": [
+            {
+              "index": 0,
+              "name": "previous_shot_type",
+              "python_type": "int",
+              "value": 1
+            },
+            {
+              "index": 1,
+              "name": "player_position",
+              "python_type": "tuple",
+              "value": [
+                20.214654900130256,
+                -209.94662013996356
+              ]
+            },
+            {
+              "index": 2,
+              "name": "opponent_position",
+              "python_type": "tuple",
+              "value": [
+                -3.9782097190618515,
+                253.22975635528564
+              ]
+            },
+            {
+              "index": 3,
+              "name": "shuttle_position",
+              "python_type": "tuple",
+              "value": [
+                51.98211595416069,
+                -196.93616151809692
+              ]
+            }
+          ],
+          "length": 4
+        },
+        "tuple_schema": [
+          "state",
+          "info",
+          "done",
+          "launch"
+        ]
+      },
+      "score_after": {
+        "A": 1,
+        "B": 0
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 1,
+        "B": 0
+      },
+      "steps": [
+        {
+          "agent_a_action": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  51.98211595416069,
+                  -196.93616151809692
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  -15.256815701723099,
+                  238.97045731544495
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  -20.157168209552765,
+                  -298.61157417297363
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.17340116234644887,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 1.0,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.10164317592661187,
+                  0.12973319388242083,
+                  0.12277317113674666,
+                  0.17340116234644887,
+                  0.054469625763216484,
+                  0.16448942598319224,
+                  0.10839291434699262,
+                  0.14509733061437044
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 5
+              }
+            },
+            "length": 5
+          },
+          "agent_a_action_inference_ms": 179.944,
+          "decision_index": 1,
+          "done": false,
+          "launch": false,
+          "native_reward": -1.0,
+          "next_info": {
+            "action_history_length": 4,
+            "env_score": [
+              0,
+              0
+            ],
+            "keys": [
+              "action",
+              "env_score",
+              "launch",
+              "match",
+              "player",
+              "rally",
+              "round",
+              "score",
+              "state"
+            ],
+            "latest_action": {
+              "fields": {
+                "hitting_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    51.98211595416069,
+                    -196.93616151809692
+                  ]
+                },
+                "landing_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    -15.256815701723099,
+                    238.97045731544495
+                  ]
+                },
+                "recovery_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    -20.157168209552765,
+                    -298.61157417297363
+                  ]
+                },
+                "shot_probability": {
+                  "length": 10,
+                  "max": 0.6510880262629641,
+                  "min": 0.0,
+                  "python_type": "tuple",
+                  "sum": 1.0,
+                  "values": [
+                    0.0,
+                    0.0,
+                    0.6510880262629641,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.34891197373703586,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                "shot_type": {
+                  "python_type": "int64",
+                  "value": 2
+                }
+              },
+              "length": 5
+            },
+            "latest_history_state": {
+              "container_type": "tuple",
+              "fields": [
+                {
+                  "index": 0,
+                  "name": "previous_shot_type",
+                  "python_type": "int64",
+                  "value": 2
+                },
+                {
+                  "index": 1,
+                  "name": "player_position",
+                  "python_type": "tuple",
+                  "value": [
+                    3.9782097190618515,
+                    -253.22975635528564
+                  ]
+                },
+                {
+                  "index": 2,
+                  "name": "opponent_position",
+                  "python_type": "tuple",
+                  "value": [
+                    20.157168209552765,
+                    298.61157417297363
+                  ]
+                },
+                {
+                  "index": 3,
+                  "name": "shuttle_position",
+                  "python_type": "tuple",
+                  "value": [
+                    15.256815701723099,
+                    -238.97045731544495
+                  ]
+                }
+              ],
+              "length": 4
+            },
+            "launch": false,
+            "match": 1,
+            "player": [
+              "Kento MOMOTA",
+              "Kento MOMOTA",
+              "CHOU Tien Chen",
+              "Kento MOMOTA"
+            ],
+            "rally": 1,
+            "round": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "score": [
+              0,
+              0
+            ],
+            "state_history_length": 4
+          },
+          "next_state": {
+            "container_type": "tuple",
+            "fields": [
+              {
+                "index": 0,
+                "name": "previous_shot_type",
+                "python_type": "int",
+                "value": 4
+              },
+              {
+                "index": 1,
+                "name": "player_position",
+                "python_type": "tuple",
+                "value": [
+                  -20.157168209552765,
+                  -298.61157417297363
+                ]
+              },
+              {
+                "index": 2,
+                "name": "opponent_position",
+                "python_type": "tuple",
+                "value": [
+                  -16.455964744091034,
+                  267.14938938617706
+                ]
+              },
+              {
+                "index": 3,
+                "name": "shuttle_position",
+                "python_type": "tuple",
+                "value": [
+                  -53.36259260773659,
+                  -160.18700122833252
+                ]
+              }
+            ],
+            "length": 4
+          },
+          "score": {
+            "A": 0,
+            "B": 0
+          },
+          "step_return_length": 5,
+          "tuple_schema": [
+            "state",
+            "native_reward",
+            "info",
+            "done",
+            "launch"
+          ]
+        },
+        {
+          "agent_a_action": {
+            "fields": {
+              "hitting_position": {
+                "python_type": "tuple",
+                "value": [
+                  -53.36259260773659,
+                  -160.18700122833252
+                ]
+              },
+              "landing_position": {
+                "python_type": "tuple",
+                "value": [
+                  24.15746860206127,
+                  239.33484256267548
+                ]
+              },
+              "recovery_position": {
+                "python_type": "tuple",
+                "value": [
+                  2.4891377799212933,
+                  -198.61923336982727
+                ]
+              },
+              "shot_probability": {
+                "length": 10,
+                "max": 0.19058235104465265,
+                "min": 0.0,
+                "python_type": "tuple",
+                "sum": 0.9999999999999999,
+                "values": [
+                  0.0,
+                  0.0,
+                  0.09967579188619725,
+                  0.13661855144661772,
+                  0.11363896024633523,
+                  0.19058235104465265,
+                  0.04679425753509599,
+                  0.15847855420685214,
+                  0.11327746561849089,
+                  0.14093406801575814
+                ]
+              },
+              "shot_type": {
+                "python_type": "int",
+                "value": 5
+              }
+            },
+            "length": 5
+          },
+          "agent_a_action_inference_ms": 137.799,
+          "decision_index": 2,
+          "done": true,
+          "launch": false,
+          "native_reward": 0.0,
+          "next_info": {
+            "action_history_length": 6,
+            "env_score": [
+              1,
+              0
+            ],
+            "keys": [
+              "action",
+              "env_score",
+              "launch",
+              "match",
+              "player",
+              "rally",
+              "round",
+              "score",
+              "state"
+            ],
+            "latest_action": {
+              "fields": {
+                "hitting_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    -53.36259260773659,
+                    -160.18700122833252
+                  ]
+                },
+                "landing_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    24.15746860206127,
+                    239.33484256267548
+                  ]
+                },
+                "recovery_position": {
+                  "python_type": "tuple",
+                  "value": [
+                    2.4891377799212933,
+                    -198.61923336982727
+                  ]
+                },
+                "shot_probability": {
+                  "length": 10,
+                  "max": 1.0,
+                  "min": 0.0,
+                  "python_type": "tuple",
+                  "sum": 1.0,
+                  "values": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ]
+                },
+                "shot_type": {
+                  "python_type": "int64",
+                  "value": 6
+                }
+              },
+              "length": 5
+            },
+            "latest_history_state": {
+              "container_type": "tuple",
+              "fields": [
+                {
+                  "index": 0,
+                  "name": "previous_shot_type",
+                  "python_type": "int64",
+                  "value": 6
+                },
+                {
+                  "index": 1,
+                  "name": "player_position",
+                  "python_type": "tuple",
+                  "value": [
+                    16.455964744091034,
+                    -267.14938938617706
+                  ]
+                },
+                {
+                  "index": 2,
+                  "name": "opponent_position",
+                  "python_type": "tuple",
+                  "value": [
+                    -2.4891377799212933,
+                    198.61923336982727
+                  ]
+                },
+                {
+                  "index": 3,
+                  "name": "shuttle_position",
+                  "python_type": "tuple",
+                  "value": [
+                    -24.15746860206127,
+                    -239.33484256267548
+                  ]
+                }
+              ],
+              "length": 4
+            },
+            "launch": false,
+            "match": 1,
+            "player": [
+              "Kento MOMOTA",
+              "Kento MOMOTA",
+              "CHOU Tien Chen",
+              "Kento MOMOTA",
+              "CHOU Tien Chen",
+              "Kento MOMOTA"
+            ],
+            "rally": 1,
+            "round": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "score": [
+              0,
+              1
+            ],
+            "state_history_length": 6
+          },
+          "next_state": {
+            "container_type": "tuple",
+            "fields": [
+              {
+                "index": 0,
+                "name": "previous_shot_type",
+                "python_type": "int64",
+                "value": 6
+              },
+              {
+                "index": 1,
+                "name": "player_position",
+                "python_type": "tuple",
+                "value": [
+                  16.455964744091034,
+                  -267.14938938617706
+                ]
+              },
+              {
+                "index": 2,
+                "name": "opponent_position",
+                "python_type": "tuple",
+                "value": [
+                  -2.4891377799212933,
+                  198.61923336982727
+                ]
+              },
+              {
+                "index": 3,
+                "name": "shuttle_position",
+                "python_type": "tuple",
+                "value": [
+                  -24.15746860206127,
+                  -239.33484256267548
+                ]
+              }
+            ],
+            "length": 4
+          },
+          "score": {
+            "A": 1,
+            "B": 0
+          },
+          "step_return_length": 5,
+          "tuple_schema": [
+            "state",
+            "native_reward",
+            "info",
+            "done",
+            "launch"
+          ]
+        }
+      ],
+      "terminated": true,
+      "winner_name_from_final_record": "CHOU Tien Chen",
+      "winner_side_from_score_delta": "A"
+    }
+  },
+  "runtime": {
+    "agent_a_class": "BadmintonEnv.Agent.RallyNet.RallyNet",
+    "agent_a_training_mode": false,
+    "agent_b_class": "BadmintonEnv.Agent.RallyNet.RallyNet",
+    "agent_b_training_mode": false,
+    "cuda_available": true,
+    "cuda_device_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "device": "cuda:0",
+    "hyperparameter_keys": [
+      "context_size",
+      "data_size",
+      "hidden_size",
+      "latent_size",
+      "player_ids_len",
+      "shot_type_len",
+      "target_players",
+      "ts",
+      "xs"
+    ],
+    "numpy_version": "1.26.4",
+    "player_a_id": 1,
+    "player_b_id": 0,
+    "target_player_count": 27,
+    "torch_version": "2.4.1+cu121"
+  },
+  "seed": 42,
+  "serve_modes_requested": [
+    "A",
+    "B"
+  ],
+  "status": "PASS"
+}
