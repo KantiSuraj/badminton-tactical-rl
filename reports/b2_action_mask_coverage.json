@@ -1,0 +1,2069 @@
+{
+  "coachai_checkout": {
+    "expected_commit": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "files": {
+      "BadmintonEnv/Agent/BC4Serve_weight.pth": {
+        "bytes": 20632,
+        "sha256": "8036be9ccf012174a51ded00689d494b530f01249ea28ce4e7dceb93653be344"
+      },
+      "BadmintonEnv/Agent/INV_weight.pth": {
+        "bytes": 45850,
+        "sha256": "ae9d0e1837c3515c3507172b060e82808e83840938313523509438d56eff3c60"
+      },
+      "BadmintonEnv/Agent/RallyNet_weight.trc": {
+        "bytes": 369928,
+        "sha256": "bed1f112d542903a5c6db898f56a0e6baf3d240abe2879041cc092805e985c7d"
+      },
+      "BadmintonEnv/Agent/hyperparameters.pkl": {
+        "bytes": 26602443,
+        "sha256": "7e5ab372205f5b37db450e519040bdb358136e4c2b66461a1374b50c43588c7d"
+      },
+      "input_data/All_dataset.csv": {
+        "bytes": 11505569,
+        "sha256": "3116fd86391e2cec477b513f9e00bc75efc596bf3862779927eee7c923403ba6"
+      },
+      "input_data/target_players_ids.pkl": {
+        "bytes": 508,
+        "sha256": "b6c2e4ea5b58923d20c1a7b51a0ee6f8d83a2958d622183995c271222f51e755"
+      }
+    },
+    "head": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "root": "/home/suraj/project-sem/external/CoachAI-Plus",
+    "working_tree_clean": true
+  },
+  "coachai_root": "/home/suraj/project-sem/external/CoachAI-Plus",
+  "coordinate_conversion": {
+    "native_singles_bounds": {
+      "opponent_landing_y": [
+        0.0,
+        330.0
+      ],
+      "x": [
+        -127.5,
+        127.5
+      ]
+    },
+    "native_x_units_per_metre": 49.22779922779923,
+    "native_y_units_per_metre": 49.25373134328358,
+    "source_frame": "centred metres; net y=0; A own half negative y",
+    "target_frame": "CoachAI+ A-relative action coordinates"
+  },
+  "coverage": {
+    "empty_mask_states": 1,
+    "families": {
+      "BLOCK": {
+        "landing_cells_seen_legal": [],
+        "legal_state_fraction": 0.0,
+        "model_shot_id": null,
+        "native_shot_id": null,
+        "recovery_cells_seen_legal": [],
+        "states_legal": 0,
+        "status": "unsupported_proposed",
+        "total_valid_joint_actions": 0,
+        "validator_checks": 0,
+        "validator_failures": 0
+      },
+      "CLEAR": {
+        "landing_cells_seen_legal": [
+          6,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "legal_state_fraction": 0.2222222222222222,
+        "model_shot_id": 3,
+        "native_shot_id": 2,
+        "recovery_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "states_legal": 4,
+        "status": "supported_proposed",
+        "total_valid_joint_actions": 252,
+        "validator_checks": 252,
+        "validator_failures": 0
+      },
+      "CUT": {
+        "landing_cells_seen_legal": [],
+        "legal_state_fraction": 0.0,
+        "model_shot_id": null,
+        "native_shot_id": null,
+        "recovery_cells_seen_legal": [],
+        "states_legal": 0,
+        "status": "unsupported_proposed",
+        "total_valid_joint_actions": 0,
+        "validator_checks": 0,
+        "validator_failures": 0
+      },
+      "DRIVE": {
+        "landing_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "legal_state_fraction": 0.4444444444444444,
+        "model_shot_id": 7,
+        "native_shot_id": 6,
+        "recovery_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "states_legal": 8,
+        "status": "supported_proposed",
+        "total_valid_joint_actions": 1080,
+        "validator_checks": 1080,
+        "validator_failures": 0
+      },
+      "DROP": {
+        "landing_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "legal_state_fraction": 0.2222222222222222,
+        "model_shot_id": 5,
+        "native_shot_id": 9,
+        "recovery_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "states_legal": 4,
+        "status": "supported_proposed",
+        "total_valid_joint_actions": 360,
+        "validator_checks": 360,
+        "validator_failures": 0
+      },
+      "HALF_SMASH": {
+        "landing_cells_seen_legal": [],
+        "legal_state_fraction": 0.0,
+        "model_shot_id": null,
+        "native_shot_id": null,
+        "recovery_cells_seen_legal": [],
+        "states_legal": 0,
+        "status": "unsupported_proposed",
+        "total_valid_joint_actions": 0,
+        "validator_checks": 0,
+        "validator_failures": 0
+      },
+      "LIFT": {
+        "landing_cells_seen_legal": [
+          0,
+          1,
+          2,
+          5,
+          6,
+          7,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "legal_state_fraction": 0.2777777777777778,
+        "model_shot_id": 6,
+        "native_shot_id": 8,
+        "recovery_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "states_legal": 5,
+        "status": "supported_proposed",
+        "total_valid_joint_actions": 540,
+        "validator_checks": 540,
+        "validator_failures": 0
+      },
+      "NET_SHOT": {
+        "landing_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "legal_state_fraction": 0.6666666666666666,
+        "model_shot_id": 8,
+        "native_shot_id": 7,
+        "recovery_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "states_legal": 12,
+        "status": "supported_proposed",
+        "total_valid_joint_actions": 972,
+        "validator_checks": 972,
+        "validator_failures": 0
+      },
+      "PUSH": {
+        "landing_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "legal_state_fraction": 0.6111111111111112,
+        "model_shot_id": 9,
+        "native_shot_id": 3,
+        "recovery_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "states_legal": 11,
+        "status": "supported_proposed",
+        "total_valid_joint_actions": 1485,
+        "validator_checks": 1485,
+        "validator_failures": 0
+      },
+      "SMASH": {
+        "landing_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "legal_state_fraction": 0.4444444444444444,
+        "model_shot_id": 4,
+        "native_shot_id": 4,
+        "recovery_cells_seen_legal": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "states_legal": 8,
+        "status": "supported_proposed",
+        "total_valid_joint_actions": 1080,
+        "validator_checks": 1080,
+        "validator_failures": 0
+      }
+    },
+    "hitting_zone_counts": {
+      "10": 2,
+      "11": 4,
+      "13": 6,
+      "14": 1,
+      "6": 4,
+      "9": 1
+    },
+    "mask_size": {
+      "max": 639,
+      "mean": 320.5,
+      "median": 324.0,
+      "min": 0,
+      "p95": 570.1499999999999,
+      "total_possible_actions_per_state": 1350
+    },
+    "out_of_zone_states": 0,
+    "previous_native_shot_id_counts": {
+      "1": 8,
+      "3": 2,
+      "4": 2,
+      "5": 6
+    },
+    "previous_shot_zone_movement_counts": {
+      "shot=1|zone=11|move=1": 1,
+      "shot=1|zone=11|move=3": 1,
+      "shot=1|zone=13|move=2": 1,
+      "shot=1|zone=13|move=3": 4,
+      "shot=1|zone=13|move=5": 1,
+      "shot=3|zone=6|move=2": 1,
+      "shot=3|zone=9|move=2": 1,
+      "shot=4|zone=10|move=3": 1,
+      "shot=4|zone=14|move=5": 1,
+      "shot=5|zone=10|move=2": 1,
+      "shot=5|zone=11|move=3": 2,
+      "shot=5|zone=6|move=2": 1,
+      "shot=5|zone=6|move=3": 2
+    },
+    "reachable_contact_states": 18,
+    "states_with_nonempty_mask": 17,
+    "unreachable_contact_states": 0,
+    "y_movement_bin_counts": {
+      "1": 1,
+      "2": 5,
+      "3": 10,
+      "5": 2
+    }
+  },
+  "created_at_utc": "2026-11-08T17:11:38.860406+00:00",
+  "episode_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49
+  ],
+  "episodes": [
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -51.98211595416069,
+              196.93616151809692
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              3.9782097190618515,
+              -253.22975635528564
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.9591021430592744,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.9591021430592744,
+              0.040897856940725556,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 6,
+      "completed": true,
+      "decisions": 2,
+      "empty_mask_states": 0,
+      "episode": 1,
+      "output_rows_added": 5,
+      "reset_fields_before": {
+        "match": 1,
+        "output_rows": 0,
+        "pre_score_a": 0,
+        "pre_score_b": 0,
+        "rally": 0,
+        "round": 1,
+        "score_a": 0,
+        "score_b": 0,
+        "serving_player": "A"
+      },
+      "reset_ms": 808.934,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "40aa79cfba8c8169b317d7a90014b695486ef4281e951394292d4ab714c58e22",
+      "sampled_states": 2,
+      "score_after": {
+        "A": 1,
+        "B": 0
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 1,
+        "B": 0
+      },
+      "seed": 42,
+      "validator_candidates_checked": 297,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "CHOU Tien Chen",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "A"
+    },
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -103.9011549949646,
+              177.8985357284546
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              8.454179018735886,
+              -240.28051257133484
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.9437263222871644,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.9437263222871644,
+              0.05627367771283562,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 3,
+      "completed": true,
+      "decisions": 1,
+      "empty_mask_states": 0,
+      "episode": 2,
+      "output_rows_added": 2,
+      "reset_fields_before": {
+        "match": 1,
+        "output_rows": 5,
+        "pre_score_a": 1,
+        "pre_score_b": 0,
+        "rally": 1,
+        "round": 6,
+        "score_a": 1,
+        "score_b": 0,
+        "serving_player": "A"
+      },
+      "reset_ms": 191.944,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "8b3ee3aee932703dd2f52e968c62b8102e6d6c70367b3b9bcd32577ce077fb23",
+      "sampled_states": 1,
+      "score_after": {
+        "A": 0,
+        "B": 1
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 0,
+        "B": 1
+      },
+      "seed": 43,
+      "validator_candidates_checked": 324,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "Kento MOMOTA",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "B"
+    },
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -88.7200802564621,
+              221.46546363830566
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              7.086411379277706,
+              -260.6420338153839
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.8512797609352994,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.8512797609352994,
+              0.14872023906470058,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 6,
+      "completed": true,
+      "decisions": 2,
+      "empty_mask_states": 0,
+      "episode": 3,
+      "output_rows_added": 5,
+      "reset_fields_before": {
+        "match": 2,
+        "output_rows": 7,
+        "pre_score_a": 0,
+        "pre_score_b": 1,
+        "rally": 1,
+        "round": 3,
+        "score_a": 0,
+        "score_b": 1,
+        "serving_player": "B"
+      },
+      "reset_ms": 158.591,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "d1ea079d27d6037a598a3652e06c00ec1df6f9ee53e9f4c4c768749360c6983f",
+      "sampled_states": 2,
+      "score_after": {
+        "A": 1,
+        "B": 0
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 1,
+        "B": 0
+      },
+      "seed": 44,
+      "validator_candidates_checked": 774,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "CHOU Tien Chen",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "A"
+    },
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -43.79595033824444,
+              214.00402128696442
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              8.972772918641567,
+              -263.10115456581116
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.9088280200958252,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.9088280200958252,
+              0.0911719799041748,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 4,
+      "completed": true,
+      "decisions": 1,
+      "empty_mask_states": 1,
+      "episode": 4,
+      "output_rows_added": 3,
+      "reset_fields_before": {
+        "match": 3,
+        "output_rows": 12,
+        "pre_score_a": 1,
+        "pre_score_b": 0,
+        "rally": 1,
+        "round": 6,
+        "score_a": 1,
+        "score_b": 0,
+        "serving_player": "A"
+      },
+      "reset_ms": 151.113,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "384d88620b9857933ccd4db74c786e87efe1ad4d350165d27a52caea17d98a77",
+      "sampled_states": 1,
+      "score_after": {
+        "A": 1,
+        "B": 0
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 1,
+        "B": 0
+      },
+      "seed": 45,
+      "validator_candidates_checked": 0,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "CHOU Tien Chen",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "A"
+    },
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -47.27199926972389,
+              229.7250384092331
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              1.443815417587757,
+              -260.8337080478668
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.8654261698510324,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.8654261698510324,
+              0.13457383014896765,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 3,
+      "completed": true,
+      "decisions": 1,
+      "empty_mask_states": 0,
+      "episode": 5,
+      "output_rows_added": 2,
+      "reset_fields_before": {
+        "match": 4,
+        "output_rows": 15,
+        "pre_score_a": 1,
+        "pre_score_b": 0,
+        "rally": 1,
+        "round": 4,
+        "score_a": 1,
+        "score_b": 0,
+        "serving_player": "A"
+      },
+      "reset_ms": 140.175,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "3d6e941060c5fa9e73b1351ce96d38d8c66c14525718108a6eeb8c9c1e70b679",
+      "sampled_states": 1,
+      "score_after": {
+        "A": 0,
+        "B": 1
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 0,
+        "B": 1
+      },
+      "seed": 46,
+      "validator_candidates_checked": 324,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "Kento MOMOTA",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "B"
+    },
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -76.62289209663868,
+              198.8123059272766
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              9.196083918213844,
+              -251.7759096622467
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.9296112199069742,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.9296112199069742,
+              0.07038878009302586,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 12,
+      "completed": true,
+      "decisions": 5,
+      "empty_mask_states": 0,
+      "episode": 6,
+      "output_rows_added": 11,
+      "reset_fields_before": {
+        "match": 5,
+        "output_rows": 17,
+        "pre_score_a": 0,
+        "pre_score_b": 1,
+        "rally": 1,
+        "round": 3,
+        "score_a": 0,
+        "score_b": 1,
+        "serving_player": "B"
+      },
+      "reset_ms": 144.175,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "801eb9ba6762183fdb625fd9dbfe37fd33ca1d2f1e70bceb1d070213720d9464",
+      "sampled_states": 5,
+      "score_after": {
+        "A": 1,
+        "B": 0
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 1,
+        "B": 0
+      },
+      "seed": 47,
+      "validator_candidates_checked": 1521,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "CHOU Tien Chen",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "A"
+    },
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -79.4303172826767,
+              205.4464888572693
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              6.387994848191738,
+              -251.4764678478241
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.9080228670236041,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.9080228670236041,
+              0.09197713297639588,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 5,
+      "completed": true,
+      "decisions": 2,
+      "empty_mask_states": 0,
+      "episode": 7,
+      "output_rows_added": 4,
+      "reset_fields_before": {
+        "match": 6,
+        "output_rows": 28,
+        "pre_score_a": 1,
+        "pre_score_b": 0,
+        "rally": 1,
+        "round": 12,
+        "score_a": 1,
+        "score_b": 0,
+        "serving_player": "A"
+      },
+      "reset_ms": 138.385,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "ed6e65be9b938e90c559ec26159c73c7aaeede9b95ec0a7dd68137f58af26cef",
+      "sampled_states": 2,
+      "score_after": {
+        "A": 0,
+        "B": 1
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 0,
+        "B": 1
+      },
+      "seed": 48,
+      "validator_candidates_checked": 810,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "Kento MOMOTA",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "B"
+    },
+    {
+      "b_serve_action": {
+        "fields": {
+          "hitting_position": {
+            "python_type": "tuple",
+            "value": [
+              0,
+              0
+            ]
+          },
+          "landing_position": {
+            "python_type": "tuple",
+            "value": [
+              -104.17559564113617,
+              191.25068306922913
+            ]
+          },
+          "recovery_position": {
+            "python_type": "tuple",
+            "value": [
+              8.577640280127525,
+              -252.32688188552856
+            ]
+          },
+          "shot_probability": {
+            "length": 10,
+            "max": 0.943355220246226,
+            "min": 0.0,
+            "python_type": "tuple",
+            "sum": 1.0,
+            "values": [
+              0.943355220246226,
+              0.05664477975377403,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "shot_type": {
+            "python_type": "int",
+            "value": 1
+          }
+        },
+        "length": 5
+      },
+      "b_serve_history_length": 9,
+      "completed": true,
+      "decisions": 4,
+      "empty_mask_states": 0,
+      "episode": 8,
+      "output_rows_added": 8,
+      "reset_fields_before": {
+        "match": 7,
+        "output_rows": 32,
+        "pre_score_a": 0,
+        "pre_score_b": 1,
+        "rally": 1,
+        "round": 5,
+        "score_a": 0,
+        "score_b": 1,
+        "serving_player": "B"
+      },
+      "reset_ms": 160.913,
+      "reset_return_length": 4,
+      "reset_state_signature_sha256": "523d1216d6d3af1ff932a64914c820a0cf2ea1999e1106cc012f437b3c0b7c38",
+      "sampled_states": 4,
+      "score_after": {
+        "A": 0,
+        "B": 1
+      },
+      "score_before": {
+        "A": 0,
+        "B": 0
+      },
+      "score_delta": {
+        "A": 0,
+        "B": 1
+      },
+      "seed": 49,
+      "validator_candidates_checked": 1719,
+      "validator_failures": 0,
+      "winner_name_from_final_record": "Kento MOMOTA",
+      "winner_record_matches_score_delta": true,
+      "winner_side_from_score_delta": "B"
+    }
+  ],
+  "expected_commit": "4fd05934f172eec16c74d05c2902983b64c8521e",
+  "family_mapping": [
+    {
+      "family": "CLEAR",
+      "family_id": 0,
+      "model_shot_id": 3,
+      "native_name": "Clear",
+      "native_shot_id": 2,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "DROP",
+      "family_id": 1,
+      "model_shot_id": 5,
+      "native_name": "Drop",
+      "native_shot_id": 9,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "SMASH",
+      "family_id": 2,
+      "model_shot_id": 4,
+      "native_name": "Smash",
+      "native_shot_id": 4,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "HALF_SMASH",
+      "family_id": 3,
+      "model_shot_id": null,
+      "native_name": null,
+      "native_shot_id": null,
+      "status": "unsupported_proposed"
+    },
+    {
+      "family": "DRIVE",
+      "family_id": 4,
+      "model_shot_id": 7,
+      "native_name": "Drive",
+      "native_shot_id": 6,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "PUSH",
+      "family_id": 5,
+      "model_shot_id": 9,
+      "native_name": "Push Shot",
+      "native_shot_id": 3,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "LIFT",
+      "family_id": 6,
+      "model_shot_id": 6,
+      "native_name": "Lob",
+      "native_shot_id": 8,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "NET_SHOT",
+      "family_id": 7,
+      "model_shot_id": 8,
+      "native_name": "Net Shot",
+      "native_shot_id": 7,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "BLOCK",
+      "family_id": 8,
+      "model_shot_id": null,
+      "native_name": null,
+      "native_shot_id": null,
+      "status": "unsupported_proposed"
+    },
+    {
+      "family": "CUT",
+      "family_id": 9,
+      "model_shot_id": null,
+      "native_name": null,
+      "native_shot_id": null,
+      "status": "unsupported_proposed"
+    }
+  ],
+  "mapping_status": "PROPOSED_ONLY_NOT_FROZEN",
+  "mask": {
+    "dtype": "bool",
+    "flat_shape": [
+      1350
+    ],
+    "shape": [
+      10,
+      15,
+      9
+    ]
+  },
+  "output_file": {
+    "bytes": 9217,
+    "exists_after_close": true,
+    "rows_read_back": 40
+  },
+  "players": {
+    "A": "CHOU Tien Chen",
+    "B": "Kento MOMOTA"
+  },
+  "probe_version": "b2_coachai_action_mask_coverage_v1",
+  "project_root": "/home/suraj/project-sem/badminton-tactical-rl",
+  "reset_strategy": "persistent_native_env_with_explicit_neutral_score_B_serve_reset",
+  "rollout_policy": "pinned_CoachAI_RallyNet_agents_for_both_sides; mask_is_observational_only",
+  "runtime": {
+    "agent_a_eval_mode": true,
+    "agent_b_eval_mode": true,
+    "constraint_object_reused_across_episodes": true,
+    "cuda_available": true,
+    "device": "cuda:0",
+    "env_constructor_ms": 285.651,
+    "landing_zones": [
+      24,
+      23,
+      21,
+      20,
+      19,
+      17,
+      16,
+      15,
+      13,
+      8,
+      7,
+      5,
+      4,
+      3,
+      1
+    ],
+    "numpy": "1.26.4",
+    "python": "3.12.3",
+    "recovery_zones": [
+      21,
+      23,
+      24,
+      13,
+      15,
+      16,
+      5,
+      7,
+      8
+    ],
+    "target_player_count": 27,
+    "torch": "2.4.1+cu121"
+  },
+  "sampling": {
+    "episode_limit_reached": false,
+    "episodes_completed": 8,
+    "episodes_requested": 8,
+    "incomplete_episode": false,
+    "state_signature_uniqueness_fraction": 1.0,
+    "states_sampled": 18,
+    "unique_state_signatures": 18
+  },
+  "sampling_limits": {
+    "episodes_requested": 8,
+    "max_decisions_per_episode": 64,
+    "max_states": 200,
+    "validator_policy": "exhaustive_all_masked_in_actions_per_sampled_state"
+  },
+  "seed": 42,
+  "states": [
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": null,
+      "episode": 1,
+      "episode_seed": 42,
+      "hit_zone": 11,
+      "mask_sha256": "7aa89f6474cf7430771fd5d3ef8de2152ade26e56c40ed93c78aed00775bb032",
+      "normalized_reach_distance": 0.18700157307137188,
+      "opponent_position_native": [
+        -3.9782097190618515,
+        253.22975635528564
+      ],
+      "player_position_native": [
+        20.214654900130256,
+        -209.94662013996356
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 1,
+      "shuttle_position_native": [
+        51.98211595416069,
+        -196.93616151809692
+      ],
+      "state_signature_sha256": "40aa79cfba8c8169b317d7a90014b695486ef4281e951394292d4ab714c58e22",
+      "valid_action_fraction": 0.16,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 216,
+      "validator_candidates_checked": 216,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 2,
+      "empty_mask_reason": null,
+      "episode": 1,
+      "episode_seed": 42,
+      "hit_zone": 14,
+      "mask_sha256": "343b95f672b3549f22430a1da620b266bf6e505c2b28c38d0f274682a6ee3fb8",
+      "normalized_reach_distance": 0.6063487273286848,
+      "opponent_position_native": [
+        -16.455964744091034,
+        267.14938938617706
+      ],
+      "player_position_native": [
+        -20.157168209552765,
+        -298.61157417297363
+      ],
+      "previous_native_shot_id": 4,
+      "sample_index": 2,
+      "shuttle_position_native": [
+        -53.36259260773659,
+        -160.18700122833252
+      ],
+      "state_signature_sha256": "6de94ef2a4d7410f8282c2721e6c2c37a7af65fd7e8f7687c8cb94c633f9d36a",
+      "valid_action_fraction": 0.06,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 81,
+        "PUSH": 0,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 81,
+      "validator_candidates_checked": 81,
+      "validator_failures": 0,
+      "y_movement_bin": 5
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": null,
+      "episode": 2,
+      "episode_seed": 43,
+      "hit_zone": 13,
+      "mask_sha256": "ec1f8496aa808c9670ea2fa1c8d901fd1270d30318269de5a051a97b93080cb8",
+      "normalized_reach_distance": 1.0144766889964019,
+      "opponent_position_native": [
+        -8.454179018735886,
+        240.28051257133484
+      ],
+      "player_position_native": [
+        62.92090822744096,
+        -251.02325823922928
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 3,
+      "shuttle_position_native": [
+        -91.23107473764058,
+        -125.18063133061412
+      ],
+      "state_signature_sha256": "8b3ee3aee932703dd2f52e968c62b8102e6d6c70367b3b9bcd32577ce077fb23",
+      "valid_action_fraction": 0.24,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 108,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 324,
+      "validator_candidates_checked": 324,
+      "validator_failures": 0,
+      "y_movement_bin": 5
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": null,
+      "episode": 3,
+      "episode_seed": 44,
+      "hit_zone": 13,
+      "mask_sha256": "7aa89f6474cf7430771fd5d3ef8de2152ade26e56c40ed93c78aed00775bb032",
+      "normalized_reach_distance": 1.007313994395179,
+      "opponent_position_native": [
+        -7.086411379277706,
+        260.6420338153839
+      ],
+      "player_position_native": [
+        63.359691311226584,
+        -158.46005521344603
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 4,
+      "shuttle_position_native": [
+        -115.34138588878008,
+        -166.42874832352203
+      ],
+      "state_signature_sha256": "d1ea079d27d6037a598a3652e06c00ec1df6f9ee53e9f4c4c768749360c6983f",
+      "valid_action_fraction": 0.16,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 216,
+      "validator_candidates_checked": 216,
+      "validator_failures": 0,
+      "y_movement_bin": 2
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 2,
+      "empty_mask_reason": null,
+      "episode": 3,
+      "episode_seed": 44,
+      "hit_zone": 9,
+      "mask_sha256": "106dc3f0fdc3189f5bcff0ac655000e67d72bd95cd59285522e88d16b4ef148e",
+      "normalized_reach_distance": 0.5852033524776054,
+      "opponent_position_native": [
+        -23.269355818629265,
+        243.77286404371262
+      ],
+      "player_position_native": [
+        18.89494489878416,
+        -211.63650155067444
+      ],
+      "previous_native_shot_id": 3,
+      "sample_index": 5,
+      "shuttle_position_native": [
+        -84.70725864171982,
+        -221.78249895572662
+      ],
+      "state_signature_sha256": "f242fbd36a564ca488682303ae099206f493157e044641135b8b021638c3d2e0",
+      "valid_action_fraction": 0.41333333333333333,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 63,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 90,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 0,
+        "PUSH": 135,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 558,
+      "validator_candidates_checked": 558,
+      "validator_failures": 0,
+      "y_movement_bin": 2
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": "no_joint_action_satisfies_all_native_constraints",
+      "episode": 4,
+      "episode_seed": 45,
+      "hit_zone": 11,
+      "mask_sha256": "89b5774618e6adf6d79fb28d69a5e4f071ee4a9976730583e4acbaf03d0696e0",
+      "normalized_reach_distance": 0.34215110087427514,
+      "opponent_position_native": [
+        -8.972772918641567,
+        263.10115456581116
+      ],
+      "player_position_native": [
+        6.01813166428073,
+        -149.70839170242823
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 6,
+      "shuttle_position_native": [
+        43.79595033824444,
+        -214.00402128696442
+      ],
+      "state_signature_sha256": "384d88620b9857933ccd4db74c786e87efe1ad4d350165d27a52caea17d98a77",
+      "valid_action_fraction": 0.0,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 0,
+        "PUSH": 0,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 0,
+      "validator_candidates_checked": 0,
+      "validator_failures": 0,
+      "y_movement_bin": 1
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": null,
+      "episode": 5,
+      "episode_seed": 46,
+      "hit_zone": 13,
+      "mask_sha256": "ec1f8496aa808c9670ea2fa1c8d901fd1270d30318269de5a051a97b93080cb8",
+      "normalized_reach_distance": 0.8323175874083242,
+      "opponent_position_native": [
+        -1.443815417587757,
+        260.8337080478668
+      ],
+      "player_position_native": [
+        30.236416566093936,
+        -175.5715196286909
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 7,
+      "shuttle_position_native": [
+        -115.15888301831157,
+        -140.15126666272994
+      ],
+      "state_signature_sha256": "3d6e941060c5fa9e73b1351ce96d38d8c66c14525718108a6eeb8c9c1e70b679",
+      "valid_action_fraction": 0.24,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 108,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 324,
+      "validator_candidates_checked": 324,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": null,
+      "episode": 6,
+      "episode_seed": 47,
+      "hit_zone": 13,
+      "mask_sha256": "ec1f8496aa808c9670ea2fa1c8d901fd1270d30318269de5a051a97b93080cb8",
+      "normalized_reach_distance": 0.8231958985236874,
+      "opponent_position_native": [
+        -9.196083918213844,
+        251.7759096622467
+      ],
+      "player_position_native": [
+        40.155191526166305,
+        -203.4526339925743
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 8,
+      "shuttle_position_native": [
+        -99.82800429408192,
+        -146.80956832140453
+      ],
+      "state_signature_sha256": "801eb9ba6762183fdb625fd9dbfe37fd33ca1d2f1e70bceb1d070213720d9464",
+      "valid_action_fraction": 0.24,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 108,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 324,
+      "validator_candidates_checked": 324,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 2,
+      "empty_mask_reason": null,
+      "episode": 6,
+      "episode_seed": 47,
+      "hit_zone": 6,
+      "mask_sha256": "7788fe7ff37b784355b46a86ea1e3e1230d1b9e6069bbfc98b71639d51b287f9",
+      "normalized_reach_distance": 0.3238224253338124,
+      "opponent_position_native": [
+        14.510644488036633,
+        229.67337369918823
+      ],
+      "player_position_native": [
+        30.64222387969494,
+        -241.13000616431236
+      ],
+      "previous_native_shot_id": 3,
+      "sample_index": 9,
+      "shuttle_position_native": [
+        -26.83604210615158,
+        -241.3423329591751
+      ],
+      "state_signature_sha256": "12d4518d37f9d3485c0ce3c3092d14c9441dac14075d8dc0b8434fd969bbddc2",
+      "valid_action_fraction": 0.31333333333333335,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 63,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 90,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 0,
+        "PUSH": 0,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 423,
+      "validator_candidates_checked": 423,
+      "validator_failures": 0,
+      "y_movement_bin": 2
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 3,
+      "empty_mask_reason": null,
+      "episode": 6,
+      "episode_seed": 47,
+      "hit_zone": 10,
+      "mask_sha256": "343b95f672b3549f22430a1da620b266bf6e505c2b28c38d0f274682a6ee3fb8",
+      "normalized_reach_distance": 0.13834770351504194,
+      "opponent_position_native": [
+        42.99915201961994,
+        189.74922895431519
+      ],
+      "player_position_native": [
+        -29.554699920117855,
+        -203.28190684318542
+      ],
+      "previous_native_shot_id": 4,
+      "sample_index": 10,
+      "shuttle_position_native": [
+        -36.59071430563927,
+        -171.4705467224121
+      ],
+      "state_signature_sha256": "b235d3369401ae1aa7e8c102ade1da10a1ae8da7402b7775e0cab5b421eea1fc",
+      "valid_action_fraction": 0.06,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 81,
+        "PUSH": 0,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 81,
+      "validator_candidates_checked": 81,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 4,
+      "empty_mask_reason": null,
+      "episode": 6,
+      "episode_seed": 47,
+      "hit_zone": 6,
+      "mask_sha256": "7788fe7ff37b784355b46a86ea1e3e1230d1b9e6069bbfc98b71639d51b287f9",
+      "normalized_reach_distance": 0.33383706269264624,
+      "opponent_position_native": [
+        22.136579304933548,
+        213.29248309135437
+      ],
+      "player_position_native": [
+        55.671485885977745,
+        -265.69840908050537
+      ],
+      "previous_native_shot_id": 5,
+      "sample_index": 11,
+      "shuttle_position_native": [
+        -3.569095842540264,
+        -267.53067433834076
+      ],
+      "state_signature_sha256": "70833595190fe599c2c47808f7224e7c41f7b888a0f695a9315ce1046da12dc9",
+      "valid_action_fraction": 0.31333333333333335,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 63,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 90,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 0,
+        "PUSH": 0,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 423,
+      "validator_candidates_checked": 423,
+      "validator_failures": 0,
+      "y_movement_bin": 2
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 5,
+      "empty_mask_reason": null,
+      "episode": 6,
+      "episode_seed": 47,
+      "hit_zone": 6,
+      "mask_sha256": "d892d65edb095e986a72a9b9412c2af92412db4659e154e73baeb4708fbd1fd9",
+      "normalized_reach_distance": 0.3875973623923486,
+      "opponent_position_native": [
+        13.199158869683743,
+        245.81837743520737
+      ],
+      "player_position_native": [
+        25.98241426050663,
+        -266.58453941345215
+      ],
+      "previous_native_shot_id": 5,
+      "sample_index": 12,
+      "shuttle_position_native": [
+        -42.81607873737812,
+        -266.4857107400894
+      ],
+      "state_signature_sha256": "a0ae38d21bc265eaf9d04d34b0200400fa717ff0b5260636b00930c5f50236bc",
+      "valid_action_fraction": 0.2,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 0,
+        "PUSH": 0,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 270,
+      "validator_candidates_checked": 270,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": null,
+      "episode": 7,
+      "episode_seed": 48,
+      "hit_zone": 13,
+      "mask_sha256": "ec1f8496aa808c9670ea2fa1c8d901fd1270d30318269de5a051a97b93080cb8",
+      "normalized_reach_distance": 0.754573474746219,
+      "opponent_position_native": [
+        -6.387994848191738,
+        251.4764678478241
+      ],
+      "player_position_native": [
+        52.298692906699785,
+        -205.67849698043796
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 13,
+      "shuttle_position_native": [
+        -76.83043516213536,
+        -157.59320924767218
+      ],
+      "state_signature_sha256": "ed6e65be9b938e90c559ec26159c73c7aaeede9b95ec0a7dd68137f58af26cef",
+      "valid_action_fraction": 0.24,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 108,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 324,
+      "validator_candidates_checked": 324,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 2,
+      "empty_mask_reason": null,
+      "episode": 7,
+      "episode_seed": 48,
+      "hit_zone": 11,
+      "mask_sha256": "87d6f7ddc97059f10440a84cdbaea9572805c241dbf375240f67a9aff8d62c46",
+      "normalized_reach_distance": 0.25496594374497733,
+      "opponent_position_native": [
+        -11.282470263540745,
+        273.6860990524292
+      ],
+      "player_position_native": [
+        22.023010179400444,
+        -272.26163148880005
+      ],
+      "previous_native_shot_id": 5,
+      "sample_index": 14,
+      "shuttle_position_native": [
+        3.9478109078481793,
+        -216.162251830101
+      ],
+      "state_signature_sha256": "6784dbaf1c8d5206466875546b6fa7c8d5aa2d7e4b7ca8d1d9a92d023e55a3f3",
+      "valid_action_fraction": 0.36,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 486,
+      "validator_candidates_checked": 486,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 1,
+      "empty_mask_reason": null,
+      "episode": 8,
+      "episode_seed": 49,
+      "hit_zone": 13,
+      "mask_sha256": "ec1f8496aa808c9670ea2fa1c8d901fd1270d30318269de5a051a97b93080cb8",
+      "normalized_reach_distance": 0.9334942031526604,
+      "opponent_position_native": [
+        -8.577640280127525,
+        252.32688188552856
+      ],
+      "player_position_native": [
+        65.37790205495881,
+        -181.38598108339914
+      ],
+      "previous_native_shot_id": 1,
+      "sample_index": 15,
+      "shuttle_position_native": [
+        -99.8906040667148,
+        -165.31760429805132
+      ],
+      "state_signature_sha256": "523d1216d6d3af1ff932a64914c820a0cf2ea1999e1106cc012f437b3c0b7c38",
+      "valid_action_fraction": 0.24,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 0,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 108,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 0
+      },
+      "valid_joint_actions": 324,
+      "validator_candidates_checked": 324,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 2,
+      "empty_mask_reason": null,
+      "episode": 8,
+      "episode_seed": 49,
+      "hit_zone": 11,
+      "mask_sha256": "87d6f7ddc97059f10440a84cdbaea9572805c241dbf375240f67a9aff8d62c46",
+      "normalized_reach_distance": 0.3113873401683125,
+      "opponent_position_native": [
+        -32.620833553373814,
+        278.39004278182983
+      ],
+      "player_position_native": [
+        -48.21196377277374,
+        -223.09078752994537
+      ],
+      "previous_native_shot_id": 5,
+      "sample_index": 16,
+      "shuttle_position_native": [
+        6.716442853212357,
+        -214.77979838848114
+      ],
+      "state_signature_sha256": "faeddd0dd00c875bcb111f32a7e9d5f634c82a7f5112c445d693b32a0a0cf37c",
+      "valid_action_fraction": 0.36,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 486,
+      "validator_candidates_checked": 486,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 3,
+      "empty_mask_reason": null,
+      "episode": 8,
+      "episode_seed": 49,
+      "hit_zone": 6,
+      "mask_sha256": "d892d65edb095e986a72a9b9412c2af92412db4659e154e73baeb4708fbd1fd9",
+      "normalized_reach_distance": 0.2784270980730123,
+      "opponent_position_native": [
+        -48.595630526542664,
+        206.22132539749146
+      ],
+      "player_position_native": [
+        12.658402882516384,
+        -259.45337891578674
+      ],
+      "previous_native_shot_id": 5,
+      "sample_index": 17,
+      "shuttle_position_native": [
+        -28.9512187987566,
+        -223.39844226837158
+      ],
+      "state_signature_sha256": "d31885e07cc4d72d0fddfeec50ef4d542c06cbb434c5cd0c66f91ed28e8725d4",
+      "valid_action_fraction": 0.2,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 0,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 0,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 0,
+        "PUSH": 0,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 270,
+      "validator_candidates_checked": 270,
+      "validator_failures": 0,
+      "y_movement_bin": 3
+    },
+    {
+      "contact_reachable": true,
+      "contact_violation": null,
+      "decision_index": 4,
+      "empty_mask_reason": null,
+      "episode": 8,
+      "episode_seed": 49,
+      "hit_zone": 10,
+      "mask_sha256": "310abfcfc2c6b3dfb30beea2e2691ef18312b5acd7d514e4ac795c7468b5ac70",
+      "normalized_reach_distance": 0.08329912450179884,
+      "opponent_position_native": [
+        -37.176691107451916,
+        247.2653415799141
+      ],
+      "player_position_native": [
+        -21.449948698282242,
+        -156.13651514053345
+      ],
+      "previous_native_shot_id": 5,
+      "sample_index": 18,
+      "shuttle_position_native": [
+        -13.863963298499584,
+        -173.29645156860352
+      ],
+      "state_signature_sha256": "a86f53c1a16bab5fb823b1d43db5562f102e98d88c6aeeecc75f3798f2c1028d",
+      "valid_action_fraction": 0.47333333333333333,
+      "valid_counts_by_family": {
+        "BLOCK": 0,
+        "CLEAR": 63,
+        "CUT": 0,
+        "DRIVE": 135,
+        "DROP": 90,
+        "HALF_SMASH": 0,
+        "LIFT": 0,
+        "NET_SHOT": 81,
+        "PUSH": 135,
+        "SMASH": 135
+      },
+      "valid_joint_actions": 639,
+      "validator_candidates_checked": 639,
+      "validator_failures": 0,
+      "y_movement_bin": 2
+    }
+  ],
+  "status": "PASS",
+  "validator_cross_check": {
+    "all_masked_in_actions_accepted_without_mutation": true,
+    "failures_count": 0,
+    "interpretation": "This tests false-positive legality in the proposed mask. It does not prove that every mask-out action is truly illegal; validate_action is a repair path.",
+    "masked_out_actions_tested": false,
+    "mismatch_examples": [],
+    "scope": "all mask-in candidates in every sampled state",
+    "valid_candidates_checked": 5769
+  },
+  "warnings": [
+    "1 sampled states had empty masks; inspect whether they were unreachable contacts or genuine no-joint-action states."
+  ]
+}

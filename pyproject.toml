@@ -12,3 +12,7 @@ requires-python = ">=3.12"
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["badminton_rl*"]
+[tool.pytest.ini_options]
+markers = [
+    "integration: requires the pinned CoachAI+ checkout and .venv-coachai runtime",
+]

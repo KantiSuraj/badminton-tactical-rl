@@ -1,0 +1,712 @@
+{
+  "action_space": {
+    "canonical_factors": [
+      10,
+      15,
+      9
+    ],
+    "dtype": "bool",
+    "shape": [
+      1350
+    ]
+  },
+  "coachai_checkout": {
+    "expected_commit": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "files": {
+      "BadmintonEnv/Agent/BC4Serve_weight.pth": {
+        "bytes": 20632,
+        "sha256": "8036be9ccf012174a51ded00689d494b530f01249ea28ce4e7dceb93653be344"
+      },
+      "BadmintonEnv/Agent/INV_weight.pth": {
+        "bytes": 45850,
+        "sha256": "ae9d0e1837c3515c3507172b060e82808e83840938313523509438d56eff3c60"
+      },
+      "BadmintonEnv/Agent/RallyNet_weight.trc": {
+        "bytes": 369928,
+        "sha256": "bed1f112d542903a5c6db898f56a0e6baf3d240abe2879041cc092805e985c7d"
+      },
+      "BadmintonEnv/Agent/hyperparameters.pkl": {
+        "bytes": 26602443,
+        "sha256": "7e5ab372205f5b37db450e519040bdb358136e4c2b66461a1374b50c43588c7d"
+      },
+      "input_data/All_dataset.csv": {
+        "bytes": 11505569,
+        "sha256": "3116fd86391e2cec477b513f9e00bc75efc596bf3862779927eee7c923403ba6"
+      },
+      "input_data/target_players_ids.pkl": {
+        "bytes": 508,
+        "sha256": "b6c2e4ea5b58923d20c1a7b51a0ee6f8d83a2958d622183995c271222f51e755"
+      }
+    },
+    "head": "4fd05934f172eec16c74d05c2902983b64c8521e",
+    "root": "/home/suraj/project-sem/external/CoachAI-Plus",
+    "working_tree_clean": true
+  },
+  "coachai_root": "/home/suraj/project-sem/external/CoachAI-Plus",
+  "coordinate_conversion": {
+    "native_singles_bounds": {
+      "opponent_landing_y": [
+        0.0,
+        330.0
+      ],
+      "x": [
+        -127.5,
+        127.5
+      ]
+    },
+    "native_x_units_per_metre": 49.22779922779923,
+    "native_y_units_per_metre": 49.25373134328358,
+    "source_frame": "centred metres; net y=0; A own half negative y",
+    "target_frame": "CoachAI+ A-relative action coordinates"
+  },
+  "created_at_utc": "2026-11-08T15:20:28.000519+00:00",
+  "expected_commit": "4fd05934f172eec16c74d05c2902983b64c8521e",
+  "family_constraint_results": {
+    "BLOCK": {
+      "reason": "No exact native class in the pinned CoachAI+ action taxonomy",
+      "status": "unsupported_proposed",
+      "valid_actions": 0
+    },
+    "CLEAR": {
+      "landing_cells_passing_shot_and_landing_constraints": 0,
+      "model_shot_id": 3,
+      "native_name": "Clear",
+      "native_shot_constraint_accepts": false,
+      "native_shot_id": 2,
+      "recovery_cells_passing_movement_constraint": 0,
+      "status": "supported_proposed",
+      "valid_joint_actions": 0
+    },
+    "CUT": {
+      "reason": "No exact native class in the pinned CoachAI+ action taxonomy",
+      "status": "unsupported_proposed",
+      "valid_actions": 0
+    },
+    "DRIVE": {
+      "landing_cells_passing_shot_and_landing_constraints": 0,
+      "model_shot_id": 7,
+      "native_name": "Drive",
+      "native_shot_constraint_accepts": false,
+      "native_shot_id": 6,
+      "recovery_cells_passing_movement_constraint": 0,
+      "status": "supported_proposed",
+      "valid_joint_actions": 0
+    },
+    "DROP": {
+      "landing_cells_passing_shot_and_landing_constraints": 0,
+      "model_shot_id": 5,
+      "native_name": "Drop",
+      "native_shot_constraint_accepts": false,
+      "native_shot_id": 9,
+      "recovery_cells_passing_movement_constraint": 0,
+      "status": "supported_proposed",
+      "valid_joint_actions": 0
+    },
+    "HALF_SMASH": {
+      "reason": "No exact native class in the pinned CoachAI+ action taxonomy",
+      "status": "unsupported_proposed",
+      "valid_actions": 0
+    },
+    "LIFT": {
+      "landing_cells_passing_shot_and_landing_constraints": 0,
+      "model_shot_id": 6,
+      "native_name": "Lob",
+      "native_shot_constraint_accepts": false,
+      "native_shot_id": 8,
+      "recovery_cells_passing_movement_constraint": 0,
+      "status": "supported_proposed",
+      "valid_joint_actions": 0
+    },
+    "NET_SHOT": {
+      "landing_cells_passing_shot_and_landing_constraints": 9,
+      "model_shot_id": 8,
+      "native_name": "Net Shot",
+      "native_shot_constraint_accepts": true,
+      "native_shot_id": 7,
+      "recovery_cells_passing_movement_constraint": 81,
+      "status": "supported_proposed",
+      "valid_joint_actions": 81
+    },
+    "PUSH": {
+      "landing_cells_passing_shot_and_landing_constraints": 15,
+      "model_shot_id": 9,
+      "native_name": "Push Shot",
+      "native_shot_constraint_accepts": true,
+      "native_shot_id": 3,
+      "recovery_cells_passing_movement_constraint": 135,
+      "status": "supported_proposed",
+      "valid_joint_actions": 135
+    },
+    "SMASH": {
+      "landing_cells_passing_shot_and_landing_constraints": 0,
+      "model_shot_id": 4,
+      "native_name": "Smash",
+      "native_shot_constraint_accepts": false,
+      "native_shot_id": 4,
+      "recovery_cells_passing_movement_constraint": 0,
+      "status": "supported_proposed",
+      "valid_joint_actions": 0
+    }
+  },
+  "family_mapping": [
+    {
+      "family": "CLEAR",
+      "family_id": 0,
+      "model_shot_id": 3,
+      "native_name": "Clear",
+      "native_shot_id": 2,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "DROP",
+      "family_id": 1,
+      "model_shot_id": 5,
+      "native_name": "Drop",
+      "native_shot_id": 9,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "SMASH",
+      "family_id": 2,
+      "model_shot_id": 4,
+      "native_name": "Smash",
+      "native_shot_id": 4,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "HALF_SMASH",
+      "family_id": 3,
+      "model_shot_id": null,
+      "native_name": null,
+      "native_shot_id": null,
+      "status": "unsupported_proposed"
+    },
+    {
+      "family": "DRIVE",
+      "family_id": 4,
+      "model_shot_id": 7,
+      "native_name": "Drive",
+      "native_shot_id": 6,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "PUSH",
+      "family_id": 5,
+      "model_shot_id": 9,
+      "native_name": "Push Shot",
+      "native_shot_id": 3,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "LIFT",
+      "family_id": 6,
+      "model_shot_id": 6,
+      "native_name": "Lob",
+      "native_shot_id": 8,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "NET_SHOT",
+      "family_id": 7,
+      "model_shot_id": 8,
+      "native_name": "Net Shot",
+      "native_shot_id": 7,
+      "status": "supported_proposed"
+    },
+    {
+      "family": "BLOCK",
+      "family_id": 8,
+      "model_shot_id": null,
+      "native_name": null,
+      "native_shot_id": null,
+      "status": "unsupported_proposed"
+    },
+    {
+      "family": "CUT",
+      "family_id": 9,
+      "model_shot_id": null,
+      "native_name": null,
+      "native_shot_id": null,
+      "status": "unsupported_proposed"
+    }
+  ],
+  "mapping_status": "PROPOSED_ONLY_NOT_FROZEN",
+  "mask": {
+    "dtype": "bool",
+    "flat_shape": [
+      1350
+    ],
+    "invalid_count": 1134,
+    "sha256": "7aa89f6474cf7430771fd5d3ef8de2152ade26e56c40ed93c78aed00775bb032",
+    "shape": [
+      10,
+      15,
+      9
+    ],
+    "valid_action_ids": [
+      675,
+      676,
+      677,
+      678,
+      679,
+      680,
+      681,
+      682,
+      683,
+      684,
+      685,
+      686,
+      687,
+      688,
+      689,
+      690,
+      691,
+      692,
+      693,
+      694,
+      695,
+      696,
+      697,
+      698,
+      699,
+      700,
+      701,
+      702,
+      703,
+      704,
+      705,
+      706,
+      707,
+      708,
+      709,
+      710,
+      711,
+      712,
+      713,
+      714,
+      715,
+      716,
+      717,
+      718,
+      719,
+      720,
+      721,
+      722,
+      723,
+      724,
+      725,
+      726,
+      727,
+      728,
+      729,
+      730,
+      731,
+      732,
+      733,
+      734,
+      735,
+      736,
+      737,
+      738,
+      739,
+      740,
+      741,
+      742,
+      743,
+      744,
+      745,
+      746,
+      747,
+      748,
+      749,
+      750,
+      751,
+      752,
+      753,
+      754,
+      755,
+      756,
+      757,
+      758,
+      759,
+      760,
+      761,
+      762,
+      763,
+      764,
+      765,
+      766,
+      767,
+      768,
+      769,
+      770,
+      771,
+      772,
+      773,
+      774,
+      775,
+      776,
+      777,
+      778,
+      779,
+      780,
+      781,
+      782,
+      783,
+      784,
+      785,
+      786,
+      787,
+      788,
+      789,
+      790,
+      791,
+      792,
+      793,
+      794,
+      795,
+      796,
+      797,
+      798,
+      799,
+      800,
+      801,
+      802,
+      803,
+      804,
+      805,
+      806,
+      807,
+      808,
+      809,
+      945,
+      946,
+      947,
+      948,
+      949,
+      950,
+      951,
+      952,
+      953,
+      954,
+      955,
+      956,
+      957,
+      958,
+      959,
+      960,
+      961,
+      962,
+      963,
+      964,
+      965,
+      966,
+      967,
+      968,
+      969,
+      970,
+      971,
+      972,
+      973,
+      974,
+      975,
+      976,
+      977,
+      978,
+      979,
+      980,
+      981,
+      982,
+      983,
+      984,
+      985,
+      986,
+      987,
+      988,
+      989,
+      990,
+      991,
+      992,
+      993,
+      994,
+      995,
+      996,
+      997,
+      998,
+      999,
+      1000,
+      1001,
+      1002,
+      1003,
+      1004,
+      1005,
+      1006,
+      1007,
+      1008,
+      1009,
+      1010,
+      1011,
+      1012,
+      1013,
+      1014,
+      1015,
+      1016,
+      1017,
+      1018,
+      1019,
+      1020,
+      1021,
+      1022,
+      1023,
+      1024,
+      1025
+    ],
+    "valid_count": 216,
+    "valid_counts_by_family": {
+      "BLOCK": 0,
+      "CLEAR": 0,
+      "CUT": 0,
+      "DRIVE": 0,
+      "DROP": 0,
+      "HALF_SMASH": 0,
+      "LIFT": 0,
+      "NET_SHOT": 81,
+      "PUSH": 135,
+      "SMASH": 0
+    }
+  },
+  "one_native_step": {
+    "action_id": 675,
+    "canonical_action": {
+      "family": "PUSH",
+      "landing_cell": 0,
+      "recovery_cell": 0
+    },
+    "done": false,
+    "launch": false,
+    "native_action_before_step": {
+      "fields": {
+        "hitting_position": {
+          "python_type": "tuple",
+          "value": [
+            51.98211595416069,
+            -196.93616151809692
+          ]
+        },
+        "landing_position": {
+          "python_type": "tuple",
+          "value": [
+            -85.0,
+            33.0
+          ]
+        },
+        "recovery_position": {
+          "python_type": "tuple",
+          "value": [
+            -85.0,
+            -55.0
+          ]
+        },
+        "shot_probability": {
+          "length": 10,
+          "max": 1.0,
+          "min": 0.0,
+          "python_type": "tuple",
+          "sum": 1.0,
+          "values": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "shot_type": {
+          "python_type": "int",
+          "value": 9
+        }
+      },
+      "length": 5
+    },
+    "native_reward": 0.0,
+    "next_info_keys": [
+      "action",
+      "constraint",
+      "env_score",
+      "launch",
+      "match",
+      "player",
+      "rally",
+      "round",
+      "score",
+      "state"
+    ],
+    "next_state": {
+      "container_type": "tuple",
+      "fields": [
+        {
+          "index": 0,
+          "name": "previous_shot_type",
+          "python_type": "int64",
+          "value": 2
+        },
+        {
+          "index": 1,
+          "name": "player_position",
+          "python_type": "tuple",
+          "value": [
+            -85.0,
+            -55.0
+          ]
+        },
+        {
+          "index": 2,
+          "name": "opponent_position",
+          "python_type": "tuple",
+          "value": [
+            17.269180305302143,
+            297.24350452423096
+          ]
+        },
+        {
+          "index": 3,
+          "name": "shuttle_position",
+          "python_type": "tuple",
+          "value": [
+            16.987652499228716,
+            -227.2315800189972
+          ]
+        }
+      ],
+      "length": 4
+    },
+    "step_ms": 185.281,
+    "step_return_length": 5
+  },
+  "output_file": {
+    "bytes": 883,
+    "exists_after_close": true
+  },
+  "players": {
+    "A": "CHOU Tien Chen",
+    "B": "Kento MOMOTA"
+  },
+  "probe_version": "b2_coachai_action_mask_probe_v1",
+  "project_root": "/home/suraj/project-sem/badminton-tactical-rl",
+  "runtime": {
+    "contact": {
+      "hit_zone": 11,
+      "hitting_position_native": [
+        51.98211595416069,
+        -196.93616151809692
+      ],
+      "native_violation": null,
+      "normalized_reach_distance": 0.18700157307137188,
+      "player_position_native": [
+        20.214654900130256,
+        -209.94662013996356
+      ],
+      "previous_native_shot_id": 1,
+      "reachable": true,
+      "y_movement_bin": 3
+    },
+    "device": "cuda:0",
+    "done": false,
+    "info_keys": [
+      "action",
+      "env_score",
+      "match",
+      "player",
+      "rally",
+      "round",
+      "score",
+      "state"
+    ],
+    "landing_zones": [
+      24,
+      23,
+      21,
+      20,
+      19,
+      17,
+      16,
+      15,
+      13,
+      8,
+      7,
+      5,
+      4,
+      3,
+      1
+    ],
+    "launch": false,
+    "numpy": "1.26.4",
+    "python": "3.12.3",
+    "recovery_zones": [
+      21,
+      23,
+      24,
+      13,
+      15,
+      16,
+      5,
+      7,
+      8
+    ],
+    "reset_ms": 693.491,
+    "reset_return_length": 4,
+    "state": {
+      "container_type": "tuple",
+      "fields": [
+        {
+          "index": 0,
+          "name": "previous_shot_type",
+          "python_type": "int",
+          "value": 1
+        },
+        {
+          "index": 1,
+          "name": "player_position",
+          "python_type": "tuple",
+          "value": [
+            20.214654900130256,
+            -209.94662013996356
+          ]
+        },
+        {
+          "index": 2,
+          "name": "opponent_position",
+          "python_type": "tuple",
+          "value": [
+            -3.9782097190618515,
+            253.22975635528564
+          ]
+        },
+        {
+          "index": 3,
+          "name": "shuttle_position",
+          "python_type": "tuple",
+          "value": [
+            51.98211595416069,
+            -196.93616151809692
+          ]
+        }
+      ],
+      "length": 4
+    },
+    "torch": "2.4.1+cu121"
+  },
+  "seed": 42,
+  "status": "PASS",
+  "validator_cross_check": {
+    "all_masked_in_actions_accepted_without_mutation": true,
+    "failures": [],
+    "probability_vector_rule": "one-hot at RallyNet model_shot_id - 1; legality mask prevents repair path",
+    "valid_candidates_checked": 216
+  }
+}

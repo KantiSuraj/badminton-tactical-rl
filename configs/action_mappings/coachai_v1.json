@@ -1,0 +1,44 @@
+{
+  "schema_version": "coachai_v1",
+  "canonical_action": ["shot_family", "landing_cell", "recovery_cell"],
+  "action_count": 1350,
+  "dimensions": {
+    "shot_families": 10,
+    "landing_cells": 15,
+    "recovery_cells": 9
+  },
+  "encoding": "(family_id * 15 + landing_cell_id) * 9 + recovery_cell_id",
+  "supported_families": [
+    {"family_id": 0, "family": "CLEAR", "model_shot_id": 3, "coachai_native_shot_id": 2, "coachai_native_name": "Clear"},
+    {"family_id": 1, "family": "DROP", "model_shot_id": 5, "coachai_native_shot_id": 9, "coachai_native_name": "Drop"},
+    {"family_id": 2, "family": "SMASH", "model_shot_id": 4, "coachai_native_shot_id": 4, "coachai_native_name": "Smash"},
+    {"family_id": 4, "family": "DRIVE", "model_shot_id": 7, "coachai_native_shot_id": 6, "coachai_native_name": "Drive"},
+    {"family_id": 5, "family": "PUSH", "model_shot_id": 9, "coachai_native_shot_id": 3, "coachai_native_name": "Push Shot"},
+    {"family_id": 6, "family": "LIFT", "model_shot_id": 6, "coachai_native_shot_id": 8, "coachai_native_name": "Lob"},
+    {"family_id": 7, "family": "NET_SHOT", "model_shot_id": 8, "coachai_native_shot_id": 7, "coachai_native_name": "Net Shot"}
+  ],
+  "unsupported_families": [
+    {"family_id": 3, "family": "HALF_SMASH"},
+    {"family_id": 8, "family": "BLOCK"},
+    {"family_id": 9, "family": "CUT"}
+  ],
+  "model_shot_id_to_coachai_native_shot_id": {
+    "1": 1,
+    "2": 10,
+    "3": 2,
+    "4": 4,
+    "5": 9,
+    "6": 8,
+    "7": 6,
+    "8": 7,
+    "9": 3,
+    "10": 5,
+    "11": 11
+  },
+  "service_policy": "B_SERVES_A_RECEIVES",
+  "notes": [
+    "Unsupported families retain their canonical ID slots and are always masked in B2 v1.",
+    "Model shot IDs and CoachAI native shot IDs are separate namespaces.",
+    "Fallback actions are environment-generated and are never policy-selected macro-actions."
+  ]
+}

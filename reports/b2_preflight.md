@@ -1,4 +1,4 @@
-# B2 implementation preflight — repository inspection
+# B2 implementation preflight â€” repository inspection
 
 **Scope:** inspect the uploaded project archive before Step 2 implementation. No CoachAI+ worker, Gymnasium wrapper or action mapping was added in this preflight.
 
@@ -75,3 +75,63 @@ The native API runtime probe has not yet been run. Milestone 0 remains in progre
 ## Runtime decision update (2026-11-08)
 
 The user explicitly approved Python 3.12 for the CoachAI+ worker. Parent and worker must use separate virtual environments (`.venv` and `.venv-coachai`) and separate processes. Install `requirements-coachai.txt` only into `.venv-coachai`. The original upstream Python 3.10.12 declaration is retained as provenance, not treated as the selected runtime. No B2 worker compatibility claim is made until the dedicated runtime probe passes.
+
+## Latest user verification (2026-11-08)
+
+The user has now completed setup in WSL:
+
+- `.venv-coachai` runs Python 3.12.3 and the upstream CoachAI+ baseline completed five rallies in 9.3 seconds, recording 31 stroke rows.
+- The parent `.venv` setup checker completed with `ALL REQUIRED CHECKS PASSED`.
+- Both environments are Python 3.12.3 and remain isolated virtual environments.
+- The checker found all expected dependency versions, GPU visibility, 104 ShuttleSet set CSVs, required CoachAI+ data/checkpoint files, the exact pinned CoachAI+ commit and a clean checkout.
+
+This confirms the approved Python 3.12 worker environment can execute the native baseline. The dedicated B2 reset/step/terminal runtime probe is still required before implementing the worker protocol or Gymnasium interface.
+
+New individual file: `scripts/setup/probe_coachai_runtime.py`. See `reports/b2_source_audit.md`, Section 9, for its probe scope and output path.
+
+
+## Runtime probe completed â€” user-provided report (2026-11-08)
+
+The user ran `scripts/setup/probe_coachai_runtime.py` in `.venv-coachai` and supplied the resulting JSON report. The probe status is `PASS`.
+
+- Runtime: Python 3.12.3, PyTorch 2.4.1+cu121, CUDA device `NVIDIA GeForce RTX 4050 Laptop GPU`.
+- A-serving: reset returned four values with `launch=True`; A needed to make a service action; three subsequent controlled A decisions used five-value step returns; terminal score delta and `getpoint_player` identified B as the winner.
+- B-serving: reset returned four values with `launch=False`; the reset history showed B's serve action already executed; A received the serve; two subsequent controlled A decisions used five-value step returns; terminal score delta and `getpoint_player` identified A as the winner.
+- Winner agreement: both sampled terminal rallies showed exactly one side gaining one point and the final record's `getpoint_player` matching the score delta.
+- `env.check_winner()` returned `None` in both cases; source confirms it is a game-level 21/30-point test, not a per-rally winner extractor.
+- Native rewards varied and are not the project's shared terminal Â±1/0 reward.
+- `validate_action()` always applies a `t2c` model-to-native shot-ID conversion before legality checks. Therefore `action_changed=True` can occur with `is_constraint=False`; changed action alone is not a constraint-violation indicator.
+- In the sampled actions, `hitting_position` matched the current state shuttle position (`state[3]`).
+
+**B2 v1 service design:** initialize side B as server so its native RallyNet service is performed during `reset()` and the RL-controlled side A starts as receiver. This keeps service outside the frozen canonical action space. The probe demonstrates the behaviour at the pinned commit; add an integration regression test around it.
+
+**Remaining lifecycle issue:** native `reset()` increments `rally` but does not clear `score_a`, `score_b`, the previous-score pointers or accumulated output rows. The upstream `RunEnv.py` intentionally reuses one environment across multiple rallies. The Gymnasium contract requires one rally per episode and the guide proposes neutral or otherwise explicitly sampled score context, so native object reuse must be designed deliberately.
+
+A new individual diagnostic script is now provided: `scripts/setup/probe_coachai_episode_lifecycle.py`. It compares two consecutive rallies in one native environment against a rally in a fresh native environment, recording score/output carry-over and constructor/reset latency. Its output path is `reports/b2_episode_lifecycle_probe.json`.
+
+**Milestone 0 remains in progress.** The basic Python 3.12 runtime, B-serve reset path, external A step path and two sample winner paths are now verified. Repeated-reset policy, deterministic replay, action translation, pure full-joint mask, canonical coordinate mapping, exhaustive terminal branches and data-provenance/leakage audit remain open.
+
+## Latest lifecycle probe results (2026-11-08)
+
+The user-provided lifecycle probe passed. Reusing the same native `BadmintonEnv` for two rallies carried the score from A=1/B=0 into the second reset; the rally counter advanced from 1 to 2 and the output DataFrame accumulated from 5 to 7 rows. A fresh environment started at 0-0 and its first B-serving reset produced an A receive state. Measured fresh construction was 331.495 ms; reset was 171.687 ms. These are single-run measurements, not stable performance targets.
+
+Pinned source inspection explains the result: `reset()` increments the rally and resets `round`, but leaves scores and previous-score pointers untouched; `Record()` relies on those previous-score pointers for the `getpoint_player` field and appends to the environment output DataFrame. The constraint object reads and preprocesses `All_dataset.csv` during construction. Recreating `BadmintonEnv` for every Gym episode therefore reloads constraint data unnecessarily.
+
+The next proposed design is one persistent native environment per worker process with a small, version-pinned adapter that resets score, score pointers, serving side, rally/match/round counters, state and info history before every one-rally reset. The RallyNet agent objects, native constraint object, BaseServe object and cumulative output DataFrame remain alive. This is not yet production-approved; it must pass `scripts/setup/probe_coachai_controlled_reset.py` first.
+
+New individual file: `scripts/setup/probe_coachai_controlled_reset.py`. Run it with `.venv-coachai/bin/python scripts/setup/probe_coachai_controlled_reset.py`. It checks repeated 0-0 B-serving episodes, winner-record agreement, whether run-level objects are reused, cumulative output write/readback, and same-seed trajectory signatures. The script passed Python syntax compilation and a local fake-object reset-helper smoke test; it has not yet been executed against the user's CoachAI+ checkout.
+
+
+## Controlled-reset verification â€” user-provided report (2026-11-08)
+
+`probe_coachai_controlled_reset.py` completed with `status=PASS`.
+
+- Two consecutive episodes on the same `BadmintonEnv` both started at 0-0 with B serving.
+- Both episodes terminated with A winning; the final `getpoint_player` records agreed with the per-rally score deltas.
+- `agent_a`, `agent_b`, `badminton_constraint`, `baseServe` and the output DataFrame retained object identity across resets.
+- The output CSV contained 10 rows after two rallies and was successfully read back.
+- Re-seeding Python, NumPy and Torch with 42 before each episode reproduced equal rounded trajectory signatures in this two-episode test.
+
+**Current architecture decision:** a persistent native environment per worker, with an explicit reset of `score_a`, `score_b`, `pre_score_a`, `pre_score_b`, `serving_player`, `rally`, `match`, `round`, `state` and `info_dict`. Preserve agents, constraints, BaseServe and native output records. This reset adapter is supported by a two-episode runtime test; broader determinism tests and a long-run output/memory policy remain pending.
+
+The next file is `scripts/setup/probe_coachai_action_mask.py`. It tests the proposed canonical/model/native shot-ID mapping, the proposed metric-to-CoachAI cell conversion and the full joint legality checks. The mapping remains a proposal until the user approves treatment of `HALF_SMASH`, `BLOCK` and `CUT`.
