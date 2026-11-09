@@ -1,16 +1,33 @@
-# badminton-tactical-rl
+# B2 reward-integrity deliverables
 
-Physics-aware tactical RL environment for badminton singles, built on CoachAI+ and ShuttleSet.
-Start with **`docs/SETUP.md`** (step-by-step, written for Windows 11 + WSL2).
+These files establish the B2 v1 reward contract before the Gymnasium wrapper is added.
 
-| Folder | What it is |
-|---|---|
-| `src/badminton_rl/dynamics/` | shuttle flight, player motion, reachability, shot execution, action masks (placeholders, being calibrated) |
-| `src/badminton_rl/data/` | ShuttleSet loader and court-coordinate conversion |
-| `scripts/audit/` | programs that audit the data and produce `reports/audit/*` |
-| `scripts/setup/` | fetch pinned external repos, check your setup |
-| `reports/audit/AUDIT.md` | what the audit found |
-| `configs/third_party_manifest.yaml` | commits, licences and checksums of everything external |
-| `tests/` | `pytest -q` |
+## Copy into the project
 
-Third-party code is **never copied into this repo**. It lives next to it in `../external/` (see `docs/SETUP.md`).
+- `src/badminton_rl/env/__init__.py` → the same path in the project.
+- `src/badminton_rl/env/rewards.py` → the same path in the project.
+- `tests/test_b2_reward_integrity.py` → the same path in the project.
+- `docs/B2_REWARD_INTEGRITY.md` → the same path in the project.
+
+The worker change is supplied separately as a patch:
+
+- `patches/worker_decision_watchdog_fatal.patch`
+
+From the project root, first verify and then apply it:
+
+```bash
+git apply --check /path/to/worker_decision_watchdog_fatal.patch
+git apply /path/to/worker_decision_watchdog_fatal.patch
+```
+
+The patch moves the decision watchdog check until after the worker has resolved the entire policy-decision epoch, including automatic fallbacks. A natural terminal on the boundary is accepted; an unresolved rally raises a fatal `policy_decision_limit_exceeded` error instead of returning a neutral truncation.
+
+## Run the pure reward tests
+
+From the project root, with the project editable-installed or `src` on `PYTHONPATH`:
+
+```bash
+PYTHONPATH=src pytest -q tests/test_b2_reward_integrity.py
+```
+
+These tests need only Python and pytest. They do not need Gymnasium, PyTorch, or CoachAI+.

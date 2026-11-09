@@ -1,0 +1,70 @@
+--- a/src/badminton_rl/adapters/coachai_worker.py
++++ b/src/badminton_rl/adapters/coachai_worker.py
+@@ -888,25 +888,6 @@
+                 },
+             )
+ 
+-        if self._policy_decisions >= self.max_decisions:
+-            self._truncated = True
+-            self._ready = False
+-            self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
+-            return self._transition_payload(
+-                action_id=action_id, observation=self._observation(), reward=0.0,
+-                terminated=False, truncated=True, action_mask=self._mask,
+-                native_rewards=native_rewards, fallback_events=fallback_events,
+-                internal_native_transitions=internal_transitions,
+-                output_rows_added=int(len(self.env.output)) - output_rows_before,
+-                terminal=None,
+-                normal_action={
+-                    "policy_action_id": action_id,
+-                    "canonical_action": list(decode_action(action_id)),
+-                    "native_validator_corrected": bool(transition.validator_corrected),
+-                    "native_output_record_matches": bool(transition.output_record_matches),
+-                },
+-            )
+-
+         extra_transitions = self._advance_to_policy_state(
+             fallback_events=fallback_events,
+             native_rewards=native_rewards,
+@@ -914,6 +895,41 @@
+         )
+         internal_transitions += extra_transitions
+         terminal = self._resolve_terminal() if self._terminated else None
++
++        # A policy-decision limit is a safety watchdog, not a badminton rule.
++        # Resolve the complete decision epoch (including automatic fallbacks)
++        # first. A natural rally terminal on the boundary is valid; otherwise
++        # fail closed instead of returning a neutral time-limit truncation that
++        # a policy could exploit by prolonging the rally.
++        if terminal is None and self._policy_decisions >= self.max_decisions:
++            watchdog_event = {
++                "event_type": "b2_policy_decision_watchdog_exceeded",
++                "episode_id": self._episode_id,
++                "episode_index": self._episode_index,
++                "episode_seed": self._episode_seed,
++                "decision_index": decision_index,
++                "policy_action_id": int(action_id),
++                "policy_selected": True,
++                "policy_decisions": int(self._policy_decisions),
++                "max_decisions": int(self.max_decisions),
++                "internal_native_transitions": int(internal_transitions),
++                "fallback_event_ids": [
++                    item.get("fallback_event_id")
++                    for item in fallback_events
++                    if isinstance(item, Mapping)
++                ],
++                "score": {"A": int(self.env.score_a), "B": int(self.env.score_b)},
++                "terminal": False,
++            }
++            self._append_event(watchdog_event)
++            raise WorkerFault(
++                "policy_decision_limit_exceeded",
++                "B2 policy-decision watchdog reached before the rally was naturally resolved; "
++                "the episode and training run must be aborted, not converted to truncation.",
++                fatal=True,
++                details=watchdog_event,
++            )
++
+         reward = float(terminal["b2_rally_reward"]) if terminal else 0.0
+         return self._transition_payload(
+             action_id=action_id,
