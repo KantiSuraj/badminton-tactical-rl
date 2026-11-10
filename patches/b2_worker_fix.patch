@@ -1,0 +1,123 @@
+--- a/src/badminton_rl/adapters/worker_client.py
++++ b/src/badminton_rl/adapters/worker_client.py
+@@ -78,6 +78,9 @@
+     expected_coachai_commit: str = "4fd05934f172eec16c74d05c2902983b64c8521e"
+     fallback_events_path: Path | None = None
+     stderr_log_path: Path | None = None
++    worker_id: str | None = None
+     max_decisions: int = 64
+     max_internal_transitions: int = 64
++    max_reset_retries: int = 0
++    cell_jitter_fraction: float = 0.0
++    fallback_win_reward: float = 1.0
+     max_line_bytes: int = DEFAULT_MAX_LINE_BYTES
+     extra_cli_args: tuple[str, ...] = field(default_factory=tuple)
+ 
+@@ -91,18 +94,25 @@
+         for name, value in (
+             ("max_decisions", self.max_decisions),
+             ("max_internal_transitions", self.max_internal_transitions),
++            ("max_reset_retries", self.max_reset_retries),
+             ("max_line_bytes", self.max_line_bytes),
+         ):
+             if isinstance(value, bool) or not isinstance(value, numbers.Integral):
+                 raise ValueError(f"{name} must be an integer")
+         if self.max_decisions <= 0 or self.max_internal_transitions <= 0:
+             raise ValueError("max_decisions and max_internal_transitions must be positive")
++        if self.max_reset_retries < 0:
++            raise ValueError("max_reset_retries must be non-negative")
++        if not (0.0 <= float(self.cell_jitter_fraction) <= 0.45):
++            raise ValueError("cell_jitter_fraction must be in [0.0, 0.45]")
+         if self.max_line_bytes < 1024:
+             raise ValueError("max_line_bytes must be at least 1024")
+         root = Path(self.project_root).expanduser().resolve()
+         worker_script = (
+             Path(self.worker_script).expanduser().resolve()
+             if self.worker_script is not None
+             else root / "src" / "badminton_rl" / "adapters" / "coachai_worker.py"
+         )
++        suffix = f"_{self.worker_id}" if self.worker_id else ""
+         fallback_log = (
+             Path(self.fallback_events_path).expanduser().resolve()
+             if self.fallback_events_path is not None
+-            else root / "reports" / "b2_fallback_events.jsonl"
++            else root / "reports" / f"b2_fallback_events{suffix}.jsonl"
+         )
+         stderr_log = (
+             Path(self.stderr_log_path).expanduser().resolve()
+             if self.stderr_log_path is not None
+-            else root / "reports" / "b2_worker_stderr.log"
++            else root / "reports" / f"b2_worker_stderr{suffix}.log"
+         )
+         return WorkerConfig(
+             project_root=root,
+@@ -117,8 +127,12 @@
+             expected_coachai_commit=self.expected_coachai_commit,
+             fallback_events_path=fallback_log,
+             stderr_log_path=stderr_log,
++            worker_id=self.worker_id,
+             max_decisions=int(self.max_decisions),
+             max_internal_transitions=int(self.max_internal_transitions),
++            max_reset_retries=int(self.max_reset_retries),
++            cell_jitter_fraction=float(self.cell_jitter_fraction),
++            fallback_win_reward=float(self.fallback_win_reward),
+             max_line_bytes=int(self.max_line_bytes),
+             extra_cli_args=tuple(self.extra_cli_args),
+         )
+@@ -349,6 +363,9 @@
+             "--fallback-events", str(cfg.fallback_events_path),
+             "--max-decisions", str(cfg.max_decisions),
+             "--max-internal-transitions", str(cfg.max_internal_transitions),
++            "--max-reset-retries", str(cfg.max_reset_retries),
++            "--cell-jitter-fraction", str(cfg.cell_jitter_fraction),
++            "--fallback-win-reward", str(cfg.fallback_win_reward),
+             "--max-line-bytes", str(cfg.max_line_bytes),
+             *cfg.extra_cli_args,
+         ]
+@@ -439,6 +456,12 @@
+         if proc.poll() is not None:
+             raise WorkerCrashedError(self._crash_message("Worker exited before request"))
++        while True:
++            try:
++                self._responses.get_nowait()
++            except queue.Empty:
++                break
+         self._request_counter += 1
+         request_id = f"w{proc.pid}-r{self._request_counter:08d}"
+         request = make_request(request_id, op, payload)
+@@ -495,6 +518,11 @@
+         if proc is None:
+             return
++        try:
++            if proc.stdin is not None:
++                proc.stdin.close()
++        except OSError:
++            pass
+         try:
+             if proc.poll() is None and force:
+                 proc.terminate()
+                 try:
+                     proc.wait(timeout=1.0)
+                 except subprocess.TimeoutExpired:
+                     proc.kill()
+                     proc.wait(timeout=1.0)
+         except OSError:
+             pass
+-        for stream in (proc.stdin, proc.stdout, proc.stderr):
+-            try:
+-                if stream is not None:
+-                    stream.close()
+-            except OSError:
+-                pass
+         for thread in (self._stdout_thread, self._stderr_thread):
+             if thread is not None and thread.is_alive() and thread is not threading.current_thread():
+                 thread.join(timeout=0.5)
+         self._stdout_thread = None
+         self._stderr_thread = None
++        for stream in (proc.stdout, proc.stderr):
++            try:
++                if stream is not None:
++                    stream.close()
++            except OSError:
++                pass
+

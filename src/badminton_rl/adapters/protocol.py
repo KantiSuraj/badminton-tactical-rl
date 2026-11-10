@@ -71,7 +71,11 @@ def _json_primitive(value: Any, *, path: str = "$") -> Any:
         for key, item in value.items():
             if not isinstance(key, (str, int, float, bool)):
                 raise ProtocolError(f"Non-primitive mapping key at {path}: {type(key).__name__}")
+            if isinstance(key, float) and not math.isfinite(key):
+                raise ProtocolError(f"Non-finite float mapping key at {path}")
             key_text = str(key)
+            if key_text in converted:
+                raise ProtocolError(f"Duplicate mapping key {key_text!r} at {path}")
             converted[key_text] = _json_primitive(item, path=f"{path}.{key_text}")
         return converted
     if isinstance(value, (list, tuple)):
@@ -96,8 +100,9 @@ def encode_json_line(message: Mapping[str, Any], *, max_bytes: int = DEFAULT_MAX
         ).encode("utf-8")
     except (TypeError, ValueError) as exc:
         raise ProtocolError(f"Could not serialize JSONL message: {exc}") from exc
-    if len(encoded) > max_bytes:
-        raise ProtocolError(f"JSONL message exceeds {max_bytes} bytes ({len(encoded)} bytes)")
+    wire_len = len(encoded) + 1
+    if wire_len > max_bytes:
+        raise ProtocolError(f"JSONL message exceeds {max_bytes} bytes ({wire_len} bytes)")
     return encoded + b"\n"
 
 

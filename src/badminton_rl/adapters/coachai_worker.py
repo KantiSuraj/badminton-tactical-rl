@@ -92,6 +92,50 @@ REASON_TAXONOMY_GAP = "B2_TAXONOMY_GAP"
 REASON_GEOMETRY_EMPTY = "NO_JOINT_ACTION_AFTER_GEOMETRY"
 
 
+import json
+import os
+import sys
+
+
+def _describe_history_structure(value, depth=0):
+    if depth >= 5:
+        return {"type": type(value).__name__}
+    if isinstance(value, dict):
+        return {
+            str(k): _describe_history_structure(v, depth + 1)
+            for k, v in value.items()
+        }
+    if hasattr(value, "shape") and hasattr(value, "dtype"):
+        return {
+            "type": type(value).__name__,
+            "shape": list(value.shape),
+            "dtype": str(value.dtype),
+        }
+    if isinstance(value, tuple):
+        return {
+            "type": "tuple",
+            "length": len(value),
+            "elements": [
+                _describe_history_structure(item, depth + 1)
+                for item in value
+            ],
+        }
+    if isinstance(value, list):
+        non_none = next((x for x in value if x is not None), None)
+        return {
+            "type": "list",
+            "length": len(value),
+            "first_element": (
+                _describe_history_structure(value[0], depth + 1)
+                if value else None
+            ),
+            "first_non_none_element": (
+                _describe_history_structure(non_none, depth + 1)
+                if non_none is not None else None
+            ),
+        }
+    return {"type": type(value).__name__, "repr": repr(value)}
+
 class WorkerFault(RuntimeError):
     """An operation failure with a stable protocol code and fatality marker."""
 
@@ -888,25 +932,6 @@ class CoachAIWorker:
                 },
             )
 
-        if self._policy_decisions >= self.max_decisions:
-            self._truncated = True
-            self._ready = False
-            self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
-            return self._transition_payload(
-                action_id=action_id, observation=self._observation(), reward=0.0,
-                terminated=False, truncated=True, action_mask=self._mask,
-                native_rewards=native_rewards, fallback_events=fallback_events,
-                internal_native_transitions=internal_transitions,
-                output_rows_added=int(len(self.env.output)) - output_rows_before,
-                terminal=None,
-                normal_action={
-                    "policy_action_id": action_id,
-                    "canonical_action": list(decode_action(action_id)),
-                    "native_validator_corrected": bool(transition.validator_corrected),
-                    "native_output_record_matches": bool(transition.output_record_matches),
-                },
-            )
-
         extra_transitions = self._advance_to_policy_state(
             fallback_events=fallback_events,
             native_rewards=native_rewards,
@@ -914,6 +939,41 @@ class CoachAIWorker:
         )
         internal_transitions += extra_transitions
         terminal = self._resolve_terminal() if self._terminated else None
+
+        # A policy-decision limit is a safety watchdog, not a badminton rule.
+        # Resolve the complete decision epoch (including automatic fallbacks)
+        # first. A natural rally terminal on the boundary is valid; otherwise
+        # fail closed instead of returning a neutral time-limit truncation that
+        # a policy could exploit by prolonging the rally.
+        if terminal is None and self._policy_decisions >= self.max_decisions:
+            watchdog_event = {
+                "event_type": "b2_policy_decision_watchdog_exceeded",
+                "episode_id": self._episode_id,
+                "episode_index": self._episode_index,
+                "episode_seed": self._episode_seed,
+                "decision_index": decision_index,
+                "policy_action_id": int(action_id),
+                "policy_selected": True,
+                "policy_decisions": int(self._policy_decisions),
+                "max_decisions": int(self.max_decisions),
+                "internal_native_transitions": int(internal_transitions),
+                "fallback_event_ids": [
+                    item.get("fallback_event_id")
+                    for item in fallback_events
+                    if isinstance(item, Mapping)
+                ],
+                "score": {"A": int(self.env.score_a), "B": int(self.env.score_b)},
+                "terminal": False,
+            }
+            self._append_event(watchdog_event)
+            raise WorkerFault(
+                "policy_decision_limit_exceeded",
+                "B2 policy-decision watchdog reached before the rally was naturally resolved; "
+                "the episode and training run must be aborted, not converted to truncation.",
+                fatal=True,
+                details=watchdog_event,
+            )
+
         reward = float(terminal["b2_rally_reward"]) if terminal else 0.0
         return self._transition_payload(
             action_id=action_id,
@@ -1628,6 +1688,14 @@ class CoachAIWorker:
         numbers = [value for row in players for value in row] + shuttle
         if not all(math.isfinite(value) for value in numbers):
             raise WorkerFault("native_state_error", "Observation contains non-finite native coordinates", fatal=True)
+
+        if os.environ.get("B2_DEBUG_HISTORY") == "1":
+            summary = _describe_history_structure(self._info)
+            print(
+                "[B2_HISTORY_DEBUG] " + json.dumps(summary, sort_keys=True),
+                file=sys.stderr,
+                flush=True,
+            )
         return {
             "schema_version": OBSERVATION_SCHEMA_VERSION,
             "coordinate_frame": "A_side_local_CoachAI_native_units",
@@ -1815,6 +1883,9 @@ def main(argv: list[str] | None = None) -> int:
             worker.close()
         except Exception:
             traceback.print_exc(file=sys.stderr)
+
+
+    
 
 
 if __name__ == "__main__":
