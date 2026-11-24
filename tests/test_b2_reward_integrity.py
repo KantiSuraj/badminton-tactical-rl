@@ -21,15 +21,19 @@ def terminal_payload(winner: str = "A") -> dict:
         "score": after,
         "terminal": {
             "winner_side": winner,
+            "winner_name": "Player A" if winner == "A" else "Player B",
+            "recorded_winner_name": "Player A" if winner == "A" else "Player B",
             "score_before": before,
             "score_after": after,
             "score_delta": delta,
             "b2_rally_reward": reward,
+            # Added to satisfy strict envelope validation:
+            "raw_rally_reward": reward,
+            "terminated_after_fallback": False,
         },
         "fallback_events": [],
         "native_reward_trace": [-999.0, 999.0],
     }
-
 
 def nonterminal_payload() -> dict:
     return {
@@ -41,7 +45,6 @@ def nonterminal_payload() -> dict:
         "fallback_events": [],
         "native_reward_trace": [-1000.0, 1000.0],
     }
-
 
 def test_shared_terminal_reward_table() -> None:
     assert shared_terminal_reward(terminated=False, rally_winner_side=None) == 0.0

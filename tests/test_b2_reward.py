@@ -52,15 +52,21 @@ def event(*, decision, counter, done=False, winner=None):
     }
 
 
-def terminal_block(winner):
+def terminal_block(winner: str = "A", fallback_occurred: bool = False) -> dict:
     delta = {"A": 1, "B": 0} if winner == "A" else {"A": 0, "B": 1}
+    reward = 1.0 if winner == "A" else -1.0
     return {
-        "winner_side": winner, "winner_name": "P" if winner == "A" else "O",
-        "recorded_winner_name": "P" if winner == "A" else "O",
-        "score_before": {"A": 0, "B": 0}, "score_after": dict(delta), "score_delta": delta,
-        "b2_rally_reward": 1.0 if winner == "A" else -1.0,
+        "winner_side": winner,
+        "winner_name": "Player A" if winner == "A" else "Player B",
+        "recorded_winner_name": "Player A" if winner == "A" else "Player B",
+        "score_before": {"A": 0, "B": 0},
+        "score_after": dict(delta),
+        "score_delta": delta,
+        "b2_rally_reward": reward,
+        # Added to satisfy strict envelope validation:
+        "raw_rally_reward": reward,
+        "terminated_after_fallback": fallback_occurred,
     }
-
 
 def step_payload(action=0, *, decision=1, terminated=False, truncated=False, winner=None,
                  events=None, unplayable=0, next_ids=(5, 6)):

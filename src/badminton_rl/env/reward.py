@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Any
 
 import hashlib
 import math
@@ -35,13 +36,28 @@ EMPTY_MASK_REASONS = frozenset(
 )
 _ZERO_SCORE = {"A": 0, "B": 0}
 _TERMINAL_CORE_KEYS = frozenset(
-    {"winner_side", "score_before", "score_after", "score_delta", "b2_rally_reward"}
+    {"winner_side", "score_before", "score_after", "score_delta", "b2_rally_reward", "raw_rally_reward", "terminated_after_fallback"}
 )
 _TERMINAL_KEYS = _TERMINAL_CORE_KEYS | frozenset({"winner_name", "recorded_winner_name"})
 
 
-class RewardIntegrityError(RuntimeError):
-    """A worker result violates the B2 v1 reward contract."""
+class RewardIntegrityError(Exception):
+    """Raised when a terminal payload violates the expected schema."""
+    pass
+
+def validate_terminal_payload(payload: dict[str, Any]) -> None:
+    """Validates the schema and integrity of a terminal transition payload."""
+    payload_keys = set(payload.keys())
+    missing = _TERMINAL_KEYS - payload_keys
+    if missing:
+        raise RewardIntegrityError(f"Terminal payload missing required keys: {missing}")
+    
+    extra = payload_keys - _TERMINAL_KEYS
+    if extra:
+        raise RewardIntegrityError(f"Terminal payload contains unrecognized keys: {extra}")
+
+    if not isinstance(payload["b2_rally_reward"], (int, float)):
+        raise RewardIntegrityError("'b2_rally_reward' must be numeric.")
 
 
 class TruncationRejectedError(RewardIntegrityError):
@@ -57,7 +73,7 @@ class TruncationPolicy(Enum):
 @dataclass(frozen=True)
 class RewardConfig:
     truncation_policy: TruncationPolicy = TruncationPolicy.REJECT
-    max_decisions: int = 64
+    max_decisions: int = 25
     player_name: str | None = None
     opponent_name: str | None = None
     require_recorded_winner: bool = False
@@ -300,7 +316,14 @@ def _validate_terminal(
                 _fail("terminal.recorded_winner_name is required but missing")
         elif recorded != winner_name:
             _fail("terminal.recorded_winner_name disagrees with winner_name")
+
+    raw_reward = 1.0 if winner == "A" else -1.0
+    if _finite_real(terminal.get("raw_rally_reward"), field="terminal.raw_rally_reward") != raw_reward:
+        _fail("terminal.raw_rally_reward disagrees with the verified winner")
+    _bool(terminal.get("terminated_after_fallback"), "terminal.terminated_after_fallback")
+
     return winner, after, reward
+
 
 
 def _check_event(

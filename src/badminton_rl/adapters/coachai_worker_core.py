@@ -1614,9 +1614,20 @@ class CoachAIWorker:
 
     # ---------- Rally-event cursors and collection ----------
     def _clear_native_output(self) -> None:
-        # Verbatim former inline block of reset().
-        if hasattr(self.env, "output") and hasattr(self.env.output, "iloc"):
-            self.env.output = self.env.output.iloc[0:0].copy()
+            # Verbatim former inline block of reset().
+            if hasattr(self.env, "output") and hasattr(self.env.output, "iloc"):
+                self.env.output = self.env.output.iloc[0:0].copy()
+
+            # ROBUST CURSOR BASELINE
+            self._output_cursor = len(self.env.output) if hasattr(self.env, "output") and hasattr(self.env.output, "__len__") else 0
+            self._history_cursor = len(self._info.get("state", [])) if isinstance(self._info, dict) else 0
+
+            # FIX: Prevent RallyNet OOD extrapolation drift by isolating match state
+            self.env.rally = 0
+            self.env.match = 1
+            self.env.score_a = 0  # Fixed: Hardcoded to 0 for a fresh episode
+            if hasattr(self.env, "score_b"):
+                self.env.score_b = 0
 
     def _begin_event_attempt(self, attempt: int) -> None:
         """Initialize every rally-event cursor for one reset attempt.

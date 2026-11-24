@@ -1,266 +1,82 @@
 {
-  "episodes_requested": 500,
-  "episodes_completed": 0,
-  "episodes_failed": 500,
-  "seconds": 40.7,
+  "episodes_requested": 100,
+  "episodes_completed": 100,
+  "episodes_failed": 0,
+  "seconds": 48.1,
   "base_seed": 20260101,
   "max_reset_retries": 0,
   "ledger_checked": true,
   "events_per_rally": {
-    "count": 0
+    "count": 100,
+    "min": 3,
+    "mean": 11.26,
+    "median": 7.0,
+    "p90": 25,
+    "p95": 39,
+    "p99": 53,
+    "max": 53
   },
   "decisions_per_rally": {
-    "count": 0
+    "count": 100,
+    "min": 1,
+    "mean": 4.23,
+    "median": 3.0,
+    "p90": 9,
+    "p95": 16,
+    "p99": 20,
+    "max": 20
   },
   "counts": {
-    "event_type": {},
-    "controller": {},
-    "actor": {},
-    "native_shot_id": {},
-    "shot_family_id": {},
-    "last_event_shape": {},
-    "winner_side": {},
-    "reset_status": {
-      "terminal_without_policy": 492,
-      "ready_for_policy": 8
+    "event_type": {
+      "STROKE": 941,
+      "MISSED_SHOT": 95,
+      "FALLBACK_STROKE": 90
     },
-    "decision_count_of_failed": {
-      "0": 492,
-      "3": 2,
-      "1": 2,
-      "5": 1,
-      "4": 1,
-      "14": 1,
-      "2": 1
-    }
+    "controller": {
+      "RALLYNET": 613,
+      "POLICY": 423,
+      "ENVIRONMENT": 90
+    },
+    "actor": {
+      "B": 613,
+      "A": 513
+    },
+    "native_shot_id": {
+      "7": 185,
+      "4": 142,
+      "3": 141,
+      "6": 119,
+      "2": 110,
+      "5": 110,
+      "None": 95,
+      "1": 90,
+      "9": 69,
+      "8": 54,
+      "10": 11
+    },
+    "shot_family_id": {
+      "None": 306,
+      "7": 185,
+      "2": 142,
+      "5": 141,
+      "4": 119,
+      "0": 110,
+      "1": 69,
+      "6": 54
+    },
+    "last_event_shape": {
+      "B/RALLYNET/MISSED_SHOT": 95,
+      "B/RALLYNET/STROKE": 5
+    },
+    "winner_side": {
+      "A": 100
+    },
+    "reset_status": {
+      "ready_for_policy": 100
+    },
+    "decision_count_of_failed": {}
   },
   "anomalies": {},
-  "failures": [
-    {
-      "episode": 0,
-      "seed": 20260101,
-      "decisions_before_failure": 5,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 1,
-      "seed": 20260102,
-      "decisions_before_failure": 3,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 2,
-      "seed": 20260103,
-      "decisions_before_failure": 1,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 3,
-      "seed": 20260104,
-      "decisions_before_failure": 4,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 4,
-      "seed": 20260105,
-      "decisions_before_failure": 3,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 5,
-      "seed": 20260106,
-      "decisions_before_failure": 14,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 6,
-      "seed": 20260107,
-      "decisions_before_failure": 2,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 7,
-      "seed": 20260108,
-      "decisions_before_failure": 1,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 8,
-      "seed": 20260109,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 9,
-      "seed": 20260110,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 10,
-      "seed": 20260111,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 11,
-      "seed": 20260112,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 12,
-      "seed": 20260113,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 13,
-      "seed": 20260114,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 14,
-      "seed": 20260115,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 15,
-      "seed": 20260116,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 16,
-      "seed": 20260117,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 17,
-      "seed": 20260118,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 18,
-      "seed": 20260119,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 19,
-      "seed": 20260120,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 20,
-      "seed": 20260121,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 21,
-      "seed": 20260122,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 22,
-      "seed": 20260123,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 23,
-      "seed": 20260124,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    },
-    {
-      "episode": 24,
-      "seed": 20260125,
-      "decisions_before_failure": 0,
-      "error_type": "RewardIntegrityError",
-      "code": null,
-      "message": "terminal metadata keys must be exactly ['b2_rally_reward', 'recorded_winner_name', 'score_after', 'score_before', 'score_delta', 'winner_name', 'winner_side']",
-      "details": null
-    }
-  ],
-  "failure_count_total": 500
+  "failures": [],
+  "failure_count_total": 0
 }
