@@ -1,6 +1,682 @@
+diff --git a/patches/b2_coachai_worker_fix.patch b/patches/b2_coachai_worker_fix.patch
+index 0540e91..e69de29 100644
+--- a/patches/b2_coachai_worker_fix.patch
++++ b/patches/b2_coachai_worker_fix.patch
+@@ -1,547 +0,0 @@
+---- a/src/badminton_rl/adapters/coachai_worker.py
+-+++ b/src/badminton_rl/adapters/coachai_worker.py
+-@@ -16,12 +16,14 @@
+- from __future__ import annotations
+- 
+- import argparse
+-+import atexit
+- import hashlib
+- import importlib
+- import json
+- import math
+- import numbers
+- import os
+- import random
+-+import signal
+- import subprocess
+- import sys
+- import tempfile
+-@@ -78,10 +80,6 @@
+- REASON_GEOMETRY_EMPTY = "NO_JOINT_ACTION_AFTER_GEOMETRY"
+- 
+- 
+--import json
+--import os
+--import sys
+--
+--
+- def _describe_history_structure(value, depth=0):
+-     if depth >= 5:
+-         return {"type": type(value).__name__}
+-@@ -152,13 +150,47 @@
+-     return family_id, landing_id, recovery_id
+- 
+- 
+--def derive_fallback_seed(worker_seed: int, episode_index: int, decision_index: int, fallback_counter: int) -> int:
+-+def derive_fallback_seed(
+-+    worker_seed: int,
+-+    episode_index: int,
+-+    decision_index: int,
+-+    fallback_counter: int,
+-+    *,
+-+    episode_seed: int | None = None,
+-+) -> int:
+-     """Stable event RNG seed; independent of Python's randomized hash()."""
+--    material = (
+-+    base = (
+-         f"b2-fallback-v1|{int(worker_seed)}|{int(episode_index)}|"
+-         f"{int(decision_index)}|{int(fallback_counter)}"
+--    ).encode("utf-8")
+-+    )
+-+    if episode_seed is not None:
+-+        base = f"{base}|{int(episode_seed)}"
+-+    material = base.encode("utf-8")
+-     digest = hashlib.blake2b(material, digest_size=8, person=b"B2-fallback-v1").digest()
+-+    return int.from_bytes(digest, byteorder="big", signed=False)
+-+
+-+
+-+def derive_reset_retry_seed(base_seed: int, attempt: int) -> int:
+-+    """Deterministic seed derivation when resampling a no-policy opening rally."""
+-+    if int(attempt) == 0:
+-+        return int(base_seed)
+-+    material = f"b2-reset-retry-v1|{int(base_seed)}|{int(attempt)}".encode("utf-8")
+-+    digest = hashlib.blake2b(material, digest_size=8, person=b"B2-reset-v1").digest()
+-+    return int.from_bytes(digest, byteorder="big", signed=False)
+-+
+-+
+-+def derive_action_jitter_seed(
+-+    worker_seed: int,
+-+    episode_seed: int,
+-+    episode_index: int,
+-+    decision_index: int,
+-+    action_id: int,
+-+) -> int:
+-+    """Deterministic seed for within-cell target coordinate jitter."""
+-+    material = (
+-+        f"b2-jitter-v1|{int(worker_seed)}|{int(episode_seed)}|"
+-+        f"{int(episode_index)}|{int(decision_index)}|{int(action_id)}"
+-+    ).encode("utf-8")
+-+    digest = hashlib.blake2b(material, digest_size=8, person=b"B2-jitter-v1").digest()
+-     return int.from_bytes(digest, byteorder="big", signed=False)
+- 
+- 
+-@@ -188,7 +220,16 @@
+-     elif hasattr(value, "tolist") and callable(value.tolist):
+-         value = value.tolist()
+-     if isinstance(value, dict):
+--        return {str(key): _json_safe(item) for key, item in value.items()}
+-+        converted: dict[str, Any] = {}
+-+        for key, item in value.items():
+-+            if not isinstance(key, (str, int, float, bool)):
+-+                raise TypeError(f"Non-primitive dict key type {type(key).__name__}")
+-+            if isinstance(key, float) and not math.isfinite(key):
+-+                raise ValueError("Dict key is a non-finite float")
+-+            key_text = str(key)
+-+            if key_text in converted:
+-+                raise ValueError(f"Duplicate dict key after string conversion: {key_text!r}")
+-+            converted[key_text] = _json_safe(item)
+-+        return converted
+-     if isinstance(value, (tuple, list)):
+-         return [_json_safe(item) for item in value]
+-     if hasattr(value, "item") and callable(value.item):
+-@@ -242,10 +283,19 @@
+-     """
+- 
+-     def __init__(self, *, constraint: Any, constraint_module: Any, target_state: Any,
+--                 torch_module: Any, np_module: Any, event_rng: random.Random | None = None):
+-+                 torch_module: Any, np_module: Any, event_rng: random.Random | None = None,
+-+                 target_action: Any = None):
+-         self.constraint = constraint
+-         self.constraint_module = constraint_module
+-         self.target_signature = _state_signature(target_state)
+-+        self.target_action = target_action
+-         self.torch = torch_module
+-         self.np = np_module
+-         self.event_rng = event_rng
+-@@ -257,7 +307,18 @@
+- 
+-     def __enter__(self) -> "OneShotValidationCapture":
+-         def wrapper(state_arg: Any, action_arg: Any) -> Any:
+-             matches = _state_signature(state_arg) == self.target_signature
+-+            if (
+-+                matches
+-+                and self.matching_calls == 1
+-+                and self.target_action is not None
+-+                and not CoachAIWorker._actions_equal(action_arg, self.target_action)
+-+            ):
+-+                # B's local-frame state can occasionally collide with A's state signature
+-+                # on symmetric rallies, but B's RallyNet action will not match A's
+-+                # proposed one-hot carrier/policy action.
+-+                matches = False
+-             if not matches:
+-                 self.nonmatching_calls += 1
+-                 return self.original(state_arg, action_arg)
+-@@ -347,6 +408,9 @@
+-         self.worker_seed = int(args.worker_seed)
+-         self.max_decisions = int(args.max_decisions)
+-         self.max_internal_transitions = int(args.max_internal_transitions)
+-+        self.max_reset_retries = int(getattr(args, "max_reset_retries", 0))
+-+        self.cell_jitter_fraction = float(getattr(args, "cell_jitter_fraction", 0.0))
+-+        self.fallback_win_reward = float(getattr(args, "fallback_win_reward", 1.0))
+-         self.fallback_events_path = Path(args.fallback_events).expanduser().resolve()
+-         self.np: Any = None
+-         self.torch: Any = None
+-@@ -612,7 +676,14 @@
+-         options = payload.get("options", {})
+-         if not isinstance(options, dict):
+-             raise WorkerFault("protocol_violation", "reset options must be an object")
+--        unexpected = set(options) - {"server"}
+-+        allowed_options = {
+-+            "server",
+-+            "score_a",
+-+            "score_b",
+-+            "round",
+-+            "sample_score",
+-+            "max_reset_retries",
+-+        }
+-+        unexpected = set(options) - allowed_options
+-         if unexpected:
+-             raise WorkerFault("unsupported_condition", f"Unsupported reset options: {sorted(unexpected)}")
+-         server = options.get("server", "B")
+-@@ -625,53 +696,95 @@
+-         self._episode_index = int(episode_index)
+-         self._episode_seed = int(seed)
+-         self._episode_id = str(payload.get("episode_id") or f"b2-episode-{self._episode_index:06d}")
+--        self._policy_decisions = 0
+--        self._terminated = False
+--        self._truncated = False
+--        self._ready = False
+--        self._mask = None
+--        self._mask_evaluation = None
+--        self._seed_everything(self._episode_seed)
+--
+--        # CoachAI+ reset increments rally and initializes RallyNet's new history.
+--        # Resource objects (RallyNet, constraint tables, BaseServe, output frame)
+--        # remain persistent across episodes; only rally-scoped state is cleared.
+--        self.env.score_a = 0
+--        self.env.score_b = 0
+--        self.env.pre_score_a = 0
+--        self.env.pre_score_b = 0
+--        self.env.round = 1
+--        self.env.match = 1
+--        self.env.state = None
+--        self.env.info_dict = {}
+--        self.env.serving_player = "B"
+--        self._score_baseline = {"A": 0, "B": 0}
+--        output_rows_before = int(len(self.env.output))
+--        reset_result = self.env.reset()
+--        if not isinstance(reset_result, (tuple, list)) or len(reset_result) != 4:
+--            raise WorkerFault(
+--                "native_state_error", "CoachAI reset must return (state, info, done, launch)", fatal=True,
+--                details={"return_type": type(reset_result).__name__, "return_length": len(reset_result) if isinstance(reset_result, (tuple, list)) else None},
+--            )
+--        state, info, done, launch = reset_result
+--        self._state, self._info, self._launch = state, info, bool(launch)
+--        if self._launch:
+--            raise WorkerFault("unsupported_condition", "B-serve reset unexpectedly left A in launch/service state", fatal=True)
+--        if done:
+--            self._terminated = True
+--            terminal = self._resolve_terminal()
+-+        max_retries = options.get("max_reset_retries", self.max_reset_retries)
+-+        if isinstance(max_retries, bool) or not isinstance(max_retries, numbers.Integral) or int(max_retries) < 0:
+-+            raise WorkerFault("protocol_violation", "max_reset_retries must be a non-negative integer")
+-+        max_retries = int(max_retries)
+-+
+-+        score_rng = random.Random(self._episode_seed)
+-+        if bool(options.get("sample_score", False)):
+-+            init_score_a = score_rng.randint(0, 20)
+-+            init_score_b = score_rng.randint(0, 20)
+-+        else:
+-+            init_score_a = options.get("score_a", 0)
+-+            init_score_b = options.get("score_b", 0)
+-+        for name, val in (("score_a", init_score_a), ("score_b", init_score_b)):
+-+            if isinstance(val, bool) or not isinstance(val, numbers.Integral) or not 0 <= int(val) <= 20:
+-+                raise WorkerFault("protocol_violation", f"{name} must be an integer in [0, 20]")
+-+        init_score_a, init_score_b = int(init_score_a), int(init_score_b)
+-+        init_round = options.get("round", init_score_a + init_score_b + 1)
+-+        if isinstance(init_round, bool) or not isinstance(init_round, numbers.Integral) or int(init_round) < 1:
+-+            raise WorkerFault("protocol_violation", "round must be a positive integer")
+-+        init_round = int(init_round)
+-+
+-+        last_payload: dict[str, Any] | None = None
+-+        for attempt in range(max_retries + 1):
+-+            attempt_seed = derive_reset_retry_seed(self._episode_seed, attempt)
+-+            self._policy_decisions = 0
+-+            self._fallback_counter = 0
+-+            self._terminated = False
+-+            self._truncated = False
+-             self._ready = False
+--            self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
+--            return self._state_payload(
+--                status="terminal_without_policy", reset_return_length=4,
+-+            self._mask = None
+-+            self._mask_evaluation = None
+-+            self._seed_everything(attempt_seed)
+-+
+-+            # Truncate previous episode rows from env.output so memory and step
+-+            # slice latency stay O(rally_length) rather than growing O(N^2).
+-+            if hasattr(self.env, "output") and hasattr(self.env.output, "iloc"):
+-+                self.env.output = self.env.output.iloc[0:0].copy()
+-+
+-+            self.env.score_a = init_score_a
+-+            self.env.score_b = init_score_b
+-+            self.env.pre_score_a = init_score_a
+-+            self.env.pre_score_b = init_score_b
+-+            self.env.round = init_round
+-+            self.env.match = 1
+-+            self.env.state = None
+-+            self.env.info_dict = {}
+-+            self.env.serving_player = "B"
+-+            self._score_baseline = {"A": init_score_a, "B": init_score_b}
+-+            output_rows_before = int(len(self.env.output))
+-+            reset_result = self.env.reset()
+-+            if not isinstance(reset_result, (tuple, list)) or len(reset_result) != 4:
+-+                raise WorkerFault(
+-+                    "native_state_error", "CoachAI reset must return (state, info, done, launch)", fatal=True,
+-+                    details={"return_type": type(reset_result).__name__, "return_length": len(reset_result) if isinstance(reset_result, (tuple, list)) else None},
+-+                )
+-+            state, info, done, launch = reset_result
+-+            self._state, self._info, self._launch = state, info, bool(launch)
+-+            if self._launch:
+-+                raise WorkerFault("unsupported_condition", "B-serve reset unexpectedly left A in launch/service state", fatal=True)
+-+            if done:
+-+                self._terminated = True
+-+                terminal = self._resolve_terminal(fallback_occurred=False)
+-+                self._ready = False
+-+                self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
+-+                last_payload = self._state_payload(
+-+                    status="terminal_without_policy", reset_return_length=4,
+-+                    reset_output_rows_added=int(len(self.env.output)) - output_rows_before,
+-+                    internal_native_transitions=0, native_reward_trace=[], fallback_events=[],
+-+                    terminal=terminal, no_policy_rally=True,
+-+                )
+-+                if attempt < max_retries:
+-+                    continue
+-+                return last_payload
+-+
+-+            # Empty masks are resolved internally before any state is exposed to PPO.
+-+            fallback_events: list[dict[str, Any]] = []
+-+            native_rewards: list[float] = []
+-+            transitions = self._advance_to_policy_state(
+-+                fallback_events=fallback_events,
+-+                native_rewards=native_rewards,
+-+                decision_index=1,
+-+            )
+-+            terminal = self._resolve_terminal(fallback_occurred=bool(fallback_events)) if self._terminated else None
+-+            status = "ready_for_policy" if self._ready else "terminal_without_policy"
+-+            last_payload = self._state_payload(
+-+                status=status,
+-+                reset_return_length=4,
+-                 reset_output_rows_added=int(len(self.env.output)) - output_rows_before,
+--                internal_native_transitions=0, native_reward_trace=[], fallback_events=[],
+--                terminal=terminal, no_policy_rally=True,
+-+                internal_native_transitions=transitions,
+-+                native_reward_trace=native_rewards,
+-+                fallback_events=fallback_events,
+-+                terminal=terminal,
+-+                no_policy_rally=bool(self._terminated and self._policy_decisions == 0),
+-             )
+--
+--        # Empty masks are resolved internally before any state is exposed to PPO.
+--        fallback_events: list[dict[str, Any]] = []
+--        native_rewards: list[float] = []
+--        transitions = self._advance_to_policy_state(
+--            fallback_events=fallback_events,
+--            native_rewards=native_rewards,
+--            decision_index=1,
+--        )
+--        terminal = self._resolve_terminal() if self._terminated else None
+--        status = "ready_for_policy" if self._ready else "terminal_without_policy"
+--        return self._state_payload(
+--            status=status,
+--            reset_return_length=4,
+--            reset_output_rows_added=int(len(self.env.output)) - output_rows_before,
+--            internal_native_transitions=transitions,
+--            native_reward_trace=native_rewards,
+--            fallback_events=fallback_events,
+--            terminal=terminal,
+--            no_policy_rally=bool(self._terminated and self._policy_decisions == 0),
+--        )
+-+            if self._ready or attempt >= max_retries:
+-+                return last_payload
+-+        assert last_payload is not None
+-+        return last_payload
+- 
+-     def step(self, payload: Mapping[str, Any]) -> dict[str, Any]:
+-         if self._episode_seed is None or self._state is None:
+-@@ -681,13 +794,14 @@
+-         if not self._ready or self._mask is None or not bool(self._mask.any()):
+-             raise WorkerFault("worker_not_ready", "worker is not waiting at a policy decision state")
+-         action_id = payload.get("action_id")
+--        if isinstance(action_id, bool) or not isinstance(action_id, int) or not 0 <= action_id < N_ACTIONS:
+-+        if isinstance(action_id, bool) or not isinstance(action_id, numbers.Integral) or not 0 <= int(action_id) < N_ACTIONS:
+-             raise WorkerFault("invalid_action_id", f"action_id must be an integer in [0,{N_ACTIONS})")
+-+        action_id = int(action_id)
+-         if not bool(self._mask[action_id]):
+-             raise WorkerFault("masked_action_selected", f"action_id {action_id} is false in the current mask")
+- 
+-         decision_index = self._policy_decisions + 1
+--        native_action = self._build_policy_action(action_id, self._state)
+-+        native_action = self._build_policy_action(action_id, self._state, decision_index=decision_index)
+-         output_rows_before = int(len(self.env.output))
+-         try:
+-             transition = self._execute_a_transition(native_action, self._launch, fallback_reason=None, event_rng=None)
+-@@ -701,7 +815,7 @@
+-         self._state, self._info, self._launch = transition.next_state, transition.info, transition.launch
+-         if transition.done:
+-             self._terminated = True
+--            terminal = self._resolve_terminal()
+-+            terminal = self._resolve_terminal(fallback_occurred=False)
+-             self._ready = False
+-             self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
+-             return self._transition_payload(
+-@@ -729,7 +843,7 @@
+-             decision_index=self._policy_decisions + 1,
+-         )
+-         internal_transitions += extra_transitions
+--        terminal = self._resolve_terminal() if self._terminated else None
+-+        terminal = self._resolve_terminal(fallback_occurred=bool(fallback_events)) if self._terminated else None
+- 
+-         # A policy-decision limit is a safety watchdog, not a badminton rule.
+-         # Resolve the complete decision epoch (including automatic fallbacks)
+-@@ -857,6 +971,16 @@
+-                 raise WorkerFault("native_state_error", "Native shot constraint vector is not Boolean", fatal=True)
+-             allowed_ids = [int(index) + 1 for index in self.np.flatnonzero(shot_vector)]
+-+            legal_recoveries: list[int] = []
+-+            for recovery_id, recovery in enumerate(self._recovery_points):
+-+                corrected = self.constraint.correct_position(hit[0], hit[1], recovery[0], recovery[1])
+-+                fixed = self.np.allclose(
+-+                    self.np.asarray(corrected, dtype=self.np.float64),
+-+                    self.np.asarray(recovery, dtype=self.np.float64),
+-+                    rtol=0.0, atol=1e-8,
+-+                )
+-+                if fixed:
+-+                    legal_recoveries.append(recovery_id)
+-             for family_id, item in FAMILY_MAP.items():
+-                 native_id = int(item["native_id"])
+-                 if not bool(shot_vector[native_id - 1]):
+-@@ -869,16 +993,6 @@
+-                     landing_id for landing_id, zone in enumerate(self._landing_zones)
+-                     if int(landing_distribution[zone - 1]) == 1
+-                 ]
+--                legal_recoveries: list[int] = []
+--                for recovery_id, recovery in enumerate(self._recovery_points):
+--                    corrected = self.constraint.correct_position(hit[0], hit[1], recovery[0], recovery[1])
+--                    fixed = self.np.allclose(
+--                        self.np.asarray(corrected, dtype=self.np.float64),
+--                        self.np.asarray(recovery, dtype=self.np.float64),
+--                        rtol=0.0, atol=1e-8,
+--                    )
+--                    if fixed:
+--                        legal_recoveries.append(recovery_id)
+-                 for landing_id in legal_landings:
+-                     landing = self._landing_points[landing_id]
+-                     for recovery_id in legal_recoveries:
+-@@ -925,17 +1039,50 @@
+-         return 5
+- 
+--    def _build_policy_action(self, action_id: int, state: Any) -> tuple[Any, ...]:
+-+    def _build_policy_action(self, action_id: int, state: Any, *, decision_index: int = 1) -> tuple[Any, ...]:
+-         family_id, landing_id, recovery_id = decode_action(action_id)
+-         item = FAMILY_MAP.get(family_id)
+-         if item is None:
+-             name = UNSUPPORTED_FAMILIES.get(family_id, f"family_{family_id}")
+-             raise WorkerFault("invalid_action_id", f"Canonical family {name} is unsupported in B2 v1")
+-         hit = (float(state[3][0]), float(state[3][1]))
+-+        landing = self._landing_points[landing_id]
+-+        recovery = self._recovery_points[recovery_id]
+-+        model_id = int(item["model_id"])
+-+
+-+        if self.cell_jitter_fraction > 0.0 and self._episode_seed is not None:
+-+            jitter_seed = derive_action_jitter_seed(
+-+                self.worker_seed, self._episode_seed, self._episode_index, decision_index, action_id
+-+            )
+-+            jrng = random.Random(jitter_seed)
+-+            scale = min(max(self.cell_jitter_fraction, 0.0), 0.45)
+-+            dx_l = (2.0 * NATIVE_HALF_WIDTH / 3.0) * scale
+-+            dy_l = (NATIVE_HALF_LENGTH / 5.0) * scale
+-+            dx_r = (2.0 * NATIVE_HALF_WIDTH / 3.0) * scale
+-+            dy_r = (NATIVE_HALF_LENGTH / 3.0) * scale
+-+            j_landing = (
+-+                float(landing[0] + jrng.uniform(-dx_l, dx_l)),
+-+                float(landing[1] + jrng.uniform(-dy_l, dy_l)),
+-+            )
+-+            j_recovery = (
+-+                float(recovery[0] + jrng.uniform(-dx_r, dx_r)),
+-+                float(recovery[1] + jrng.uniform(-dy_r, dy_r)),
+-+            )
+-+            corrected = self.constraint.correct_position(hit[0], hit[1], j_recovery[0], j_recovery[1])
+-+            if (
+-+                int(self.constraint.coordinate_to_block(j_landing, "opp")) == self._landing_zones[landing_id]
+-+                and int(self.constraint.coordinate_to_block(j_recovery, "self")) == self._recovery_zones[recovery_id]
+-+                and self.np.allclose(corrected, j_recovery, rtol=0.0, atol=1e-8)
+-+            ):
+-+                candidate = _build_candidate(model_id, hit, j_landing, j_recovery)
+-+                if self.env.check_out_violation(candidate, state, False) is None:
+-+                    return candidate
+-+
+-         return _build_candidate(
+--            int(item["model_id"]), hit,
+--            self._landing_points[landing_id],
+--            self._recovery_points[recovery_id],
+-+            model_id, hit,
+-+            landing,
+-+            recovery,
+-         )
+- 
+-     def _native_context(self, state: Any, evaluation: Mapping[str, Any]) -> dict[str, Any]:
+-@@ -990,9 +1137,10 @@
+-             if not allowed_for_selection:
+-                 raise WorkerFault("native_state_error", "Geometry fallback has no allowed mapped native shot", fatal=True)
+-             native_id = int(rng.choice(allowed_for_selection))
+-             model_id = NATIVE_TO_MODEL[native_id]
+-+            # Prefer landing zones within the canonical policy grid first so the
+-+            # fallback does not unnecessarily introduce out-of-vocabulary court zones.
+-             valid_landing = [
+-                 index + 1 for index, valid in enumerate(self.constraint.action_distribution_2[native_id])
+--                if int(valid) == 1 and (index + 1) not in self._policy_landing_zones
+-+                if int(valid) == 1 and (index + 1) in self._policy_landing_zones
+-             ]
+-             if not valid_landing:
+-                 valid_landing = [
+-@@ -1009,7 +1157,10 @@
+-         hit = (float(state[3][0]), float(state[3][1]))
+-         player = (float(state[1][0]), float(state[1][1]))
+-         recovery = tuple(float(value) for value in self.constraint.correct_position(hit[0], hit[1], player[0], player[1]))
+-         projected = self.constraint.correct_position(hit[0], hit[1], recovery[0], recovery[1])
+-+        if not self.np.allclose(projected, recovery, rtol=0.0, atol=1e-8):
+-+            recovery = tuple(float(value) for value in projected)
+-+            projected = self.constraint.correct_position(hit[0], hit[1], recovery[0], recovery[1])
+-         if not self.np.allclose(projected, recovery, rtol=0.0, atol=1e-8):
+-             raise WorkerFault("native_state_error", "Fallback recovery is not a fixed point of correct_position", fatal=True)
+-         if int(self.constraint.coordinate_to_block(landing, "opp")) != native_landing_zone:
+-@@ -1052,6 +1203,7 @@
+-                     target_state=state_before,
+-                     torch_module=self.torch,
+-                     np_module=self.np,
+-                     event_rng=event_rng,
+-+                    target_action=action,
+-                 )
+-                 with capture:
+-                     step_result = self.env.step(action, is_launch=bool(launch))
+-@@ -1283,7 +1435,7 @@
+-         winner = self._winner_from_delta(delta)
+-         if winner is None:
+-             raise WorkerFault("native_state_error", f"Terminal rally has ambiguous score delta: {dict(delta)}", fatal=True)
+-         return 1.0 if winner == "A" else -1.0
+- 
+--    def _resolve_terminal(self) -> dict[str, Any]:
+-+    def _resolve_terminal(self, *, fallback_occurred: bool = False) -> dict[str, Any]:
+-         score = {"A": int(self.env.score_a), "B": int(self.env.score_b)}
+-         delta = {side: score[side] - self._score_baseline[side] for side in ("A", "B")}
+-         winner = self._winner_from_delta(delta)
+-@@ -1302,13 +1454,18 @@
+-                 "Score-delta winner disagrees with CoachAI final rally record",
+-                 fatal=True,
+-                 details={"winner_side": winner, "score_delta": delta, "recorded_winner": recorded_winner, "expected_name": expected_name},
+-             )
+-+        raw_reward = 1.0 if winner == "A" else -1.0
+-+        effective_reward = (
+-+            float(self.fallback_win_reward)
+-+            if (winner == "A" and fallback_occurred)
+-+            else raw_reward
+-+        )
+-         return {
+-             "winner_side": winner,
+-             "winner_name": expected_name,
+-             "recorded_winner_name": recorded_winner,
+-             "score_before": dict(self._score_baseline),
+-             "score_after": score,
+-             "score_delta": delta,
+--            "b2_rally_reward": 1.0 if winner == "A" else -1.0,
+-+            "raw_rally_reward": raw_reward,
+-+            "terminated_after_fallback": bool(fallback_occurred),
+-+            "b2_rally_reward": effective_reward,
+-         }
+- 
+-     def _observation(self) -> dict[str, Any]:
+-@@ -1462,13 +1619,21 @@
+-     parser.add_argument("--fallback-events", type=Path, default=Path("reports/b2_fallback_events.jsonl"))
+-     parser.add_argument("--max-decisions", type=int, default=64)
+-     parser.add_argument("--max-internal-transitions", type=int, default=64)
+-+    parser.add_argument("--max-reset-retries", type=int, default=0)
+-+    parser.add_argument("--cell-jitter-fraction", type=float, default=0.0)
+-+    parser.add_argument("--fallback-win-reward", type=float, default=1.0)
+-     parser.add_argument("--max-line-bytes", type=int, default=DEFAULT_MAX_LINE_BYTES)
+-     return parser.parse_args(argv)
+- 
+- 
+- def main(argv: list[str] | None = None) -> int:
+-     args = parse_args(argv)
+-     if args.max_decisions <= 0 or args.max_internal_transitions <= 0:
+-         print("[coachai_worker] max decision/transition limits must be positive", file=sys.stderr, flush=True)
+-         return 2
+-+    if args.max_reset_retries < 0 or not (0.0 <= args.cell_jitter_fraction <= 0.45):
+-+        print("[coachai_worker] invalid reset retries or cell jitter fraction", file=sys.stderr, flush=True)
+-+        return 2
+-     worker = CoachAIWorker(args)
+-+    atexit.register(worker.close)
+-+
+-+    def _handle_signal(signum: int, _frame: Any) -> None:
+-+        worker.close()
+-+        raise SystemExit(128 + signum)
+-+
+-+    signal.signal(signal.SIGTERM, _handle_signal)
+-+    signal.signal(signal.SIGINT, _handle_signal)
+-     try:
+-         worker.initialize()
+diff --git a/patches/b2_worker_fix.patch b/patches/b2_worker_fix.patch
+index 2c077c3..0639318 100644
+--- a/patches/b2_worker_fix.patch
++++ b/patches/b2_worker_fix.patch
+@@ -1,6 +1,7 @@
++diff --git a/src/badminton_rl/adapters/worker_client.py b/src/badminton_rl/adapters/worker_client.py
+ --- a/src/badminton_rl/adapters/worker_client.py
+ +++ b/src/badminton_rl/adapters/worker_client.py
+-@@ -78,6 +78,9 @@
++@@ -90,8 +90,12 @@
+      expected_coachai_commit: str = "4fd05934f172eec16c74d05c2902983b64c8521e"
+      fallback_events_path: Path | None = None
+      stderr_log_path: Path | None = None
+@@ -13,7 +14,7 @@
+      max_line_bytes: int = DEFAULT_MAX_LINE_BYTES
+      extra_cli_args: tuple[str, ...] = field(default_factory=tuple)
+  
+-@@ -91,18 +94,25 @@
++@@ -105,12 +109,17 @@
+          for name, value in (
+              ("max_decisions", self.max_decisions),
+              ("max_internal_transitions", self.max_internal_transitions),
+@@ -31,8 +32,7 @@
+          if self.max_line_bytes < 1024:
+              raise ValueError("max_line_bytes must be at least 1024")
+          root = Path(self.project_root).expanduser().resolve()
+-         worker_script = (
+-             Path(self.worker_script).expanduser().resolve()
++@@ -119,15 +128,16 @@
+              if self.worker_script is not None
+              else root / "src" / "badminton_rl" / "adapters" / "coachai_worker.py"
+          )
+@@ -51,7 +51,7 @@
+          )
+          return WorkerConfig(
+              project_root=root,
+-@@ -117,8 +127,12 @@
++@@ -146,8 +156,12 @@
+              expected_coachai_commit=self.expected_coachai_commit,
+              fallback_events_path=fallback_log,
+              stderr_log_path=stderr_log,
+@@ -64,7 +64,7 @@
+              max_line_bytes=int(self.max_line_bytes),
+              extra_cli_args=tuple(self.extra_cli_args),
+          )
+-@@ -349,6 +363,9 @@
++@@ -381,6 +395,9 @@
+              "--fallback-events", str(cfg.fallback_events_path),
+              "--max-decisions", str(cfg.max_decisions),
+              "--max-internal-transitions", str(cfg.max_internal_transitions),
+@@ -74,7 +74,8 @@
+              "--max-line-bytes", str(cfg.max_line_bytes),
+              *cfg.extra_cli_args,
+          ]
+-@@ -439,6 +456,12 @@
++@@ -484,6 +501,11 @@
++             raise WorkerCrashedError("Worker process is unavailable")
+          if proc.poll() is not None:
+              raise WorkerCrashedError(self._crash_message("Worker exited before request"))
+ +        while True:
+@@ -85,39 +86,39 @@
+          self._request_counter += 1
+          request_id = f"w{proc.pid}-r{self._request_counter:08d}"
+          request = make_request(request_id, op, payload)
+-@@ -495,6 +518,11 @@
++@@ -546,6 +568,11 @@
+          if proc is None:
+              return
+-+        try:
++         try:
+ +            if proc.stdin is not None:
+ +                proc.stdin.close()
+ +        except OSError:
+ +            pass
+-         try:
+++        try:
+              if proc.poll() is None and force:
+                  proc.terminate()
+                  try:
+-                     proc.wait(timeout=1.0)
+-                 except subprocess.TimeoutExpired:
+-                     proc.kill()
++@@ -555,17 +582,17 @@
+                      proc.wait(timeout=1.0)
+          except OSError:
+              pass
+ -        for stream in (proc.stdin, proc.stdout, proc.stderr):
+--            try:
+--                if stream is not None:
+--                    stream.close()
+--            except OSError:
+--                pass
+-         for thread in (self._stdout_thread, self._stderr_thread):
+-             if thread is not None and thread.is_alive() and thread is not threading.current_thread():
+-                 thread.join(timeout=0.5)
+-         self._stdout_thread = None
+-         self._stderr_thread = None
+++        for thread in (self._stdout_thread, self._stderr_thread):
+++            if thread is not None and thread.is_alive() and thread is not threading.current_thread():
+++                thread.join(timeout=0.5)
+++        self._stdout_thread = None
+++        self._stderr_thread = None
+ +        for stream in (proc.stdout, proc.stderr):
+-+            try:
+-+                if stream is not None:
+-+                    stream.close()
+-+            except OSError:
+-+                pass
+-
++             try:
++                 if stream is not None:
++                     stream.close()
++             except OSError:
++                 pass
++-        for thread in (self._stdout_thread, self._stderr_thread):
++-            if thread is not None and thread.is_alive() and thread is not threading.current_thread():
++-                thread.join(timeout=0.5)
++-        self._stdout_thread = None
++-        self._stderr_thread = None
++ 
++     def close(self) -> None:
++         with self._lock:
+diff --git a/src/badminton_rl/adapters/coachai_worker.py b/src/badminton_rl/adapters/coachai_worker.py
+index c16df78..f962105 100644
 --- a/src/badminton_rl/adapters/coachai_worker.py
 +++ b/src/badminton_rl/adapters/coachai_worker.py
-@@ -16,12 +16,14 @@
+@@ -17,6 +17,7 @@ an automatically cleaned temporary directory owned by this process.
  from __future__ import annotations
  
  import argparse
@@ -8,7 +684,7 @@
  import hashlib
  import importlib
  import json
- import math
+@@ -24,6 +25,7 @@ import math
  import numbers
  import os
  import random
@@ -16,7 +692,7 @@
  import subprocess
  import sys
  import tempfile
-@@ -78,10 +80,6 @@
+@@ -92,11 +94,6 @@ REASON_TAXONOMY_GAP = "B2_TAXONOMY_GAP"
  REASON_GEOMETRY_EMPTY = "NO_JOINT_ACTION_AFTER_GEOMETRY"
  
  
@@ -28,7 +704,7 @@
  def _describe_history_structure(value, depth=0):
      if depth >= 5:
          return {"type": type(value).__name__}
-@@ -152,13 +150,47 @@
+@@ -181,16 +178,51 @@ def decode_action(action_id: int) -> tuple[int, int, int]:
      return family_id, landing_id, recovery_id
  
  
@@ -52,9 +728,9 @@
 +        base = f"{base}|{int(episode_seed)}"
 +    material = base.encode("utf-8")
      digest = hashlib.blake2b(material, digest_size=8, person=b"B2-fallback-v1").digest()
-+    return int.from_bytes(digest, byteorder="big", signed=False)
-+
-+
+     return int.from_bytes(digest, byteorder="big", signed=False)
+ 
+ 
 +def derive_reset_retry_seed(base_seed: int, attempt: int) -> int:
 +    """Deterministic seed derivation when resampling a no-policy opening rally."""
 +    if int(attempt) == 0:
@@ -77,10 +753,13 @@
 +        f"{int(episode_index)}|{int(decision_index)}|{int(action_id)}"
 +    ).encode("utf-8")
 +    digest = hashlib.blake2b(material, digest_size=8, person=b"B2-jitter-v1").digest()
-     return int.from_bytes(digest, byteorder="big", signed=False)
- 
- 
-@@ -188,7 +220,16 @@
++    return int.from_bytes(digest, byteorder="big", signed=False)
++
++
+ def classify_empty_mask_reason(
+     *, contact_reachable: bool, contact_zone_valid: bool,
+     native_allowed_ids: list[int], mapped_native_ids: set[int],
+@@ -225,7 +257,17 @@ def _json_safe(value: Any) -> Any:
      elif hasattr(value, "tolist") and callable(value.tolist):
          value = value.tolist()
      if isinstance(value, dict):
@@ -99,7 +778,7 @@
      if isinstance(value, (tuple, list)):
          return [_json_safe(item) for item in value]
      if hasattr(value, "item") and callable(value.item):
-@@ -242,10 +283,19 @@
+@@ -291,10 +333,12 @@ class OneShotValidationCapture:
      """
  
      def __init__(self, *, constraint: Any, constraint_module: Any, target_state: Any,
@@ -113,8 +792,7 @@
          self.torch = torch_module
          self.np = np_module
          self.event_rng = event_rng
-@@ -257,7 +307,18 @@
- 
+@@ -308,6 +352,16 @@ class OneShotValidationCapture:
      def __enter__(self) -> "OneShotValidationCapture":
          def wrapper(state_arg: Any, action_arg: Any) -> Any:
              matches = _state_signature(state_arg) == self.target_signature
@@ -131,7 +809,7 @@
              if not matches:
                  self.nonmatching_calls += 1
                  return self.original(state_arg, action_arg)
-@@ -347,6 +408,9 @@
+@@ -408,6 +462,9 @@ class CoachAIWorker:
          self.worker_seed = int(args.worker_seed)
          self.max_decisions = int(args.max_decisions)
          self.max_internal_transitions = int(args.max_internal_transitions)
@@ -141,7 +819,7 @@
          self.fallback_events_path = Path(args.fallback_events).expanduser().resolve()
          self.np: Any = None
          self.torch: Any = None
-@@ -612,7 +676,14 @@
+@@ -801,7 +858,15 @@ class CoachAIWorker:
          options = payload.get("options", {})
          if not isinstance(options, dict):
              raise WorkerFault("protocol_violation", "reset options must be an object")
@@ -158,7 +836,7 @@
          if unexpected:
              raise WorkerFault("unsupported_condition", f"Unsupported reset options: {sorted(unexpected)}")
          server = options.get("server", "B")
-@@ -625,53 +696,95 @@
+@@ -815,70 +880,107 @@ class CoachAIWorker:
          self._episode_index = int(episode_index)
          self._episode_seed = int(seed)
          self._episode_id = str(payload.get("episode_id") or f"b2-episode-{self._episode_index:06d}")
@@ -238,6 +916,9 @@
 +            if hasattr(self.env, "output") and hasattr(self.env.output, "iloc"):
 +                self.env.output = self.env.output.iloc[0:0].copy()
 +
++            # CoachAI+ reset increments rally and initializes RallyNet's new history.
++            # Resource objects (RallyNet, constraint tables, BaseServe, output frame)
++            # remain persistent across episodes; only rally-scoped state is cleared.
 +            self.env.score_a = init_score_a
 +            self.env.score_b = init_score_b
 +            self.env.pre_score_a = init_score_a
@@ -324,7 +1005,7 @@
  
      def step(self, payload: Mapping[str, Any]) -> dict[str, Any]:
          if self._episode_seed is None or self._state is None:
-@@ -681,13 +794,14 @@
+@@ -888,13 +990,14 @@ class CoachAIWorker:
          if not self._ready or self._mask is None or not bool(self._mask.any()):
              raise WorkerFault("worker_not_ready", "worker is not waiting at a policy decision state")
          action_id = payload.get("action_id")
@@ -341,7 +1022,7 @@
          output_rows_before = int(len(self.env.output))
          try:
              transition = self._execute_a_transition(native_action, self._launch, fallback_reason=None, event_rng=None)
-@@ -701,7 +815,7 @@
+@@ -909,7 +1012,7 @@ class CoachAIWorker:
          self._state, self._info, self._launch = transition.next_state, transition.info, transition.launch
          if transition.done:
              self._terminated = True
@@ -350,7 +1031,7 @@
              self._ready = False
              self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
              return self._transition_payload(
-@@ -729,7 +843,7 @@
+@@ -938,7 +1041,7 @@ class CoachAIWorker:
              decision_index=self._policy_decisions + 1,
          )
          internal_transitions += extra_transitions
@@ -359,7 +1040,8 @@
  
          # A policy-decision limit is a safety watchdog, not a badminton rule.
          # Resolve the complete decision epoch (including automatic fallbacks)
-@@ -857,6 +971,16 @@
+@@ -1105,6 +1208,16 @@ class CoachAIWorker:
+             if self.np.any((shot_vector != 0) & (shot_vector != 1)):
                  raise WorkerFault("native_state_error", "Native shot constraint vector is not Boolean", fatal=True)
              allowed_ids = [int(index) + 1 for index in self.np.flatnonzero(shot_vector)]
 +            legal_recoveries: list[int] = []
@@ -375,7 +1057,7 @@
              for family_id, item in FAMILY_MAP.items():
                  native_id = int(item["native_id"])
                  if not bool(shot_vector[native_id - 1]):
-@@ -869,16 +993,6 @@
+@@ -1116,16 +1229,6 @@ class CoachAIWorker:
                      landing_id for landing_id, zone in enumerate(self._landing_zones)
                      if int(landing_distribution[zone - 1]) == 1
                  ]
@@ -392,7 +1074,8 @@
                  for landing_id in legal_landings:
                      landing = self._landing_points[landing_id]
                      for recovery_id in legal_recoveries:
-@@ -925,17 +1039,50 @@
+@@ -1172,18 +1275,46 @@ class CoachAIWorker:
+             return 4
          return 5
  
 -    def _build_policy_action(self, action_id: int, state: Any) -> tuple[Any, ...]:
@@ -403,6 +1086,11 @@
              name = UNSUPPORTED_FAMILIES.get(family_id, f"family_{family_id}")
              raise WorkerFault("invalid_action_id", f"Canonical family {name} is unsupported in B2 v1")
          hit = (float(state[3][0]), float(state[3][1]))
+-        return _build_candidate(
+-            int(item["model_id"]), hit,
+-            self._landing_points[landing_id],
+-            self._recovery_points[recovery_id],
+-        )
 +        landing = self._landing_points[landing_id]
 +        recovery = self._recovery_points[recovery_id]
 +        model_id = int(item["model_id"])
@@ -435,18 +1123,11 @@
 +                if self.env.check_out_violation(candidate, state, False) is None:
 +                    return candidate
 +
-         return _build_candidate(
--            int(item["model_id"]), hit,
--            self._landing_points[landing_id],
--            self._recovery_points[recovery_id],
-+            model_id, hit,
-+            landing,
-+            recovery,
-         )
++        return _build_candidate(model_id, hit, landing, recovery)
  
      def _native_context(self, state: Any, evaluation: Mapping[str, Any]) -> dict[str, Any]:
-@@ -990,9 +1137,10 @@
-             if not allowed_for_selection:
+         return {
+@@ -1248,9 +1379,11 @@ class CoachAIWorker:
                  raise WorkerFault("native_state_error", "Geometry fallback has no allowed mapped native shot", fatal=True)
              native_id = int(rng.choice(allowed_for_selection))
              model_id = NATIVE_TO_MODEL[native_id]
@@ -459,8 +1140,7 @@
              ]
              if not valid_landing:
                  valid_landing = [
-@@ -1009,7 +1157,10 @@
-         hit = (float(state[3][0]), float(state[3][1]))
+@@ -1269,6 +1402,9 @@ class CoachAIWorker:
          player = (float(state[1][0]), float(state[1][1]))
          recovery = tuple(float(value) for value in self.constraint.correct_position(hit[0], hit[1], player[0], player[1]))
          projected = self.constraint.correct_position(hit[0], hit[1], recovery[0], recovery[1])
@@ -470,8 +1150,7 @@
          if not self.np.allclose(projected, recovery, rtol=0.0, atol=1e-8):
              raise WorkerFault("native_state_error", "Fallback recovery is not a fixed point of correct_position", fatal=True)
          if int(self.constraint.coordinate_to_block(landing, "opp")) != native_landing_zone:
-@@ -1052,6 +1203,7 @@
-                     target_state=state_before,
+@@ -1316,6 +1452,7 @@ class CoachAIWorker:
                      torch_module=self.torch,
                      np_module=self.np,
                      event_rng=event_rng,
@@ -479,9 +1158,7 @@
                  )
                  with capture:
                      step_result = self.env.step(action, is_launch=bool(launch))
-@@ -1283,7 +1435,7 @@
-         winner = self._winner_from_delta(delta)
-         if winner is None:
+@@ -1642,7 +1779,7 @@ class CoachAIWorker:
              raise WorkerFault("native_state_error", f"Terminal rally has ambiguous score delta: {dict(delta)}", fatal=True)
          return 1.0 if winner == "A" else -1.0
  
@@ -490,8 +1167,7 @@
          score = {"A": int(self.env.score_a), "B": int(self.env.score_b)}
          delta = {side: score[side] - self._score_baseline[side] for side in ("A", "B")}
          winner = self._winner_from_delta(delta)
-@@ -1302,13 +1454,18 @@
-                 "Score-delta winner disagrees with CoachAI final rally record",
+@@ -1663,6 +1800,12 @@ class CoachAIWorker:
                  fatal=True,
                  details={"winner_side": winner, "score_delta": delta, "recorded_winner": recorded_winner, "expected_name": expected_name},
              )
@@ -504,7 +1180,7 @@
          return {
              "winner_side": winner,
              "winner_name": expected_name,
-             "recorded_winner_name": recorded_winner,
+@@ -1670,7 +1813,9 @@ class CoachAIWorker:
              "score_before": dict(self._score_baseline),
              "score_after": score,
              "score_delta": delta,
@@ -515,7 +1191,7 @@
          }
  
      def _observation(self) -> dict[str, Any]:
-@@ -1462,13 +1619,21 @@
+@@ -1855,6 +2000,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
      parser.add_argument("--fallback-events", type=Path, default=Path("reports/b2_fallback_events.jsonl"))
      parser.add_argument("--max-decisions", type=int, default=64)
      parser.add_argument("--max-internal-transitions", type=int, default=64)
@@ -525,9 +1201,7 @@
      parser.add_argument("--max-line-bytes", type=int, default=DEFAULT_MAX_LINE_BYTES)
      return parser.parse_args(argv)
  
- 
- def main(argv: list[str] | None = None) -> int:
-     args = parse_args(argv)
+@@ -1864,7 +2012,18 @@ def main(argv: list[str] | None = None) -> int:
      if args.max_decisions <= 0 or args.max_internal_transitions <= 0:
          print("[coachai_worker] max decision/transition limits must be positive", file=sys.stderr, flush=True)
          return 2
@@ -545,3 +1219,129 @@
 +    signal.signal(signal.SIGINT, _handle_signal)
      try:
          worker.initialize()
+         print(
+diff --git a/src/badminton_rl/adapters/worker_client.py b/src/badminton_rl/adapters/worker_client.py
+index 84d1d24..eb142b8 100644
+--- a/src/badminton_rl/adapters/worker_client.py
++++ b/src/badminton_rl/adapters/worker_client.py
+@@ -90,8 +90,12 @@ class WorkerConfig:
+     expected_coachai_commit: str = "4fd05934f172eec16c74d05c2902983b64c8521e"
+     fallback_events_path: Path | None = None
+     stderr_log_path: Path | None = None
++    worker_id: str | None = None
+     max_decisions: int = 64
+     max_internal_transitions: int = 64
++    max_reset_retries: int = 0
++    cell_jitter_fraction: float = 0.0
++    fallback_win_reward: float = 1.0
+     max_line_bytes: int = DEFAULT_MAX_LINE_BYTES
+     extra_cli_args: tuple[str, ...] = field(default_factory=tuple)
+ 
+@@ -105,12 +109,17 @@ class WorkerConfig:
+         for name, value in (
+             ("max_decisions", self.max_decisions),
+             ("max_internal_transitions", self.max_internal_transitions),
++            ("max_reset_retries", self.max_reset_retries),
+             ("max_line_bytes", self.max_line_bytes),
+         ):
+             if isinstance(value, bool) or not isinstance(value, numbers.Integral):
+                 raise ValueError(f"{name} must be an integer")
+         if self.max_decisions <= 0 or self.max_internal_transitions <= 0:
+             raise ValueError("max_decisions and max_internal_transitions must be positive")
++        if self.max_reset_retries < 0:
++            raise ValueError("max_reset_retries must be non-negative")
++        if not (0.0 <= float(self.cell_jitter_fraction) <= 0.45):
++            raise ValueError("cell_jitter_fraction must be in [0.0, 0.45]")
+         if self.max_line_bytes < 1024:
+             raise ValueError("max_line_bytes must be at least 1024")
+         root = Path(self.project_root).expanduser().resolve()
+@@ -119,15 +128,16 @@ class WorkerConfig:
+             if self.worker_script is not None
+             else root / "src" / "badminton_rl" / "adapters" / "coachai_worker.py"
+         )
++        suffix = f"_{self.worker_id}" if self.worker_id else ""
+         fallback_log = (
+             Path(self.fallback_events_path).expanduser().resolve()
+             if self.fallback_events_path is not None
+-            else root / "reports" / "b2_fallback_events.jsonl"
++            else root / "reports" / f"b2_fallback_events{suffix}.jsonl"
+         )
+         stderr_log = (
+             Path(self.stderr_log_path).expanduser().resolve()
+             if self.stderr_log_path is not None
+-            else root / "reports" / "b2_worker_stderr.log"
++            else root / "reports" / f"b2_worker_stderr{suffix}.log"
+         )
+         return WorkerConfig(
+             project_root=root,
+@@ -146,8 +156,12 @@ class WorkerConfig:
+             expected_coachai_commit=self.expected_coachai_commit,
+             fallback_events_path=fallback_log,
+             stderr_log_path=stderr_log,
++            worker_id=self.worker_id,
+             max_decisions=int(self.max_decisions),
+             max_internal_transitions=int(self.max_internal_transitions),
++            max_reset_retries=int(self.max_reset_retries),
++            cell_jitter_fraction=float(self.cell_jitter_fraction),
++            fallback_win_reward=float(self.fallback_win_reward),
+             max_line_bytes=int(self.max_line_bytes),
+             extra_cli_args=tuple(self.extra_cli_args),
+         )
+@@ -381,6 +395,9 @@ class WorkerClient:
+             "--fallback-events", str(cfg.fallback_events_path),
+             "--max-decisions", str(cfg.max_decisions),
+             "--max-internal-transitions", str(cfg.max_internal_transitions),
++            "--max-reset-retries", str(cfg.max_reset_retries),
++            "--cell-jitter-fraction", str(cfg.cell_jitter_fraction),
++            "--fallback-win-reward", str(cfg.fallback_win_reward),
+             "--max-line-bytes", str(cfg.max_line_bytes),
+             *cfg.extra_cli_args,
+         ]
+@@ -484,6 +501,11 @@ class WorkerClient:
+             raise WorkerCrashedError("Worker process is unavailable")
+         if proc.poll() is not None:
+             raise WorkerCrashedError(self._crash_message("Worker exited before request"))
++        while True:
++            try:
++                self._responses.get_nowait()
++            except queue.Empty:
++                break
+         self._request_counter += 1
+         request_id = f"w{proc.pid}-r{self._request_counter:08d}"
+         request = make_request(request_id, op, payload)
+@@ -545,6 +567,11 @@ class WorkerClient:
+         self._process = None
+         if proc is None:
+             return
++        try:
++            if proc.stdin is not None:
++                proc.stdin.close()
++        except OSError:
++            pass
+         try:
+             if proc.poll() is None and force:
+                 proc.terminate()
+@@ -555,17 +582,17 @@ class WorkerClient:
+                     proc.wait(timeout=1.0)
+         except OSError:
+             pass
+-        for stream in (proc.stdin, proc.stdout, proc.stderr):
+-            try:
+-                if stream is not None:
+-                    stream.close()
+-            except OSError:
+-                pass
+         for thread in (self._stdout_thread, self._stderr_thread):
+             if thread is not None and thread.is_alive() and thread is not threading.current_thread():
+                 thread.join(timeout=0.5)
+         self._stdout_thread = None
+         self._stderr_thread = None
++        for stream in (proc.stdout, proc.stderr):
++            try:
++                if stream is not None:
++                    stream.close()
++            except OSError:
++                pass
+ 
+     def close(self) -> None:
+         with self._lock:

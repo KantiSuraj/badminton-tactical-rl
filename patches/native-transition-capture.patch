@@ -1,0 +1,388 @@
+--- a/src/badminton_rl/adapters/coachai_worker_core.py
++++ b/src/badminton_rl/adapters/coachai_worker_core.py
+@@ -31,10 +31,36 @@
+     NATIVE_HALF_WIDTH, NATIVE_HALF_LENGTH
+ )
+ from .coachai_worker_capture import OneShotValidationCapture
++from .coachai_history_serializer import serialize_rally_history, _native_to_metres
+ 
+ class UnexpectedNativeAgentCall(RuntimeError): ...
+ class ExternalControlledAgent: ...
+-@dataclass
+-class NativeStepResult: ...
++
++@dataclass(frozen=True)
++class NativeTransitionCapture:
++    transition_index: int
++    decision_index: int
++    within_decision_index: int
++    state_before: Any
++    state_after: Any
++    info_before: Any
++    info_after: Any
++    output_rows: list[dict[str, Any]]
++    history_delta: list[Any]
++    actor: str | None
++    controller: str
++    event_source: str
++    policy_action_id: int | None
++    executed_native_action: Any | None
++    fallback_event_id: str | None
++    native_reward: float
++    done: bool
++    launch: bool
++    validator_reward: float | None = None
++    validator_corrected: bool | None = None
++    output_record_matches: bool | None = None
++    validation_capture: Any | None = None
++    score_before: dict[str, int] | None = None
++    score_after: dict[str, int] | None = None
+ 
+ class CoachAIWorker:
+@@ -69,5 +92,9 @@
+         self._policy_landing_zones: set[int] = set()
+         self._common_fallback_zones: list[int] = []
+         self._action_mapping_hash = ""
++        self._history_cursor = 0
++        self._output_cursor = 0
++        self._event_index = 0
++        self._transition_counter = 0
+ 
+     def initialize(self) -> None:
+@@ -703,6 +730,10 @@
+             self._terminated = False
+             self._truncated = False
+             self._ready = False
++            self._history_cursor = 0
++            self._output_cursor = 0
++            self._event_index = 0
++            self._transition_counter = 0
+             self._mask = None
+             self._mask_evaluation = None
+             self._seed_everything(attempt_seed)
+@@ -723,22 +754,56 @@
+             self.env.serving_player = "B"
+             self._score_baseline = {"A": init_score_a, "B": init_score_b}
+-            output_rows_before = int(len(self.env.output))
+             reset_result = self.env.reset()
+             if not isinstance(reset_result, (tuple, list)) or len(reset_result) != 4:
+                 raise WorkerFault("native_state_error", "CoachAI reset must return (state, info, done, launch)", fatal=True)
+             state, info, done, launch = reset_result
+             self._state, self._info, self._launch = state, info, bool(launch)
++            
++            output_rows = self.env.output.iloc[self._output_cursor:].to_dict('records')
++            history_delta = self._info.get("state", [])[self._history_cursor:]
++            self._output_cursor = len(self.env.output)
++            self._history_cursor = len(self._info.get("state", []))
++            
++            captures = []
++            if output_rows or history_delta:
++                reset_capture = NativeTransitionCapture(
++                    transition_index=self._transition_counter,
++                    decision_index=0,
++                    within_decision_index=0,
++                    state_before=None,
++                    state_after=self._state,
++                    info_before={},
++                    info_after=self._info,
++                    output_rows=output_rows,
++                    history_delta=history_delta,
++                    actor="B",
++                    controller="RALLYNET",
++                    event_source="INITIAL_SERVE",
++                    policy_action_id=None,
++                    executed_native_action=None,
++                    fallback_event_id=None,
++                    native_reward=0.0,
++                    done=bool(done),
++                    launch=self._launch
++                )
++                captures.append(reset_capture)
++                self._transition_counter += 1
++
+             if self._launch:
+                 raise WorkerFault("unsupported_condition", "B-serve reset unexpectedly left A in launch/service state", fatal=True)
+             if done:
+                 self._terminated = True
+                 terminal = self._resolve_terminal(fallback_occurred=False)
+                 self._ready = False
+                 self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
++                
++                new_events = serialize_rally_history(transition_records=captures, start_event_index=self._event_index, episode_context={"episode_id": self._episode_id})
++                self._event_index += len(new_events)
++                
+                 last_payload = self._state_payload(
+                     status="terminal_without_policy", reset_return_length=4,
+-                    reset_output_rows_added=int(len(self.env.output)) - output_rows_before,
+-                    internal_native_transitions=0, native_reward_trace=[], fallback_events=[],
+-                    terminal=terminal, no_policy_rally=True,
++                    reset_output_rows_added=len(output_rows),
++                    internal_native_transitions=0, native_reward_trace=[], fallback_events=[], rally_events_delta=new_events,
++                    terminal=terminal, no_policy_rally=True
+                 )
+                 if attempt < max_retries:
+@@ -748,17 +808,23 @@
+             transitions = self._advance_to_policy_state(
+                 fallback_events=fallback_events,
+                 native_rewards=native_rewards,
+                 decision_index=1,
++                captures=captures
+             )
++            
++            new_events = serialize_rally_history(transition_records=captures, start_event_index=self._event_index, episode_context={"episode_id": self._episode_id})
++            self._event_index += len(new_events)
++            
+             terminal = self._resolve_terminal(fallback_occurred=bool(fallback_events)) if self._terminated else None
+             status = "ready_for_policy" if self._ready else "terminal_without_policy"
+             last_payload = self._state_payload(
+                 status=status,
+                 reset_return_length=4,
+-                reset_output_rows_added=int(len(self.env.output)) - output_rows_before,
++                reset_output_rows_added=len(output_rows),
+                 internal_native_transitions=transitions,
+                 native_reward_trace=native_rewards,
+                 fallback_events=fallback_events,
++                rally_events_delta=new_events,
+                 terminal=terminal,
+                 no_policy_rally=bool(self._terminated and self._policy_decisions == 0),
+             )
+@@ -783,7 +848,14 @@
+ 
+         decision_index = self._policy_decisions + 1
+         native_action = self._build_policy_action(action_id, self._state, decision_index=decision_index)
+-        output_rows_before = int(len(self.env.output))
++        
++        captures = []
+         try:
+-            transition = self._execute_a_transition(native_action, self._launch, fallback_reason=None, event_rng=None)
++            transition = self._execute_a_transition(
++                native_action, self._launch, fallback_reason=None, event_rng=None,
++                decision_index=decision_index, within_decision_index=0,
++                actor="A", controller="POLICY", event_source="NORMAL_POLICY_ACTION",
++                policy_action_id=action_id, fallback_event_id=None
++            )
++            captures.append(transition)
+         except WorkerFault:
+@@ -806,6 +875,10 @@
+             self._terminated = True
+             terminal = self._resolve_terminal(fallback_occurred=False)
+             self._ready = False
+             self._mask = self.np.zeros((N_ACTIONS,), dtype=self.np.bool_)
++            
++            new_events = serialize_rally_history(transition_records=captures, start_event_index=self._event_index, episode_context={"episode_id": self._episode_id})
++            self._event_index += len(new_events)
++            
+             return self._transition_payload(
+                 action_id=action_id,
+@@ -816,7 +889,8 @@
+                 action_mask=self._mask,
+                 native_rewards=native_rewards,
+                 fallback_events=fallback_events,
++                rally_events_delta=new_events,
+                 internal_native_transitions=internal_transitions,
+-                output_rows_added=int(len(self.env.output)) - output_rows_before,
++                output_rows_added=len(transition.output_rows),
+                 terminal=terminal,
+                 normal_action={
+@@ -829,7 +903,11 @@
+             fallback_events=fallback_events,
+             native_rewards=native_rewards,
+             decision_index=self._policy_decisions + 1,
++            captures=captures
+         )
+         internal_transitions += extra_transitions
+         terminal = self._resolve_terminal(fallback_occurred=bool(fallback_events)) if self._terminated else None
++
++        new_events = serialize_rally_history(transition_records=captures, start_event_index=self._event_index, episode_context={"episode_id": self._episode_id})
++        self._event_index += len(new_events)
+ 
+@@ -858,6 +936,7 @@
+             action_mask=self._mask,
+             native_rewards=native_rewards,
+             fallback_events=fallback_events,
++            rally_events_delta=new_events,
+             internal_native_transitions=internal_transitions,
+-            output_rows_added=int(len(self.env.output)) - output_rows_before,
++            output_rows_added=len(transition.output_rows),
+             terminal=terminal,
+@@ -868,6 +947,6 @@
+ 
+     def _advance_to_policy_state(
+-        self, *, fallback_events: list[dict[str, Any]], native_rewards: list[float], decision_index: int,
++        self, *, fallback_events: list[dict[str, Any]], native_rewards: list[float], decision_index: int, captures: list[NativeTransitionCapture]
+     ) -> int:
+         transitions = 0
+         while True:
+@@ -888,6 +968,10 @@
+             if reason == "CONTACT_UNREACHABLE":
+                 transition = self._execute_a_transition(
+-                    None, self._launch, fallback_reason=None, event_rng=None
++                    None, self._launch, fallback_reason=None, event_rng=None,
++                    decision_index=decision_index, within_decision_index=transitions,
++                    actor=None, controller="ENVIRONMENT", event_source="UNPLAYABLE_TRANSITION",
++                    policy_action_id=None, fallback_event_id=None
+                 )
++                captures.append(transition)
+                 native_rewards.append(transition.native_reward)
+                 transitions += 1
+@@ -918,4 +1003,5 @@
+             if transitions >= self.max_internal_transitions:
+                 raise WorkerFault("native_state_error", "Exceeded max_internal_transitions while resolving empty masks", fatal=True)
+-            event, transition = self._execute_fallback(reason, evaluation, decision_index)
++            event, transition = self._execute_fallback(reason, evaluation, decision_index, transitions)
++            captures.append(transition)
+             fallback_events.append(event)
+@@ -1094,6 +1179,6 @@
+ 
+     def _execute_fallback(
+-        self, reason: str, evaluation: Mapping[str, Any], decision_index: int,
++        self, reason: str, evaluation: Mapping[str, Any], decision_index: int, within_decision_index: int
+-    ) -> tuple[dict[str, Any], NativeStepResult]:
++    ) -> tuple[dict[str, Any], NativeTransitionCapture]:
+         fallback_counter = self._fallback_counter
+         self._fallback_counter += 1
+@@ -1108,6 +1193,9 @@
+         try:
+             carrier, selection = self._build_fallback_carrier(reason, evaluation, event_rng)
+             transition = self._execute_a_transition(
+-                carrier, self._launch, fallback_reason=reason, event_rng=event_rng
++                carrier, self._launch, fallback_reason=reason, event_rng=event_rng,
++                decision_index=decision_index, within_decision_index=within_decision_index,
++                actor="A", controller="ENVIRONMENT", event_source="FALLBACK",
++                policy_action_id=None, fallback_event_id=event_id
+             )
+             transition_executed = True
+@@ -1172,9 +1260,12 @@
+ 
+     def _execute_a_transition(
+-        self, action: Any, launch: bool, *, fallback_reason: str | None, event_rng: random.Random | None,
+-    ) -> NativeStepResult:
++        self, action: Any, launch: bool, *, fallback_reason: str | None, event_rng: random.Random | None,
++        decision_index: int, within_decision_index: int,
++        actor: str | None, controller: str, event_source: str,
++        policy_action_id: int | None, fallback_event_id: str | None
++    ) -> NativeTransitionCapture:
+         state_before = self._state
+         score_before = {"A": int(self.env.score_a), "B": int(self.env.score_b)}
+-        output_rows_before = int(len(self.env.output))
++        info_before = dict(self._info)
+         capture: OneShotValidationCapture | None = None
+         try:
+@@ -1202,5 +1295,11 @@
+         if not math.isfinite(float(native_reward)):
+             raise WorkerFault("native_state_error", "CoachAI returned a non-finite native reward", fatal=True)
++
++        output_rows = self.env.output.iloc[self._output_cursor:].to_dict('records')
++        history_delta = self._info.get("state", [])[self._history_cursor:]
++        self._output_cursor = len(self.env.output)
++        self._history_cursor = len(self._info.get("state", []))
++
+         checked_action = validator_reward = validator_corrected = output_match = None
+         if action is not None:
+             if capture is None or capture.matching_calls != 1 or capture.captured_result is None:
+@@ -1214,11 +1313,11 @@
+                 validator_reward=validator_reward,
+                 validator_corrected=validator_corrected,
+             )
+-            a_row = self._first_new_a_output_row(output_rows_before)
++            a_row = next((row for row in output_rows if str(row.get("player")) == "A"), None)
++            if a_row is None:
++                raise WorkerFault("native_state_error", "CoachAI did not append an A-side output record", fatal=True)
+             output_match = self._native_output_matches(a_row, checked_action)
+             if not output_match:
+                 raise WorkerFault("native_state_error", "CoachAI A-side output record disagrees with captured validator action", fatal=True)
+-        else:
+-            self._first_new_a_output_row(output_rows_before)
+         if bool(next_launch):
+             raise WorkerFault("unsupported_condition", "CoachAI returned A to a launch/service decision mid-rally", fatal=True)
+@@ -1228,7 +1326,22 @@
+             raise WorkerFault("native_state_error", f"CoachAI produced unserializable state: {exc}", fatal=True) from exc
+         score_after = {"A": int(self.env.score_a), "B": int(self.env.score_b)}
+-        return NativeStepResult(
++        
++        self._transition_counter += 1
++        return NativeTransitionCapture(
++            transition_index=self._transition_counter - 1,
++            decision_index=decision_index,
++            within_decision_index=within_decision_index,
++            state_before=state_before,
+             next_state=next_state,
++            info_before=info_before,
++            info_after=next_info,
++            output_rows=output_rows,
++            history_delta=history_delta,
++            actor=actor,
++            controller=controller,
++            event_source=event_source,
++            policy_action_id=policy_action_id,
+             native_reward=float(native_reward),
+-            info=next_info,
++            fallback_event_id=fallback_event_id,
++            executed_native_action=checked_action,
+             done=bool(done),
+@@ -1300,16 +1410,4 @@
+             return False
+ 
+-    def _first_new_a_output_row(self, output_rows_before: int) -> Any:
+-        new_rows = self.env.output.iloc[output_rows_before:]
+-        if len(new_rows) == 0:
+-            raise WorkerFault("native_state_error", "CoachAI did not append an A-side output record", fatal=True)
+-        a_rows = new_rows[new_rows["player"].astype(str) == "A"]
+-        if len(a_rows) == 0:
+-            raise WorkerFault(
+-                "native_state_error", "No A-side output record found after controlled native transition", fatal=True,
+-                details={"new_output_sides": [str(value) for value in new_rows["player"].tolist()]},
+-            )
+-        return a_rows.iloc[0]
+-
+     @staticmethod
+     def _native_output_matches(row: Any, native_action: Any) -> bool:
+@@ -1346,9 +1454,21 @@
+             "launch": bool(self._launch),
+             "rally_history_length": len(self._info.get("state", [])) if isinstance(self._info, dict) else 0,
+         }
++        
++    def _decision_boundary_state(self) -> dict[str, Any] | None:
++        if self._state is None:
++            return None
++        return {
++            "players_xy": [
++                list(_native_to_metres((float(self._state[1][0]), float(self._state[1][1])))),
++                list(_native_to_metres((float(self._state[2][0]), float(self._state[2][1])))),
++            ],
++            "shuttle_xy": list(_native_to_metres((float(self._state[3][0]), float(self._state[3][1]))))
++        }
+ 
+     def _state_payload(
+         self, *, status: str, reset_return_length: int, reset_output_rows_added: int,
+         internal_native_transitions: int, native_reward_trace: list[float],
+-        fallback_events: list[dict[str, Any]], terminal: dict[str, Any] | None,
++        fallback_events: list[dict[str, Any]], rally_events_delta: list[dict[str, Any]],
++        terminal: dict[str, Any] | None,
+         no_policy_rally: bool,
+@@ -1367,5 +1486,7 @@
+             "internal_native_transitions": internal_native_transitions,
+             "native_reward_trace": native_reward_trace,
+             "fallback_events": fallback_events,
++            "rally_events_delta": rally_events_delta,
++            "decision_boundary_state": self._decision_boundary_state(),
+             "terminal": terminal,
+             "no_policy_rally": no_policy_rally,
+@@ -1375,7 +1496,7 @@
+ 
+     def _transition_payload(
+         self, *, action_id: int, observation: dict[str, Any], reward: float,
+-        terminated: bool, truncated: bool, action_mask: Any, native_rewards: list[float],
+-        fallback_events: list[dict[str, Any]], internal_native_transitions: int,
++        terminated: bool, truncated: bool, action_mask: Any, native_rewards: list[float], fallback_events: list[dict[str, Any]],
++        rally_events_delta: list[dict[str, Any]], internal_native_transitions: int,
+         output_rows_added: int, terminal: dict[str, Any] | None, normal_action: dict[str, Any],
+     ) -> dict[str, Any]:
+@@ -1393,5 +1514,7 @@
+             "native_reward_trace": native_rewards,
+             "internal_native_transitions": internal_native_transitions,
+             "fallback_events": fallback_events,
++            "rally_events_delta": rally_events_delta,
++            "decision_boundary_state": self._decision_boundary_state(),
+             "normal_action": normal_action,
+             "terminal": terminal,

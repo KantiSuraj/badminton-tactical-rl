@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from badminton_rl.env.rewards import (
+from badminton_rl.env.reward import (
     RewardIntegrityError,
     shared_terminal_reward,
     validate_worker_step_reward,
